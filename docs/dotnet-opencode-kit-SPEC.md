@@ -83,7 +83,7 @@ Rules under `rules/dotnet/` are always-on conventions. Each rule file should sta
 | Workflow | Command | Requirement |
 |----------|---------|-------------|
 | Project setup | `/dotnet-init` | Generate `AGENTS.md`, configure MCP, ask architecture questions |
-| Planning | `/plan` | Produce scoped implementation plan before non-trivial work |
+| Planning | `/plan` | Grill decisions, generate local PRD/issues, then implement with caveman+cavecrew agents |
 | Scaffolding | `/scaffold` | Generate complete architecture-aware feature slices |
 | Verification | `/verify` | Build, diagnostics, anti-patterns, tests, security, format, diff review |
 | Build repair | `/build-fix` | Bounded build-fix loop with progress checks |

@@ -42,6 +42,7 @@ These files document reusable hook scripts and client-specific wiring:
 
 These files document the OpenCode/Codex-first project model and this manifest:
 
+- `MEMORY.md`
 - `docs/dotnet-opencode-kit-SPEC.md`
 - `docs/added-files-manifest.md`
 
@@ -57,8 +58,10 @@ These files add globally used productivity workflows to the local kit:
 - `commands/grill-me.md`
 - `commands/to-prd.md`
 - `commands/to-issue.md`
+- `commands/to-issues.md`
 - `commands/caveman.md`
 - `commands/cavecrew.md`
+- `docs/planning/README.md`
 
 ## Update Guidance
 

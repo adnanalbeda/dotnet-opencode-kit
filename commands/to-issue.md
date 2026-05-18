@@ -1,14 +1,14 @@
 ---
 description: >
-  Break a plan, issue, or PRD into dependency-ordered vertical-slice tickets for
-  the project issue tracker.
+  Break a plan, issue, or PRD into dependency-ordered local vertical-slice issue
+  files. Does not publish to GitHub/GitLab.
 ---
 
 # /to-issue
 
 ## What
 
-Uses `to-issue` to create independently grabbable implementation issues.
+Uses `to-issue`/`to-issues` behavior to create independently grabbable local implementation issue files.
 
 ## When
 
@@ -21,8 +21,8 @@ Uses `to-issue` to create independently grabbable implementation issues.
 1. Load `to-issue`.
 2. Gather source context from conversation, PRD, or tracker issue.
 3. Draft tracer-bullet vertical slices with AFK/HITL classification and dependencies.
-4. Ask user to approve granularity and dependency order.
-5. Publish approved issues in dependency order.
+4. Save issue files under `docs/planning/issues/[yyyy-mm-dd]-[slug]/`.
+5. Do not publish to GitHub/GitLab from this command.
 
 ## Example
 

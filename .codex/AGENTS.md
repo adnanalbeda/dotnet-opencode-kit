@@ -45,7 +45,7 @@ Codex does not need native slash command support. If user types command text, re
 | Command | File | Purpose |
 |---------|------|---------|
 | `/dotnet-init` | `commands/dotnet-init.md` | Project setup and `AGENTS.md` generation |
-| `/plan` | `commands/plan.md` | Architecture-aware planning |
+| `/plan` | `commands/plan.md` | Grill, route contextual skills/MCP, local PRD/issues, then implement |
 | `/verify` | `commands/verify.md` | Build, diagnostics, tests, security, format, diff review |
 | `/scaffold` | `commands/scaffold.md` | Architecture-aware feature scaffolding |
 | `/code-review` | `commands/code-review.md` | MCP-powered code review |
@@ -53,8 +53,9 @@ Codex does not need native slash command support. If user types command text, re
 | `/checkpoint` | `commands/checkpoint.md` | Commit plus `.agent/handoff.md` |
 | `/wrap-up` | `commands/wrap-up.md` | End-session handoff |
 | `/grill-me` | `commands/grill-me.md` | Stress-test a plan/design |
-| `/to-prd` | `commands/to-prd.md` | Create PRD from current context |
-| `/to-issue` | `commands/to-issue.md` | Break plan/PRD into implementation issues |
+| `/to-prd` | `commands/to-prd.md` | Create local PRD from current context |
+| `/to-issue` | `commands/to-issue.md` | Break plan/PRD into local implementation issues |
+| `/to-issues` | `commands/to-issues.md` | Alias for `/to-issue` |
 | `/caveman` | `commands/caveman.md` | Enable compressed response style |
 | `/cavecrew` | `commands/cavecrew.md` | Use compressed subagent delegation |
 

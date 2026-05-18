@@ -1,8 +1,8 @@
 ---
 name: to-issue
 description: >
-  Break a plan, spec, or PRD into independently grabbable issue-tracker tickets
-  using tracer-bullet vertical slices. Load when user asks to create issues,
+  Break a plan, spec, or PRD into independently grabbable local issue files using
+  tracer-bullet vertical slices. Load when user asks to create issues,
   implementation tickets, or break down work. Alias for global to-issues behavior.
 ---
 
@@ -13,17 +13,17 @@ description: >
 1. **Slice vertically** - Each issue should deliver a narrow end-to-end path, not one horizontal layer.
 2. **Prefer grabbable work** - Issues should be small enough for an agent or developer to take independently.
 3. **Mark interaction needs** - Distinguish AFK slices from HITL slices that need human decision or review.
-4. **Publish in dependency order** - Create blockers first so later issues can reference real issue IDs.
+4. **Local only** - Write dependency-ordered markdown files locally. Do not create GitHub/GitLab issues.
 
 ## Patterns
 
 ### Issue Breakdown Flow
 
 1. Gather current plan, PRD, issue, or conversation context.
-2. Inspect repo only enough to use correct domain vocabulary and architecture terms.
-3. Draft vertical slices with dependency order.
+2. Inspect repo only enough to use correct domain vocabulary and architecture terms, preferring MCPs over broad file reads.
+3. Draft vertical slices with dependency order using routed agent/skill context.
 4. Ask user to approve granularity and HITL/AFK classification.
-5. Publish approved issues to tracker.
+5. Write approved issue files under `docs/planning/issues/[yyyy-mm-dd]-[slug]/`.
 
 ### Proposed Slice Format
 
@@ -52,6 +52,17 @@ description: >
 [Issue links or "None - can start immediately".]
 ```
 
+### Local Artifact Path
+
+Write issue slices locally:
+
+```text
+docs/planning/issues/2026-05-18-order-export/001-export-request-api.md
+docs/planning/issues/2026-05-18-order-export/002-export-worker-processing.md
+```
+
+Do not run `gh issue create`, GitLab issue commands, or tracker APIs from this skill.
+
 ## Anti-patterns
 
 ### Horizontal Slices
@@ -70,10 +81,10 @@ Issue 1: Create minimal order submission path with schema, endpoint, validation,
 
 ```text
 # BAD
-Publish 15 issues before user sees breakdown.
+Publish 15 GitHub/GitLab issues during planning.
 
 # GOOD
-Present slices, ask for granularity/dependency approval, then publish.
+Write local issue markdown files and pause only for HITL decisions.
 ```
 
 ### Vague Tickets
@@ -90,9 +101,10 @@ Allow checkout to reject expired payment authorization with ProblemDetails respo
 
 | Scenario | Action |
 |----------|--------|
-| User says "to issue", "to issues", or "create tickets" | Draft vertical slice breakdown |
+| User says "to issue", "to issues", or "create tickets" | Draft local vertical slice breakdown |
 | Source is existing tracker issue | Fetch full body/comments before slicing |
 | Slice needs human choice | Mark HITL |
 | Slice can be implemented from spec | Mark AFK |
-| User approves breakdown | Publish issues in dependency order |
+| Running inside `/plan` | Write local issue files in dependency order |
+| User asks to publish remotely | Stop and require a separate explicit publishing workflow; do not publish from this skill |
 | User wants PRD first | Use `to-prd` before slicing |

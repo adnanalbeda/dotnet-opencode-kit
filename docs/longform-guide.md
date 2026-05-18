@@ -61,13 +61,13 @@ OpenCode reads root `AGENTS.md`. That file is canonical.
 Recommended operating loop:
 
 1. Ask for `/plan` before non-trivial changes.
-2. Use `/grill-me` when plan/design needs stress testing.
-3. Let routing select specialist agent.
-4. Load relevant skills before editing.
-5. Use MCP tools before full file reads.
-6. Implement smallest correct change.
-7. Run `/verify` or targeted build/test checks.
-8. Use `/to-prd` and `/to-issue` when work needs tracker-ready product docs or implementation tickets.
+2. `/plan` loads `grill-me` and resolves decisions one question at a time.
+3. During grilling, `/plan` routes to relevant agents/skills and loads MCP context when it improves recommendations.
+4. After grilling, `/plan` runs `to-prd` and writes local PRD markdown only.
+5. Then `/plan` runs `to-issue`/`to-issues` and writes local issue markdown only.
+6. Implementation agents run with `caveman` style and `cavecrew` delegation.
+7. Use MCP tools before full file reads.
+8. Run `/verify` or targeted build/test checks.
 9. Use `/wrap-up` at session end to write `.agent/handoff.md`.
 
 ## Codex Workflow
@@ -87,6 +87,7 @@ When user invokes command text:
 | `/grill-me` | `commands/grill-me.md` |
 | `/to-prd` | `commands/to-prd.md` |
 | `/to-issue` | `commands/to-issue.md` |
+| `/to-issues` | `commands/to-issues.md` |
 | `/caveman` | `commands/caveman.md` |
 | `/cavecrew` | `commands/cavecrew.md` |
 
