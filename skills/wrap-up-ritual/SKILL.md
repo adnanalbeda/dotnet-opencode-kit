@@ -2,202 +2,173 @@
 name: wrap-up-ritual
 description: >
   Structured session ending ritual that captures completed work, pending tasks,
-  and learnings before a session ends. Writes a handoff note to .claude/handoff.md
-  so the next session (or a different developer) can pick up exactly where this
-  session left off. Load this skill when the user signals they're wrapping up,
-  says "let's stop here", "that's all for now", "end of session", "wrap up",
-  "save progress", "handoff", or "I'm done for today".
+  decisions, and learnings before a session ends. Writes a handoff note to
+  .agent/handoff.md so the next agent session can resume immediately. Load when
+  the user signals they're wrapping up, says "done for today", "wrap up",
+  "save progress", "handoff", or "checkpoint".
 ---
 
 # Wrap-Up Ritual
 
 ## Core Principles
 
-1. **Sessions are ephemeral, knowledge is permanent** — When a session ends, context is lost. But learnings, decisions, and progress don't have to be. The wrap-up ritual bridges the gap between sessions by writing a handoff note.
-
-2. **Three captures every time** — Every session ending captures exactly three things: what was DONE, what is PENDING, and what was LEARNED. No exceptions. Skipping any of these creates gaps for the next session.
-
-3. **Handoff notes are written for a stranger** — Write the handoff as if the next person has zero context. Include file paths, decision rationale, and specific next steps. "Continue the refactor" is useless. "Refactor `src/Orders/CreateOrder.cs` to use the Result pattern — see the Catalog module for the established pattern" is actionable.
-
-4. **Consistent location, always overwritten** — The handoff file lives at `.claude/handoff.md`. Each session overwrites the previous one — there's only ever one active handoff. Old handoffs are not valuable; current state is.
-
-5. **Learnings flow to permanent memory** — The "learned" section of a wrap-up is a trigger for the `self-correction-loop` skill. Any correction or discovery worth remembering should be captured in `MEMORY.md` as a permanent rule, not just in the ephemeral handoff.
+1. **State survives outside chat** — Important context belongs in files, not conversation history. Write `.agent/handoff.md` at session end.
+2. **One active handoff** — Overwrite `.agent/handoff.md` each wrap-up. Historical handoffs create stale context.
+3. **Separate temporary and permanent knowledge** — Handoff captures current work. `MEMORY.md` captures durable rules/preferences.
+4. **Be specific** — Include file paths, branch, commit hash, pending steps, blockers, and verification status.
+5. **Prefer continuity over ceremony** — Short accurate handoff beats long narrative nobody reads.
 
 ## Patterns
 
-### Session Summary Template
+### Trigger Detection
 
-The handoff file follows a consistent structure:
+Recognize explicit and implicit session-ending signals:
+
+```text
+EXPLICIT:
+- "wrap up"
+- "that's all"
+- "done for today"
+- "save progress"
+- "handoff"
+- "checkpoint"
+- "pick this up tomorrow"
+
+IMPLICIT:
+- User says thanks after completed work
+- User says good enough for now
+- User asks to pause before switching tasks
+```
+
+Response pattern:
+
+```text
+Before we stop, write `.agent/handoff.md` so next session resumes with exact state.
+```
+
+### Standard Handoff
+
+Write this file:
+
+```text
+.agent/handoff.md
+```
+
+Use this structure:
 
 ```markdown
 # Session Handoff
 
-> Generated: 2025-07-15 | Branch: feature/order-validation
+## Current State
+- Branch: [branch]
+- Last commit: [hash or none]
+- Worktree: [clean/dirty summary]
+- Verification: [commands run + result]
 
 ## Completed
-- [x] Added FluentValidation to CreateOrder command
-  - File: `src/Orders/Features/CreateOrder.cs` (lines 15-35)
-  - Validator checks: non-empty CustomerId, at least 1 item, positive quantities
-- [x] Added integration test for validation
-  - File: `tests/Orders.Tests/Features/CreateOrderTests.cs`
-  - Tests: InvalidCustomerId_Returns400, EmptyItems_Returns400
-- [x] Fixed N+1 query in GetOrderDetails
-  - File: `src/Orders/Features/GetOrderDetails.cs` (line 28)
-  - Added `.Include(o => o.Items)` to the query
+- [x] [Specific completed item with file path]
 
 ## Pending
-- [ ] Add validation to UpdateOrder command (same pattern as CreateOrder)
-  - Start from: `src/Orders/Features/UpdateOrder.cs`
-  - Reference: CreateOrder validator for the established pattern
-- [ ] Run full test suite — last run had 2 unrelated failures in Catalog module
-  - Failures: `CatalogTests.GetProduct_NotFound` and `CatalogTests.ListProducts_Pagination`
-  - These appear pre-existing, not caused by today's changes
+- [ ] [Specific next step]
 
-## Learned
-- FluentValidation validators must be registered in the module's DI setup
-  (added to `OrdersModule.cs` line 12) — easy to forget
-- The N+1 in GetOrderDetails was not caught by existing tests because the test
-  fixture seeds only 1 item per order. Consider adding multi-item test data.
+## Decisions
+- [Decision] because [reason]
 
-## Context
-- Working in the `feature/order-validation` branch
-- All changes committed up to "Add CreateOrder validation + tests"
-- No uncommitted changes
+## Blockers
+- [Blocker or "None"]
+
+## Learnings
+- [Durable learning candidate]
+
+## Resume Prompt
+Start by [next concrete action]. Relevant files: [paths].
 ```
 
-### Trigger Detection
+### Checkpoint Variant
 
-Recognize when the user is ending a session:
+For `/checkpoint`, write the handoff before committing when the user explicitly requested a checkpoint/commit and changes are ready. The checkpoint commit should include code, docs, and handoff state together. If a commit already exists, write handoff and tell the user it is uncommitted unless they ask for a follow-up commit.
 
-```
-EXPLICIT SIGNALS:
-- "Let's wrap up"
-- "That's all for today"
-- "I'm done"
-- "Save progress"
-- "Let's stop here"
-- "End of session"
-- "Handoff"
-- "Pick this up tomorrow"
+### Learning Extraction
 
-IMPLICIT SIGNALS:
-- User says "thanks" after a series of completed tasks
-- User says "good enough for now"
-- Long pause after completing a task followed by no new request
+Before writing handoff, scan session for:
 
-RESPONSE:
-When you detect a wrap-up signal, offer to write the handoff:
-"Let me write a handoff note to .claude/handoff.md so the next session
-can pick up exactly where we left off."
-```
+- user corrections
+- non-obvious bugs or workarounds
+- decisions with rationale
+- tools/approaches that failed
+- patterns worth reusing
 
-### Learning Extraction at Session End
+Examples of useful learnings:
 
-Before writing the handoff, review the session for learnings:
+- "FluentValidation validators must be registered in module DI setup."
+- "Test fixture seeds only one child entity, hiding N+1 query bugs."
+- "Payment sandbox returns 500 for amounts over 10000."
 
-```
-LEARNING EXTRACTION CHECKLIST:
-1. Did the user correct anything? → Capture in MEMORY.md (via self-correction-loop)
-2. Did we discover something non-obvious? → Add to "Learned" section
-3. Did we make a decision with rationale? → Document the "why" in handoff
-4. Did a tool/approach not work? → Note it so the next session doesn't retry
-5. Did we find a pattern worth reusing? → Note for potential skill/memory addition
+Examples to avoid:
 
-EXAMPLES OF GOOD LEARNINGS:
-- "EF Core compiled queries don't work with Include() — use regular queries"
-- "The payment gateway sandbox returns 500 on amounts > $10,000"
-- "FluentValidation async validators need .MustAsync(), not .Must() with await"
+- "Worked on Orders module."
+- "Things went well."
+- "Used TimeProvider" when already known rule.
 
-EXAMPLES OF BAD LEARNINGS:
-- "We worked on the Orders module" (too vague)
-- "Things went well" (not actionable)
-- "Used TimeProvider" (already a known rule, not a learning)
-```
+### Completed/Pending Detail Standard
+
+Every completed/pending item should include at least one of:
+
+- file path
+- command to run
+- test name
+- decision link
+- failure output summary
+
+### Legacy Compatibility
+
+If project only has `.claude/handoff.md`, read it as fallback. New writes should target `.agent/handoff.md` unless user requests Claude-specific compatibility.
 
 ## Anti-patterns
 
-### Abrupt Endings
+### Vague Handoff
 
-```
-// BAD — session ends with no capture
-User: "Thanks, that's all!"
-Claude: "You're welcome! Happy to help."
-*Next session: "What were we working on? Let me read through the git log..."*
-
-// GOOD — session ends with a handoff
-User: "Thanks, that's all!"
-Claude: "Before we wrap up, let me write a handoff note to .claude/handoff.md
-         so the next session can pick up where we left off."
-*Next session: reads handoff, immediately knows the state*
+```markdown
+# BAD
+Worked on orders. Need tests.
 ```
 
-### Vague Handoffs
-
-```
-// BAD — handoff that doesn't help
-## Completed
-- Worked on Orders module
-
-## Pending
-- More work on Orders
-
-// GOOD — specific, actionable handoff
-## Completed
-- [x] Added CreateOrder validation (src/Orders/Features/CreateOrder.cs:15-35)
-- [x] Integration test for validation (tests/Orders.Tests/Features/CreateOrderTests.cs)
-
-## Pending
-- [ ] Add same validation pattern to UpdateOrder (src/Orders/Features/UpdateOrder.cs)
-  - Reference CreateOrder validator for the pattern
+```markdown
+# GOOD
+Implemented CreateOrder validation in `src/Orders/CreateOrder.cs`. Pending: add integration test for duplicate SKU in `tests/Orders/CreateOrderTests.cs`.
 ```
 
-### Accumulating Handoff Files
+### Permanent Rules Only In Handoff
 
-```
-// BAD — creating timestamped handoff files
-.claude/
-├── handoff-2025-07-13.md
-├── handoff-2025-07-14.md
-├── handoff-2025-07-15.md
-*3 files, unclear which is current, stale data accumulating*
-
-// GOOD — single file, always overwritten
-.claude/
-├── handoff.md    ← always the current state
-*Permanent learnings go to MEMORY.md, not handoff files*
+```markdown
+# BAD
+Learned: user hates AutoMapper.
 ```
 
-### Skipping the Learning Extraction
-
+```markdown
+# GOOD
+Handoff: "Observed user preference: explicit mapping over AutoMapper."
+MEMORY.md: "Prefer explicit mapping over AutoMapper unless user asks otherwise."
 ```
-// BAD — handoff without learnings
-## Completed
-- Fixed N+1 query
-## Pending
-- Nothing
 
-*The discovery that seeded test data only has 1 item per order (hiding N+1s)
- is lost forever*
+### Writing Multiple Active Handoffs
 
-// GOOD — extract and preserve the insight
-## Learned
-- Test fixture seeds only 1 item per order, which hides N+1 queries.
-  Consider adding multi-item test data to the default fixture.
-→ Also added to MEMORY.md > Testing: "Seed test data with multiple
-  child entities to catch N+1 queries"
-```
+Do not create timestamped active handoffs. Use one current file so next session has obvious source.
+
+### Skipping Learning Extraction
+
+Do not write only completed/pending when session had corrections or discoveries. Put durable rules in `MEMORY.md`; keep session facts in handoff.
+
+### Abrupt Ending
+
+Do not answer "bye" and drop state after meaningful work. Offer handoff unless user says not to.
 
 ## Decision Guide
 
 | Scenario | Action |
 |----------|--------|
-| User says "wrap up" / "that's all" / "done" | Write handoff to `.claude/handoff.md` |
-| Session completed multiple tasks | List each with file paths and line numbers |
-| Session had user corrections | Extract to MEMORY.md AND note in handoff Learned section |
-| Next session is likely a different person | Include Decisions Made table with rationale |
-| Session had no pending work | Still write a handoff — document what was completed and learned |
-| Previous handoff exists | Overwrite it — only the current state matters |
-| Work was on a feature branch | Include branch name and last commit message in handoff |
-| Session ended with failing tests | Document which tests fail and suspected cause in Pending |
-| User doesn't want a handoff | Respect it — but suggest capturing learnings in MEMORY.md at minimum |
-| Session was purely exploratory (no code changes) | Write a lighter handoff with findings and recommendations |
+| User says "wrap up" | Write `.agent/handoff.md`, capture learnings |
+| User says "checkpoint" | Write handoff, then commit if explicitly requested |
+| No changes made | Write concise state note if useful |
+| Durable preference discovered | Add to `MEMORY.md` via self-correction flow |
+| Legacy project has `.claude/handoff.md` | Read fallback, write `.agent/handoff.md` |

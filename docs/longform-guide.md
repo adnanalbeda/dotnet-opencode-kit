@@ -1,368 +1,431 @@
-# dotnet-claude-kit Deep Dive Guide
+# dotnet-opencode-kit Deep Dive Guide
 
-A comprehensive guide covering setup, workflows, optimization, and troubleshooting for dotnet-claude-kit.
+Comprehensive setup and workflow guide for OpenCode, Codex, and MCP-compatible .NET agents.
 
----
+## Mental Model
 
-## Getting Started
+dotnet-opencode-kit separates reusable agent intelligence from client adapters.
 
-### Prerequisites
+| Layer | Path | Purpose |
+|------|------|---------|
+| Orchestration | `AGENTS.md` | OpenCode/Codex routing, skill maps, MCP policy |
+| Codex adapter | `.codex/AGENTS.md` | Codex-specific load order and command mapping |
+| Claude adapter | `.claude-plugin/`, `.claude/`, `CLAUDE.md` | Compatibility only |
+| Skills | `skills/*/SKILL.md` | Domain and workflow knowledge |
+| Agents | `agents/*.md` | Specialist roles and boundaries |
+| Commands | `commands/*.md` | Reusable workflow prompts |
+| Rules | `rules/dotnet/*.md` | Always-on conventions |
+| MCP | `mcp/CWM.RoslynNavigator/` | Roslyn semantic navigation |
 
-- .NET 10 SDK
-- Claude Code CLI (`npm install -g @anthropic-ai/claude-code` or equivalent)
-- Docker (for Testcontainers in integration tests)
-- Node.js (for MCP servers that use `npx`)
+## Setup
 
-### Installation
+### 1. Install Roslyn MCP Server
 
-1. **Install the Roslyn MCP server:**
 ```bash
 dotnet tool install -g CWM.RoslynNavigator
 ```
 
-2. **Add dotnet-claude-kit as a Claude Code plugin:**
+### 2. Add Project Instructions
+
+For existing project, copy best matching template:
+
 ```bash
-# From your .NET project directory
-claude plugins add /path/to/dotnet-claude-kit
+cp templates/web-api/AGENTS.md ./AGENTS.md
 ```
 
-3. **Configure MCP servers:**
-Copy or merge `mcp-configs/mcp-servers.json` into your project's `.mcp.json`:
+For greenfield work, use `/dotnet-init` workflow. It should ask project questions, choose architecture, and generate `AGENTS.md`.
+
+### 3. Configure MCP
+
+Copy shared config if your client supports project-local MCP files:
+
 ```bash
-cp /path/to/dotnet-claude-kit/mcp-configs/mcp-servers.json .mcp.json
-```
-Update `${workspaceFolder}` to your project root path.
-
-4. **Drop in a template CLAUDE.md (optional):**
-Choose a template from `templates/` that matches your architecture and copy its `CLAUDE.md` into your project root.
-
-### First Session
-
-Start Claude Code in your project directory. The plugin loads automatically. Try these commands to explore:
-
-```
-/health-check          # Assess project health
-/instinct-status       # See what patterns have been learned
-/plan add user export  # Plan a new feature before building
+cp mcp-configs/mcp-servers.json .mcp.json
 ```
 
-The system will detect your architecture, load appropriate skills, and route queries to the right specialist agent.
+Then adjust `${workspaceFolder}` if your client does not expand it.
 
----
+### 4. Start Client
 
-## Token Optimization Strategies
+Start OpenCode or Codex in project root. Confirm agent can see:
 
-Context window budget is finite. These strategies maximize what fits.
+- `AGENTS.md`
+- `.mcp.json` or client MCP settings
+- solution file (`.sln` or `.slnx`)
+- `rules/dotnet/` if using this repo as local kit
 
-### MCP-First Approach
+## OpenCode Workflow
 
-Always use Roslyn MCP tools before reading source files:
+OpenCode reads root `AGENTS.md`. That file is canonical.
 
-| Instead Of | Use |
-|-----------|-----|
-| Reading a 500-line file to find one method | `find_symbol` (returns file + line number) |
-| Grepping for all usages of a type | `find_references` (structured results) |
-| Reading multiple files to trace inheritance | `get_type_hierarchy` (complete chain) |
-| Running `dotnet build` and parsing output | `get_diagnostics` (structured errors/warnings) |
-| Manually inspecting all files for dead code | `find_dead_code` (zero-reference analysis) |
+Recommended operating loop:
 
-This approach typically reduces token consumption by 60-80% compared to file-reading approaches.
+1. Ask for `/plan` before non-trivial changes.
+2. Let routing select specialist agent.
+3. Load relevant skills before editing.
+4. Use MCP tools before full file reads.
+5. Implement smallest correct change.
+6. Run `/verify` or targeted build/test checks.
+7. Use `/wrap-up` at session end to write `.agent/handoff.md`.
 
-### Skill Loading
+## Codex Workflow
 
-Skills are loaded on-demand, not all at once. Each agent has a defined skill map:
+Codex reads `.codex/AGENTS.md`, which points back to root `AGENTS.md`.
 
-- **Small queries** (single fix or pattern): 1-2 skills loaded
-- **Medium queries** (feature implementation): 3-4 skills loaded
-- **Large queries** (architecture review): All relevant skills for the domain
+When user invokes command text:
 
-The `context-discipline` skill provides advanced strategies for managing token budget during long sessions.
+| User Text | Codex Should Read |
+|----------|-------------------|
+| `/plan` | `commands/plan.md` |
+| `/scaffold` | `commands/scaffold.md` |
+| `/verify` | `commands/verify.md` |
+| `/code-review` | `commands/code-review.md` |
+| `/build-fix` | `commands/build-fix.md` |
+| `/wrap-up` | `commands/wrap-up.md` |
 
-### Subagent Delegation
+Codex should treat command files as execution workflows, not documentation only.
 
-Use subagents to keep the main context window clean:
+## Claude Compatibility
 
-- **Research tasks**: Spawn a subagent to explore a codebase area while you work on another
-- **Parallel analysis**: Multiple subagents can investigate different aspects simultaneously
-- **One task per subagent**: Focused subagents produce better results than multi-task ones
-- **Model selection matters**: Use Sonnet for routine subagent work, Opus for complex analysis
+Claude support remains available through:
 
----
+- `.claude-plugin/plugin.json`
+- `.claude-plugin/marketplace.json`
+- `.claude/rules/*`
+- `CLAUDE.md`
+- template `CLAUDE.md` files
+
+Compatibility files should mirror shared source. Do not add new canonical guidance only under `.claude/`.
+
+Claude compatibility setup:
+
+1. Keep `CLAUDE.md` as the root compatibility adapter.
+2. Use `.claude-plugin/plugin.json` metadata when packaging Claude support.
+3. Mirror reusable rules from `rules/dotnet/` into `.claude/rules/` only as compatibility output.
+4. Use the same MCP guidance from `mcp-configs/README.md`; do not maintain a separate Claude-only MCP policy.
+
+Troubleshooting:
+
+- If Claude commands or skills look stale, regenerate compatibility files from shared `agents/`, `skills/`, `commands/`, and `rules/` sources.
+- If MCP tools are missing, verify user-scope MCP registration first, then project `.mcp.json` fallback.
+- If guidance conflicts, `AGENTS.md` wins over Claude compatibility files.
+
+## Core Workflows
+
+### Project Init
+
+Use `/dotnet-init` for existing or greenfield projects.
+
+Flow:
+
+1. Detect solution/project type.
+2. Ask architecture questions.
+3. Ask tech stack questions.
+4. Generate `AGENTS.md`.
+5. Configure MCP.
+6. Run health check or build baseline.
+
+### Planning
+
+Use `/plan` when work has 3+ steps, architecture impact, data model changes, security risk, or unclear requirements.
+
+Good plan includes:
+
+- scope and non-goals
+- files likely affected
+- architecture choice/rationale
+- test strategy
+- verification commands
+- rollback/safety notes when needed
+
+### Scaffolding
+
+Use `/scaffold` after architecture is known.
+
+Scaffold should generate complete feature slice:
+
+- endpoint/API surface
+- command/query/handler
+- validation
+- EF configuration if data-backed
+- DTOs/contracts
+- tests
+- build verification
+
+Never generate half feature unless user explicitly asks for partial skeleton.
+
+### Verification
+
+Use `/verify` before declaring substantial work done.
+
+Pipeline:
+
+1. Build.
+2. Diagnostics.
+3. Anti-pattern scan.
+4. Tests.
+5. Security checks.
+6. Format verification.
+7. Diff review.
+
+Short-circuit on critical failures, fix root cause, rerun relevant phase.
+
+### Build Fix
+
+Use `/build-fix` when build fails.
+
+Loop:
+
+1. Capture errors.
+2. Categorize by cause.
+3. Fix smallest root issue.
+4. Rebuild.
+5. Stop after bounded attempts if error class changes or progress stalls.
+
+### Code Review
+
+Use `/code-review` for PRs or risky diffs.
+
+Review priority:
+
+- correctness
+- security
+- data access
+- concurrency/async
+- API compatibility
+- architecture boundaries
+- test gaps
+- maintainability
+
+Findings first, ordered by severity, with file/line references.
+
+### Session Handoff
+
+Use `/wrap-up` or `/checkpoint` to persist state.
+
+Canonical files:
+
+```text
+.agent/handoff.md
+.agent/instincts.md
+MEMORY.md
+```
+
+Claude compatibility may read old `.claude/handoff.md`, but new writes should target `.agent/handoff.md`.
+
+## MCP Usage
+
+Use MCPs by boundary. Do not make one MCP do another MCP's job.
+
+| Need | Prefer |
+|------|--------|
+| Local code symbols, references, diagnostics, dependency graph | Roslyn MCP (`cwm-roslyn-navigator`) |
+| Current official .NET/Microsoft/Azure docs | Microsoft Learn/.NET MCP |
+| Official Microsoft code samples | Microsoft Learn/.NET MCP code sample search |
+| Aspire AppHost resources, logs, traces, integrations | Aspire MCP |
+
+### Roslyn MCP
+
+Prefer Roslyn MCP tools before file scanning.
+
+| Need | MCP Tool |
+|------|----------|
+| Locate type/method | `find_symbol` |
+| Find usage | `find_references` |
+| Find interface implementors | `find_implementations` |
+| Inspect API surface | `get_public_api` |
+| Understand solution | `get_project_graph` |
+| Check warnings/errors | `get_diagnostics` |
+| Detect anti-patterns | `detect_antipatterns` |
+| Find dead code | `find_dead_code` |
+| Check cycles | `detect_circular_dependencies` |
+
+Use file reads after MCP narrows target.
+
+### Microsoft Learn/.NET MCP
+
+Use official Microsoft Learn/.NET MCP before generating Microsoft/Azure/.NET code samples or checking current APIs.
+
+| Task | Tool |
+|------|------|
+| Search official docs | `dotnet_microsoft_docs_search` |
+| Fetch full docs page | `dotnet_microsoft_docs_fetch` |
+| Search official code samples | `dotnet_microsoft_code_sample_search` |
+
+Workflow:
+
+1. Search docs first.
+2. Fetch high-value page when search snippet is incomplete.
+3. Use code sample search before writing sample code.
+4. Cite docs in explanation when result affects design or package/API choice.
+
+### Aspire MCP
+
+Use Aspire MCP when working with Aspire AppHost, service discovery, orchestrated resources, dashboard, logs, traces, or integrations.
+
+| Task | Tool |
+|------|------|
+| Diagnose environment | `aspire_doctor` |
+| Find running AppHosts | `aspire_list_apphosts` |
+| Select AppHost | `aspire_select_apphost` |
+| List resources/endpoints/health | `aspire_list_resources` |
+| Inspect console logs | `aspire_list_console_logs` |
+| Inspect structured logs | `aspire_list_structured_logs` |
+| Inspect traces | `aspire_list_traces`, then `aspire_list_trace_structured_logs` |
+| Control resource | `aspire_execute_resource_command` |
+| Find docs/integrations | `aspire_search_docs`, `aspire_get_doc`, `aspire_list_integrations` |
+
+Troubleshooting flow:
+
+1. Run `aspire_doctor` for environment issues.
+2. Run `aspire_list_apphosts` and select AppHost if needed.
+3. Run `aspire_list_resources` to inspect state/health/endpoints.
+4. Use logs/traces for failing resource or request.
+5. Use Aspire docs/integrations tools for configuration questions.
 
 ## Autonomous Workflows
 
-dotnet-claude-kit supports several autonomous feedback loops that run without user intervention.
+dotnet-opencode-kit supports bounded autonomous loops. Every loop needs progress checks and exit guards.
 
 ### Build-Fix Loop (`/build-fix`)
 
-1. Runs `dotnet build`
-2. Parses compiler errors and categorizes them (missing reference, type mismatch, syntax, etc.)
-3. Applies known fix patterns for each error category
-4. Rebuilds and checks if errors decreased
-5. Repeats until the build is green or the iteration limit (default: 10) is reached
-6. Reports what was fixed and what remains
+1. Run build or diagnostics.
+2. Parse errors and categorize: missing reference, type mismatch, syntax, DI, EF Core, nullability.
+3. Apply smallest known fix pattern.
+4. Rebuild.
+5. Continue only if errors decrease or error class changes productively.
+6. Stop on max iterations, no progress, or more errors introduced.
 
-The `build-error-resolver` agent handles this with contextual skill loading -- it pulls in `ef-core` for DbContext errors, `dependency-injection` for DI container errors, and so on.
+### TDD Loop (`/tdd`)
 
-### Test-Fix Loop (`/tdd`)
+1. Red: write failing test for desired behavior.
+2. Green: write minimum implementation.
+3. Refactor: simplify while tests stay green.
+4. Prefer WebApplicationFactory + Testcontainers for integration behavior.
+5. Verify each phase before continuing.
 
-Follows strict red-green-refactor:
+### Cleanup Loop (`/de-sloppify`)
 
-1. **Red**: Write a failing test that defines the desired behavior
-2. **Green**: Write the minimum code to make the test pass
-3. **Refactor**: Clean up while keeping tests green
-4. Uses `WebApplicationFactory` + Testcontainers for integration tests
-5. Verifies each step before proceeding
-
-### Refactor Loop (`/de-sloppify`)
-
-1. Runs `dotnet format` for style consistency
-2. Uses `find_dead_code` to identify unused symbols
-3. Runs `detect_antipatterns` for code smell detection
-4. Applies `get_diagnostics` for analyzer warnings
-5. Makes structural improvements (extract method, simplify logic)
-6. Verifies build + tests after each change
-
----
+1. Format.
+2. Remove unused usings/dead code.
+3. Fix analyzer diagnostics.
+4. Resolve TODOs if safe.
+5. Audit `sealed` and `CancellationToken` propagation.
+6. Build/test between risky phases.
 
 ## Verification Pipeline
 
-The `/verify` command runs a comprehensive 7-phase pipeline. Each phase produces PASS or FAIL with actionable output. The pipeline short-circuits on critical failures.
+`/verify` runs seven phases with PASS/FAIL output:
 
-### Phase 1: Build
-Runs `dotnet build` across all projects. Must pass before proceeding.
+1. Build.
+2. Diagnostics/analyzers.
+3. Anti-pattern scan.
+4. Tests.
+5. Security scan.
+6. Format verification.
+7. Diff review.
 
-### Phase 2: Analyzers
-Checks `get_diagnostics` for compiler warnings and analyzer violations. Reports severity counts and specific issues.
-
-### Phase 3: Antipatterns
-Uses `detect_antipatterns` to scan for .NET-specific code smells: async void, sync-over-async, `new HttpClient()`, `DateTime.Now`, broad catch, logging string interpolation, missing CancellationToken, EF queries without AsNoTracking.
-
-### Phase 4: Tests
-Runs `dotnet test` with detailed output. Reports pass/fail counts and failing test details.
-
-### Phase 5: Security
-Scans for hardcoded secrets, vulnerable NuGet packages, missing auth attributes, and CORS misconfigurations.
-
-### Phase 6: Formatting
-Runs `dotnet format --verify-no-changes` to ensure consistent code style.
-
-### Phase 7: Diff Review
-Reviews the diff against the base branch for logical issues, missing tests, and architecture violations.
-
----
+Short-circuit on critical failures. Fix root cause, then rerun relevant phase.
 
 ## Health Check Interpretation
 
-The `/health-check` command produces letter grades (A through F) across multiple dimensions:
+`/health-check` grades project health across dimensions:
 
-| Dimension | What It Measures | Tools Used |
-|-----------|-----------------|------------|
-| Code Quality | Antipatterns, analyzer warnings, formatting | `detect_antipatterns`, `get_diagnostics` |
-| Architecture | Dependency direction, circular deps, module boundaries | `get_project_graph`, `detect_circular_dependencies` |
-| Test Coverage | Types with corresponding test classes | `get_test_coverage_map` |
-| Dead Code | Unused types, methods, properties | `find_dead_code` |
-| Security | Secrets, auth, OWASP compliance | Manual scan + antipattern detection |
+| Dimension | Measures | Tools |
+|-----------|----------|-------|
+| Build health | compile/test readiness | build, `get_diagnostics` |
+| Code quality | anti-patterns, warnings, formatting | `detect_antipatterns`, `get_diagnostics` |
+| Architecture | dependency direction, cycles, module boundaries | `get_project_graph`, `detect_circular_dependencies` |
+| Test coverage | type/test mapping | `get_test_coverage_map` |
+| Dead code | unused symbols | `find_dead_code` |
+| Security | secrets, auth, OWASP patterns | security scan + targeted inspection |
 
-### Grade Scale
-- **A**: Excellent. Production-ready with confidence.
-- **B**: Good. Minor issues that should be addressed but are not blocking.
-- **C**: Acceptable. Notable gaps that need attention before scaling.
-- **D**: Concerning. Significant issues that risk production stability.
-- **F**: Critical. Fundamental problems that must be resolved immediately.
+Grades:
 
-Each grade includes specific findings and recommended actions.
-
----
+- A: production-ready.
+- B: good, minor issues.
+- C: acceptable, notable gaps.
+- D: risky, prioritize cleanup.
+- F: critical, stop feature work.
 
 ## Instinct System
 
-The instinct system learns project-specific patterns and conventions over time.
+Instincts track observed but not yet permanent project conventions.
 
-### How It Works
+Lifecycle:
 
-1. **Observation**: As you work, the system observes patterns in your codebase (naming conventions, architecture choices, testing patterns).
-2. **Correction capture**: When you correct Claude, the `self-correction-loop` skill captures the pattern and writes it to `MEMORY.md`.
-3. **Confidence scoring**: Each instinct has a confidence score (0-100) that increases with repeated observations and decreases when contradicted.
-4. **Application**: High-confidence instincts are applied automatically. Low-confidence instincts are suggested but not enforced.
+1. Observe pattern.
+2. Store hypothesis in `.agent/instincts.md` at low confidence.
+3. Increase confidence on repeated evidence.
+4. Mention at medium confidence when relevant.
+5. Follow by default at high confidence.
+6. Promote to `MEMORY.md` when confirmed.
 
-### Managing Instincts
+Commands:
 
+```text
+/instinct-status
+/instinct-export
+/instinct-import
 ```
-/instinct-status       # View all instincts with confidence scores
-/instinct-export       # Export for sharing across projects
-/instinct-import       # Import from another project
+
+Legacy `.claude/instincts.md` may be read as fallback; new state belongs in `.agent/instincts.md`.
+
+## Context Strategy
+
+Load only what task needs:
+
+- Small fix: root `AGENTS.md`, one agent, one skill, target files.
+- Feature: relevant architecture skill, API/data/testing skills, existing neighboring feature.
+- Review: diff, changed file summaries, relevant skills, diagnostics.
+- Architecture: project graph, ADRs, architecture-advisor, structure docs.
+
+## Adding New Skills
+
+Skill format:
+
+```yaml
+---
+name: skill-name
+description: >
+  What this skill does and when to load it.
+---
 ```
 
-Instincts are stored in `.claude/instincts.json` and are project-specific. Exporting creates a portable format that another project can import and adapt.
+Required sections:
 
----
+- Core Principles
+- Patterns
+- Anti-patterns
+- Decision Guide
 
-## Session Management
-
-### Starting a Session
-
-When starting a new session, the system:
-1. Loads `CLAUDE.md` and any `MEMORY.md` for project context
-2. Checks for handoff notes in `.claude/handoff.md` from the previous session
-3. Loads instincts from `.claude/instincts.json`
-4. Makes rules from `rules/dotnet/` available (always-apply)
-
-### Mid-Session Checkpointing
-
-Use `/checkpoint` to save progress at any point:
-- Creates a descriptive git commit with conventional commit prefix
-- Writes a handoff note with completed work and next steps
-- Useful before risky changes or when switching tasks
-
-### Ending a Session
-
-Use `/wrap-up` when done for the day:
-- Summarizes completed work
-- Lists pending tasks and open questions
-- Captures learnings and new instincts
-- Writes handoff to `.claude/handoff.md` for the next session
-
----
+Keep skills under 400 lines. Every recommendation needs rationale and modern .NET examples.
 
 ## Troubleshooting
 
-### MCP Server Not Connecting
+| Symptom | Check |
+|---------|-------|
+| Agent ignores rules | Confirm `AGENTS.md` references `rules/dotnet/` and client loaded it |
+| Roslyn MCP unavailable | Confirm `dotnet tool install -g CWM.RoslynNavigator`, solution path, and MCP config |
+| Microsoft Learn/.NET MCP unavailable | Confirm global MCP config exposes `dotnet_microsoft_docs_search` and related tools |
+| Aspire MCP unavailable | Confirm Aspire AppHost/MCP integration is installed and `aspire_list_apphosts` works |
+| Slow exploration | Use MCP tools before file reads |
+| Wrong architecture assumptions | Run `architecture-advisor` workflow and update `AGENTS.md` |
+| Session context lost | Read `.agent/handoff.md` and `MEMORY.md` at session start |
+| Claude files drift | Regenerate compatibility adapters from canonical shared files |
 
-**Symptom:** MCP tools return errors or are not available.
+### Testcontainers Failures
 
-**Fixes:**
-1. Verify the tool is installed: `cwm-roslyn-navigator --version`
-2. Check that a `.sln` or `.slnx` file exists (the server discovers it via BFS up to 3 levels)
-3. Verify `.mcp.json` has the correct server configuration
-4. Check that `${workspaceFolder}` is replaced with the actual path
-5. The server needs time to load on first use -- it returns "loading" status during initialization
+Check Docker is running, resources are available, package versions match test framework, and CI supports Docker.
 
 ### Build-Fix Loop Not Converging
 
-**Symptom:** `/build-fix` hits the iteration limit without a green build.
+Check whether errors decrease per iteration. If not, stop loop and re-plan. Look for circular dependencies, missing restore, or architecture-level mismatch.
 
-**Fixes:**
-1. Check if errors are decreasing per iteration -- if not, the fixes may be introducing new errors
-2. Look for circular dependency issues with `detect_circular_dependencies`
-3. Check for missing NuGet packages (`dotnet restore` may be needed)
-4. Some errors require manual intervention (architecture-level issues, missing project references)
+### High Token Use
 
-### Hooks Not Running
+Use MCP tools, load fewer skills, delegate research to subagents, and split large tasks into smaller sessions.
 
-**Symptom:** Format or antipattern hooks do not trigger.
+## Maintenance Rule
 
-**Fixes:**
-1. Verify `hooks/hooks.json` is present and well-formed
-2. Check that the plugin is loaded (`claude plugins list`)
-3. Ensure hook scripts are executable (`chmod +x hooks/*.sh`)
-4. Review hook matcher patterns -- `Edit|Write` matches those tool names
-
-### High Token Consumption
-
-**Symptom:** Context window fills up quickly, responses get truncated.
-
-**Fixes:**
-1. Use MCP tools instead of reading files (see Token Optimization above)
-2. Load fewer skills -- only what the current task needs
-3. Use subagents for research tasks to keep main context clean
-4. Use the `context-discipline` skill for advanced strategies
-5. Consider splitting large tasks into smaller, focused sessions
-
-### Tests Failing with Testcontainers
-
-**Symptom:** Integration tests fail with Docker-related errors.
-
-**Fixes:**
-1. Verify Docker is running: `docker info`
-2. Check Docker has enough resources allocated (memory, disk)
-3. Ensure the Testcontainers NuGet package version matches your test framework
-4. On CI, use Docker-in-Docker or a dedicated Docker host
-5. Check for port conflicts if tests run in parallel
-
-### Instincts Not Applying
-
-**Symptom:** Previously learned patterns are not being followed.
-
-**Fixes:**
-1. Check instinct confidence with `/instinct-status` -- low-confidence instincts are suggestions, not enforced
-2. Verify `.claude/instincts.json` exists and is not corrupted
-3. Instincts are project-specific -- they do not transfer automatically between projects (use `/instinct-export` and `/instinct-import`)
-
----
-
-## Creating Custom Skills
-
-Skills follow the Agent Skills open standard. To create a new skill:
-
-### 1. Create the Directory
-
-```bash
-mkdir -p skills/my-skill
-```
-
-### 2. Write SKILL.md
-
-Every skill needs frontmatter and four required sections:
-
-```markdown
----
-name: my-skill
-description: >
-  What this skill does and when Claude should load it.
-  Include trigger keywords and specific scenarios.
----
-
-# My Skill
-
-## Core Principles
-
-1. **First principle** -- Rationale for why this matters.
-2. **Second principle** -- Another opinionated default with explanation.
-3. **Third principle** -- Keep to 3-5 principles.
-
-## Patterns
-
-### Pattern Name
-
-[Working C# code example]
-
-Brief explanation of why this is the recommended approach.
-
-## Anti-patterns
-
-### Anti-pattern Name
-
-```csharp
-// BAD
-[code to avoid]
-
-// GOOD
-[correct approach]
-```
-
-Explanation of why the bad pattern is harmful.
-
-## Decision Guide
-
-| Scenario | Recommendation |
-|----------|---------------|
-| When X | Do Y |
-| When A | Do B |
-```
-
-### 3. Quality Checklist
-
-- [ ] Maximum 400 lines -- every line earns its place
-- [ ] Every recommendation has a "why"
-- [ ] Code examples use modern C# 14 (primary constructors, collection expressions, records)
-- [ ] BAD/GOOD comparisons in anti-patterns section
-- [ ] Frontmatter has `name` (kebab-case, matches directory) and `description`
-
-### 4. Register with Agents
-
-Add the skill to relevant agent skill maps in the agent's `.md` file and update `AGENTS.md` if the skill introduces a new routing pattern.
-
-### 5. Test the Skill
-
-Load the skill in a Claude Code session and verify it activates on the trigger keywords defined in the description. Test that code examples compile conceptually and that anti-pattern comparisons are clear.
+Canonical content belongs in shared paths: `AGENTS.md`, `rules/dotnet/`, `skills/`, `agents/`, `commands/`, `knowledge/`, `mcp/`. Client folders are adapters only.

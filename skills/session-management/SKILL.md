@@ -1,351 +1,222 @@
 ---
 name: session-management
 description: >
-  End-to-end session lifecycle management for .NET projects. Handles session start
-  (load handoff, MEMORY.md, instincts, detect .NET solution), session end (capture
-  completed work, persist learnings, write handoff), and context preservation across
-  sessions. Load this skill when starting a new session, ending a session, when the
-  user says "new session", "pick up where we left off", "what were we working on",
-  "session start", "session end", "handoff", "context", "resume", or when Claude
-  needs to bootstrap itself in an unfamiliar project.
+  End-to-end session lifecycle management for .NET projects. Handles session
+  start, session end, handoff reading/writing, MEMORY.md loading, instincts,
+  and solution detection. Load when starting or ending a session, resuming work,
+  reading handoff, preserving context, or bootstrapping an unfamiliar project.
 ---
 
 # Session Management
 
 ## Core Principles
 
-1. **Sessions start with context, not from scratch** — Every session begins by loading three files: `.claude/handoff.md` (pending work), `MEMORY.md` (permanent rules), and `.claude/instincts.md` (learned patterns). Then detect the .NET solution so MCP tools are connected. A session that starts blind wastes the first 10 minutes re-discovering what was already known.
-
-2. **Sessions end with capture, never abruptly** — When a session ends, three things are captured: what was DONE, what is PENDING, and what was LEARNED. This is non-negotiable. Context lost between sessions is context the user must re-provide, which wastes their time.
-
-3. **Context preservation is a chain** — Handoff files pass state session-to-session. MEMORY.md accumulates permanent rules. Instincts track emerging patterns. Git commits preserve code state. Together, these four mechanisms create continuity that no single mechanism can provide alone.
-
-4. **Solution detection enables tooling** — .NET MCP tools (`get_diagnostics`, `find_symbol`, `get_project_graph`) require a loaded solution. Detecting the `.slnx`/`.sln` file on session start ensures these tools are available from the first prompt, not discovered mid-conversation.
-
-5. **Graceful degradation over hard failure** — If no handoff file exists, start clean. If no MEMORY.md exists, offer to create one on first learning. If no solution file is found, work without MCP tools. Never block a session because a context file is missing.
+1. **Start from persisted state** — Load `.agent/handoff.md`, `MEMORY.md`, and `.agent/instincts.md` before rediscovering context.
+2. **Detect solution early** — Find `.sln`/`.slnx` so MCP tools can operate on correct workspace.
+3. **Write state before exit** — End sessions by writing `.agent/handoff.md` and updating durable memory when needed.
+4. **Prefer neutral state paths** — Use `.agent/` for OpenCode/Codex. Read `.claude/` only as legacy fallback.
+5. **Keep state actionable** — Store next commands/files, not vague summaries.
 
 ## Patterns
 
 ### Session Start Protocol
 
-Execute this sequence at the beginning of every session:
+Execute at start of each resumed session:
 
-```
+```text
 STEP 1: Load Handoff
-  → Check for .claude/handoff.md
-  → If found: read and summarize pending work
-  → If not found: note "No handoff file — starting fresh"
+  -> Check `.agent/handoff.md`
+  -> If missing, check legacy `.claude/handoff.md`
+  -> Summarize pending work if found
 
 STEP 2: Load Memory
-  → Check for MEMORY.md (project root or .claude/)
-  → If found: scan for rules relevant to the likely task
-  → If not found: note "No memory file — will create on first learning"
+  -> Check `MEMORY.md` at project root
+  -> If missing, check `.agent/MEMORY.md` and legacy `.claude/MEMORY.md`
+  -> Load only rules relevant to likely task
 
 STEP 3: Load Instincts
-  → Check for .claude/instincts.md
-  → If found: load instincts at 0.7+ into active context
-  → If not found: note "No instincts file — will create on first observation"
+  -> Check `.agent/instincts.md`
+  -> If missing, check legacy `.claude/instincts.md`
+  -> Bring 0.7+ confidence instincts into active context
 
 STEP 4: Detect .NET Solution
-  → Search for .slnx files in current directory
-  → If not found, search for .sln files
-  → If not found, search parent directories (up to 3 levels)
-  → If not found, search child directories (1 level)
-  → If found: confirm MCP tools are connected
-  → If not found: warn "No solution detected — MCP tools unavailable"
+  -> Search current directory for `.slnx`, then `.sln`
+  -> Search parent directories up to 3 levels
+  -> Search child directories 1 level deep
+  -> If multiple found, ask user which solution to use
 
-STEP 5: Present Summary
-  "Session context loaded:
-   - Last session: [summary from handoff or 'no previous session']
-   - Pending tasks: [list from handoff or 'none']
-   - Active rules: [count from MEMORY.md]
-   - Active instincts: [count at 0.7+]
-   - Solution: [solution name and path, or 'not detected']
-   Ready to continue. What would you like to work on?"
+STEP 5: Connect MCP Context
+  -> Use `get_project_graph` if Roslyn MCP available
+  -> If MCP returns loading, wait briefly and retry once
+  -> If unavailable, continue with file tools and note limitation
+
+STEP 6: Present Resume Summary
+  -> Previous session summary
+  -> Pending tasks
+  -> Active rules/instincts count
+  -> Detected solution path
 ```
 
-### Session End Protocol
+### Session Start
 
-Execute this sequence when the session is ending:
+1. Check `.agent/handoff.md`; fallback `.claude/handoff.md` if missing.
+2. Check `MEMORY.md`; fallback `.agent/MEMORY.md` or `.claude/MEMORY.md` if project uses old layout.
+3. Check `.agent/instincts.md`; fallback `.claude/instincts.md` if missing.
+4. Detect `.slnx` or `.sln`.
+5. Use `get_project_graph` when MCP available.
+6. Summarize current state and ask/continue based on user request.
 
-```
-STEP 1: Review Accomplishments
-  → List everything completed this session with file paths
-  → Include line numbers for significant changes
+### Session End
 
-STEP 2: Check for Uncommitted Changes
-  → Run git status
-  → If uncommitted changes exist:
-    "You have uncommitted changes. Want me to commit before wrapping up?"
-  → If clean: note "All changes committed"
-
-STEP 3: Write Handoff
-  → Write .claude/handoff.md using the Handoff File Template (see below)
-
-STEP 4: Extract Learnings
-  → Review session for corrections from the user
-  → Generalize corrections into rules (via self-correction-loop)
-  → Write to MEMORY.md under appropriate category
-
-STEP 5: Update Instincts
-  → Review any new patterns observed during the session
-  → Update confidence scores in .claude/instincts.md
-  → Promote any instincts that reached 0.9 (via instinct-system)
-
-STEP 6: Confirm
-  "Session wrapped up:
-   - Handoff written to .claude/handoff.md
-   - [N] learnings added to MEMORY.md
-   - [N] instincts updated
-   Next session will pick up right where we left off."
-```
+1. Review git status/diff.
+2. Summarize completed work.
+3. Record pending work and blockers.
+4. Capture decisions and verification results.
+5. Write `.agent/handoff.md`.
+6. Add durable corrections/preferences to `MEMORY.md`.
+7. Update `.agent/instincts.md` for active or confirmed project patterns.
 
 ### Solution Detection Strategy
 
-Find the .NET solution for MCP tool connectivity:
-
-```
+```text
 SEARCH ORDER:
-1. Current directory: *.slnx, *.sln
-2. Parent directory: *.slnx, *.sln (common in src/ subdirectory layouts)
-3. Grandparent directory: *.slnx, *.sln (up to 3 levels)
-4. Child directories: */**.slnx, */**.sln (1 level deep)
+1. Current directory: `*.slnx`, then `*.sln`
+2. Parent directories up to 3 levels
+3. Child directories 1 level deep
 
 PREFERENCE:
-- .slnx over .sln (modern format)
-- If multiple solutions found, prefer the one matching the directory name
-- If still ambiguous, list all and ask the user
+- Prefer `.slnx` over `.sln`
+- Prefer solution matching repository/directory name
+- If ambiguous, list candidates and ask
 
 AFTER DETECTION:
-- Confirm MCP connection by running get_project_graph
-- If MCP returns "loading", wait briefly and retry (solution may be initializing)
-- Cache the solution path for the session — don't re-detect on every tool call
+- Run `get_project_graph` when Roslyn MCP exists
+- Cache solution path for session
+- Do not repeatedly rediscover on every tool call
 ```
 
-### Context Preservation Architecture
-
-Four mechanisms work together to prevent context loss:
-
-```
-FILE                    SCOPE       LIFETIME        PURPOSE
-.claude/handoff.md      Session     Overwritten      Pass state between sessions
-MEMORY.md               Project     Permanent        Store confirmed rules
-.claude/instincts.md    Project     Evolving         Track emerging patterns
-Git commits             Code        Permanent        Preserve code state
-
-FLOW:
-  Session N ends → writes handoff.md, updates MEMORY.md, updates instincts.md
-  Session N+1 starts → reads handoff.md, MEMORY.md, instincts.md
-  Result: zero context loss between sessions
-```
-
-### Handoff File Template
-
-The standard format for `.claude/handoff.md`:
+### Handoff Template
 
 ```markdown
 # Session Handoff
 
-> Generated: 2025-07-15 | Branch: feature/order-validation
+> Generated: [date] | Branch: [branch]
 
 ## Completed
-- [x] Added FluentValidation to CreateOrder command
-  - File: `src/Orders/Features/CreateOrder.cs` (lines 15-35)
-  - Validator: non-empty CustomerId, at least 1 item, positive quantities
-- [x] Fixed N+1 query in GetOrderDetails
-  - File: `src/Orders/Features/GetOrderDetails.cs` (line 28)
-  - Added `.Include(o => o.Items)` to the query
+- [x] [Completed item]
+  - File: `[path]`
+  - Notes: [why it matters]
 
 ## Pending
-- [ ] Add validation to UpdateOrder command (same pattern as CreateOrder)
-  - Start from: `src/Orders/Features/UpdateOrder.cs`
-  - Reference: CreateOrder validator for the established pattern
-- [ ] Run full test suite — last run had 2 unrelated failures in Catalog module
+- [ ] [Next task]
+  - Start from: `[path]`
+  - Reference: [pattern/file/test]
 
 ## Learned
-- FluentValidation validators must be registered in the module's DI setup
-- The N+1 in GetOrderDetails was hidden because test data seeds only 1 item per order
+- [Non-obvious finding or correction]
+
+## Decisions
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| [topic] | [choice] | [why] |
 
 ## Context
-- Branch: feature/order-validation
-- Last commit: "Add CreateOrder validation + tests"
-- Uncommitted changes: no
-- Solution: src/MyApp.slnx
+- Branch: [branch]
+- Last commit: [hash/message]
+- Uncommitted changes: [summary]
+- Solution: [path]
+- Verification: [commands/results]
 ```
 
-### Resuming from Handoff
+### Resume Flow
 
-When a handoff file exists, present a clear summary and let the user decide:
-
-```
-SESSION RESUME FLOW:
-1. Read .claude/handoff.md
-2. Summarize concisely:
-   "Last session (2025-07-15) on branch feature/order-validation:
-    - Completed: CreateOrder validation, N+1 fix in GetOrderDetails
-    - Pending: UpdateOrder validation, test suite failures
-    Shall I continue with the UpdateOrder validation?"
-3. Wait for user direction — never auto-start pending work
-4. If the user wants something different, acknowledge and proceed
-   "Got it, setting aside the pending tasks. What would you like to work on?"
+```text
+1. Read handoff.
+2. Summarize: completed, pending, blockers, likely next step.
+3. Ask before continuing if pending task is non-trivial.
+4. If user chooses different work, set aside handoff and proceed.
+5. Update handoff at end with current state.
 ```
 
 ### First Session Bootstrap
 
-When no context files exist (brand new project or first Claude session):
+When no context files exist:
 
-```
-BOOTSTRAP PROTOCOL:
-1. No handoff.md → "No previous session found. Starting fresh."
-2. No MEMORY.md → "No project memory found. I'll create one when we discover
-   project-specific rules."
-3. No instincts.md → "No instincts file. I'll start tracking patterns
-   as we work together."
-4. Detect solution → Run full detection, report findings
-5. Offer convention scan:
-   "This is our first session. Want me to scan the codebase to learn
-    the project's conventions? (Uses the convention-learner skill)"
+```text
+1. Say no prior handoff found.
+2. Say no project memory found; create when first durable learning appears.
+3. Detect solution and project shape.
+4. Offer convention scan using `convention-learner`.
+5. Recommend running `/health-check` for baseline.
 ```
 
 ### Multi-Developer Handoff
 
-When the handoff might be read by a different developer or Claude session:
+Add these sections when handoff may be read by someone else:
 
-```
-ENHANCED HANDOFF (add when multiple developers use Claude on the project):
-
-## Decisions Made
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| Validation library | FluentValidation | Already used in Catalog module |
-| Error format | ProblemDetails | RFC 7807, consistent with API standard |
-
+```markdown
 ## Open Questions
-- Should we validate product existence at command level or handler level?
-  - Current: handler level (after DB lookup)
-  - Trade-off: invalid product IDs return 500 instead of 400
+- [Question]
+  - Current assumption: [assumption]
+  - Risk: [risk]
 
 ## Dependencies
-- Requires FluentValidation 11.x NuGet package (already referenced)
-- No new infrastructure dependencies
+- [Package/service/tool required]
+
+## Do Not Repeat
+- [Failed approach and why]
+```
+
+### State File Layout
+
+```text
+.agent/
+  handoff.md        # Current session handoff, overwritten
+  instincts.md      # Learned project patterns, evolving
+  learning-log.md   # Non-obvious discoveries, append-only when useful
+MEMORY.md           # Durable rules/preferences
 ```
 
 ## Anti-patterns
 
-### Starting Blind
+### Blind Session Start
 
-```
-# BAD — ignoring existing context
-*Session starts*
-Claude: "How can I help you today?"
-*User: "Continue the order validation work"*
-Claude: "What order validation work? Can you tell me what files to look at?"
-*User wastes 5 minutes re-explaining*
-
-# GOOD — loading context automatically
-*Session starts*
-Claude: "Last session completed CreateOrder validation. Pending: UpdateOrder
-         validation (start from src/Orders/Features/UpdateOrder.cs).
-         Shall I continue with that?"
+```text
+# BAD
+Ask "what were we doing?" without reading handoff.
 ```
 
-### Ending Without Capture
-
-```
-# BAD — session ends, context evaporates
-User: "Thanks, that's all for today!"
-Claude: "You're welcome! Happy to help anytime."
-*Next session starts from scratch*
-
-# GOOD — capture before closing
-User: "Thanks, that's all for today!"
-Claude: "Before we wrap up, let me save our progress to .claude/handoff.md
-         so the next session picks up right where we left off."
-*Writes handoff, extracts learnings, updates instincts*
+```text
+# GOOD
+Read `.agent/handoff.md`, then resume with pending task and file paths.
 ```
 
-### Overwriting Without Consent
+### Stale State
 
-```
-# BAD — silently overwriting an existing handoff with different pending tasks
-*Previous handoff has 3 pending tasks from another developer*
-*This session worked on something different*
-*Overwrites handoff, losing the other developer's pending tasks*
+Do not keep multiple active handoff files. Overwrite current handoff.
 
-# GOOD — check before overwriting
-"There's an existing handoff from [date] with pending tasks:
- - [task 1], [task 2], [task 3]
- These appear unrelated to our session. Should I:
- a) Merge our session with existing pending tasks
- b) Overwrite (their tasks are done or no longer relevant)
- c) Skip writing handoff this time"
-```
+### Overwriting Unrelated Handoff
+
+If existing handoff has unrelated pending work from another developer/session, ask before overwriting: merge, overwrite, or skip.
 
 ### Skipping Solution Detection
 
-```
-# BAD — trying to use MCP tools without a loaded solution
-Claude: "Let me check diagnostics..." *tool fails*
-Claude: "Let me find the symbol..." *tool fails*
-Claude: "I'll just read the files manually" *misses project-wide context*
+Do not use broad file reads for solution structure when `get_project_graph` can answer it.
 
-# GOOD — detect solution on start, verify MCP connectivity
-*Session start*
-Claude: "Detected solution at src/MyApp.slnx. MCP tools connected.
-         Project graph shows 5 projects with 3 test projects."
-*All MCP tools work throughout the session*
-```
+### Bloated Handoff
 
-### Bloated Handoffs
+Do not duplicate full diff. Link to files, commits, and next steps.
 
-```
-# BAD — handoff file is 500 lines with every detail
-## Completed
-- Changed line 15 in file A from X to Y because Z and also considered W...
-*So long that the next session's context window is wasted on the handoff*
+### Client-Specific Canonical State
 
-# GOOD — concise, actionable handoff
-## Completed
-- [x] Added CreateOrder validation (src/Orders/Features/CreateOrder.cs:15-35)
-*Reference the diff or commit for full details, don't duplicate them*
-```
-
-### Context File Sprawl
-
-```
-# BAD — multiple context files with overlapping purposes
-.claude/
-  handoff.md
-  handoff-backup.md
-  session-notes-july.md
-  session-notes-august.md
-  todo.md
-  context.md
-*6 files, unclear which is authoritative*
-
-# GOOD — exactly 3 context files, each with a clear purpose
-.claude/
-  handoff.md       ← session-to-session state (overwritten each time)
-  instincts.md     ← emerging patterns (evolving)
-MEMORY.md          ← permanent rules (append-only, audited)
-```
+Do not write new canonical state only under `.claude/`. Use `.agent/` and keep client folders as adapters.
 
 ## Decision Guide
 
 | Scenario | Action |
 |----------|--------|
-| Starting a new session | Run full Session Start Protocol (5 steps) |
-| User says "wrap up" / "done" / "that's all" | Run full Session End Protocol (6 steps) |
-| No handoff.md exists | Start clean, create on first session end |
-| No MEMORY.md exists | Offer to create on first correction or learning |
-| No solution file found | Warn user, work without MCP tools, suggest creating one |
-| Multiple solution files found | List all, ask user which to use |
-| Handoff has pending tasks from another dev | Ask before overwriting: merge, overwrite, or skip |
-| User wants to resume pending work | Summarize and confirm before starting |
-| User wants something different from handoff | Acknowledge, proceed with new task, update handoff at end |
-| Session had user corrections | Extract to MEMORY.md before ending |
-| Session discovered new patterns | Update instincts.md before ending |
-| First-ever session on a project | Run bootstrap protocol, offer convention scan |
-| Solution is still loading (MCP returns "loading") | Wait 5 seconds, retry once, then proceed without MCP |
-| Mid-session context getting large | Offload research to subagents, keep main context focused |
-| User asks "what were we working on?" | Read handoff.md and summarize |
+| New session | Read `.agent/handoff.md`, `MEMORY.md`, `.agent/instincts.md` |
+| No state files | Detect solution, ask concise project intent question |
+| User says resume | Start with handoff pending items |
+| User says wrap up | Invoke wrap-up-ritual |
+| Legacy `.claude/*` exists | Read fallback, migrate new writes to `.agent/` |

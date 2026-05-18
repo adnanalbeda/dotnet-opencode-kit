@@ -1,10 +1,10 @@
-# dotnet-claude-kit — Development Instructions
+# dotnet-opencode-kit — Claude Compatibility Instructions
 
-> These instructions are for developing THIS repository. For user-facing project templates, see `templates/`.
+> Claude compatibility adapter for developing THIS repository. Canonical OpenCode/Codex instructions live in `AGENTS.md`. For user-facing project templates, see `templates/`.
 
 ## Repository Purpose
 
-dotnet-claude-kit is an opinionated Claude Code companion for .NET developers. It provides skills, agents, templates, knowledge documents, and a Roslyn MCP server that make Claude Code dramatically more effective for .NET development.
+dotnet-opencode-kit is an OpenCode/Codex-first .NET agent kit. It provides skills, agents, templates, knowledge documents, rules, workflow commands, and a Roslyn MCP server that make AI coding agents more effective for .NET development. Claude Code support remains as compatibility.
 
 ## Philosophy
 
@@ -24,7 +24,7 @@ Skills follow the Agent Skills open standard. Each skill lives at `skills/<skill
 ---
 name: skill-name           # kebab-case, matches directory name
 description: >
-  What this skill does and when Claude should load it.
+  What this skill does and when an agent should load it.
   Include trigger keywords and specific scenarios.
 ---
 ```
@@ -62,17 +62,18 @@ Agents live at `agents/<agent-name>.md`. Each agent contains:
 
 Templates live at `templates/<template-name>/`. Each contains:
 
-- `CLAUDE.md` — Drop-in file for user projects
+- `AGENTS.md` — Drop-in file for user projects
+- `CLAUDE.md` — Optional Claude compatibility copy
 - `README.md` — When and how to use this template
 
-Templates reference skills by name and should be self-contained — a user copies just the CLAUDE.md into their project.
+Templates reference skills by name and should be self-contained — OpenCode/Codex users copy `AGENTS.md`; Claude users may use `CLAUDE.md` compatibility files.
 
 ## Knowledge Documents
 
 Knowledge files at `knowledge/` are NOT skills. They're reference material that agents and templates point to. They don't follow the skill frontmatter format.
 
 - `dotnet-whats-new.md` — Updated per .NET release
-- `common-antipatterns.md` — Patterns Claude should never generate
+- `common-antipatterns.md` — Patterns agents should never generate
 - `package-recommendations.md` — Vetted NuGet packages
 - `breaking-changes.md` — Migration gotchas
 - `decisions/*.md` — ADRs using the template format
@@ -144,7 +145,7 @@ dotnet test mcp/CWM.RoslynNavigator/CWM.RoslynNavigator.slnx
 
 ## Workflow Standards
 
-How Claude should work on this repository (and any project using dotnet-claude-kit templates).
+How agents should work on this repository (and any project using dotnet-opencode-kit templates).
 
 ### Plan Before Building
 
@@ -191,7 +192,7 @@ How Claude should work on this repository (and any project using dotnet-claude-k
 
 ## Contribution Workflow
 
-1. Check the spec at `docs/dotnet-claude-kit-SPEC.md` for the full vision
+1. Check `AGENTS.md` and `docs/dotnet-opencode-kit-SPEC.md` for the current vision
 2. Follow the skill/agent/template/command/rule structure defined above
 3. Run `dotnet format --verify-no-changes` before committing
 4. Ensure skill files stay under 400 lines, commands under 200, rules under 100
