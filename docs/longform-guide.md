@@ -61,12 +61,14 @@ OpenCode reads root `AGENTS.md`. That file is canonical.
 Recommended operating loop:
 
 1. Ask for `/plan` before non-trivial changes.
-2. Let routing select specialist agent.
-3. Load relevant skills before editing.
-4. Use MCP tools before full file reads.
-5. Implement smallest correct change.
-6. Run `/verify` or targeted build/test checks.
-7. Use `/wrap-up` at session end to write `.agent/handoff.md`.
+2. Use `/grill-me` when plan/design needs stress testing.
+3. Let routing select specialist agent.
+4. Load relevant skills before editing.
+5. Use MCP tools before full file reads.
+6. Implement smallest correct change.
+7. Run `/verify` or targeted build/test checks.
+8. Use `/to-prd` and `/to-issue` when work needs tracker-ready product docs or implementation tickets.
+9. Use `/wrap-up` at session end to write `.agent/handoff.md`.
 
 ## Codex Workflow
 
@@ -82,6 +84,11 @@ When user invokes command text:
 | `/code-review` | `commands/code-review.md` |
 | `/build-fix` | `commands/build-fix.md` |
 | `/wrap-up` | `commands/wrap-up.md` |
+| `/grill-me` | `commands/grill-me.md` |
+| `/to-prd` | `commands/to-prd.md` |
+| `/to-issue` | `commands/to-issue.md` |
+| `/caveman` | `commands/caveman.md` |
+| `/cavecrew` | `commands/cavecrew.md` |
 
 Codex should treat command files as execution workflows, not documentation only.
 

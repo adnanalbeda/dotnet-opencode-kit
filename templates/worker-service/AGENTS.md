@@ -62,6 +62,7 @@ Load relevant skills before implementation:
 - `resilience`
 - `ef-core` if persistent data exists
 - `context-discipline`, `wrap-up-ritual`, `verification-loop`
+- `grill-me`, `to-prd`, `to-issue`, `caveman`, `cavecrew` for planning, product docs, issue breakdown, and compressed workflows
 
 ## MCP Tools
 

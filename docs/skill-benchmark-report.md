@@ -1,10 +1,11 @@
 # Skill Benchmark Report
 
 > Generated: 2026-03-06 | Skills analyzed: 47 | Total estimated tokens: ~91,700
+> Historical report: covers the original 47 skills before later productivity-skill additions.
 
 ## Executive Summary
 
-All 47 skills are **structurally compliant** — every one has YAML frontmatter, Core Principles, Patterns, Anti-patterns (BAD/GOOD), and Decision Guide tables. The format is consistent and well-executed across the board.
+The 47 skills analyzed in this report are **structurally compliant** — every one has YAML frontmatter, Core Principles, Patterns, Anti-patterns (BAD/GOOD), and Decision Guide tables. The format is consistent and well-executed across the board.
 
 However, the skills vary dramatically in **value-add over base model knowledge**:
 - **16 skills** are HIGH value-add (agents would produce significantly worse output without them)

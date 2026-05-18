@@ -3,7 +3,7 @@
   <p align="center">
     <strong>Make OpenCode and Codex expert .NET agents.</strong>
     <br />
-    47 skills &bull; 10 specialist agents &bull; 16 workflow commands &bull; 10 rules &bull; 5 project templates &bull; 15 MCP tools &bull; 7 hooks
+    52 skills &bull; 10 specialist agents &bull; 21 workflow commands &bull; 10 rules &bull; 5 project templates &bull; 15 MCP tools &bull; 7 hooks
     <br />
     Built for .NET 10 / C# 14. Architecture-aware. Token-efficient. MCP-first.
   </p>
@@ -12,8 +12,8 @@
 <p align="center">
   <a href="#quick-start">Quick Start</a> &bull;
   <a href="#platform-support">Platform Support</a> &bull;
-  <a href="#commands-16">Commands</a> &bull;
-  <a href="#skills-47">Skills</a> &bull;
+  <a href="#commands-21">Commands</a> &bull;
+  <a href="#skills-52">Skills</a> &bull;
   <a href="#agents-10">Agents</a> &bull;
   <a href="#rules-10">Rules</a> &bull;
   <a href="#templates-5">Templates</a> &bull;
@@ -105,9 +105,9 @@ Claude support remains available through `.claude-plugin/`, `.claude/rules/`, `C
 | EF Core guidance | Direct `DbContext`, migrations, interceptors, compiled queries, `ExecuteUpdateAsync`, split queries, value converters. |
 | Integration-first testing | xUnit v3, `WebApplicationFactory`, Testcontainers, Verify snapshots, behavior-focused tests. |
 | MCP navigation | 15 Roslyn tools for symbols, references, diagnostics, dead code, dependencies, API surface, and anti-patterns. |
-| Workflow automation | `/plan`, `/scaffold`, `/verify`, `/build-fix`, `/code-review`, `/health-check`, `/security-scan`, `/wrap-up`. |
+| Workflow automation | `/plan`, `/scaffold`, `/verify`, `/build-fix`, `/code-review`, `/health-check`, `/security-scan`, `/grill-me`, `/to-prd`, `/to-issue`, `/wrap-up`. |
 
-## Commands (16)
+## Commands (21)
 
 Commands are markdown workflow prompts under `commands/`. Clients with native slash commands can expose them directly. Other clients should read the matching file and execute the workflow.
 
@@ -129,6 +129,11 @@ Commands are markdown workflow prompts under `commands/`. Clients with native sl
 | `/instinct-status` | Show learned instincts with confidence scores | instinct-system skill |
 | `/instinct-export` | Export instincts to shareable format | instinct-system skill |
 | `/instinct-import` | Import instincts from another project | instinct-system skill |
+| `/grill-me` | Stress-test a plan/design one question at a time | grill-me skill |
+| `/to-prd` | Convert current context into a PRD | to-prd skill |
+| `/to-issue` | Break a plan/PRD into vertical-slice issues | to-issue skill |
+| `/caveman` | Enable ultra-compressed technical communication | caveman skill |
+| `/cavecrew` | Use compressed subagent delegation patterns | cavecrew skill |
 
 ## Rules (10)
 
@@ -147,7 +152,7 @@ Always-loaded conventions live in `rules/dotnet/`.
 | [hooks](rules/dotnet/hooks.md) | Format hooks, pre-commit, post-test analysis |
 | [packages](rules/dotnet/packages.md) | Latest stable NuGet versions, no training-data package pins |
 
-## Skills (47)
+## Skills (52)
 
 Skills are code-heavy reference files under `skills/<name>/SKILL.md`. Load only relevant skills for task context.
 
@@ -161,8 +166,8 @@ Skills are code-heavy reference files under `skills/<name>/SKILL.md`. Load only 
 | Observability | [logging](skills/logging/SKILL.md), [serilog](skills/serilog/SKILL.md), [opentelemetry](skills/opentelemetry/SKILL.md) | Structured logs, traces, metrics, correlation IDs. |
 | Testing | [testing](skills/testing/SKILL.md) | xUnit v3, WebApplicationFactory, Testcontainers, Verify. |
 | DevOps | [docker](skills/docker/SKILL.md), [container-publish](skills/container-publish/SKILL.md), [ci-cd](skills/ci-cd/SKILL.md), [aspire](skills/aspire/SKILL.md) | Containers, SDK publishing, GitHub Actions, Aspire orchestration. |
-| Workflow | [scaffolding](skills/scaffolding/SKILL.md), [project-setup](skills/project-setup/SKILL.md), [code-review-workflow](skills/code-review-workflow/SKILL.md), [verification-loop](skills/verification-loop/SKILL.md) | Feature generation, setup, review, verification. |
-| Meta | [context-discipline](skills/context-discipline/SKILL.md), [wrap-up-ritual](skills/wrap-up-ritual/SKILL.md), [session-management](skills/session-management/SKILL.md), [learning-log](skills/learning-log/SKILL.md) | Token budget, handoff, session state, captured learnings. |
+| Workflow | [scaffolding](skills/scaffolding/SKILL.md), [project-setup](skills/project-setup/SKILL.md), [code-review-workflow](skills/code-review-workflow/SKILL.md), [verification-loop](skills/verification-loop/SKILL.md), [grill-me](skills/grill-me/SKILL.md), [to-prd](skills/to-prd/SKILL.md), [to-issue](skills/to-issue/SKILL.md) | Feature generation, setup, review, verification, plan interrogation, PRDs, issue breakdown. |
+| Meta | [context-discipline](skills/context-discipline/SKILL.md), [wrap-up-ritual](skills/wrap-up-ritual/SKILL.md), [session-management](skills/session-management/SKILL.md), [learning-log](skills/learning-log/SKILL.md), [caveman](skills/caveman/SKILL.md), [cavecrew](skills/cavecrew/SKILL.md) | Token budget, handoff, session state, captured learnings, compressed communication, compressed subagents. |
 
 ## Agents (10)
 
@@ -236,8 +241,8 @@ dotnet-opencode-kit/
 ├── CLAUDE.md                    # Claude compatibility instructions for this repo
 ├── .codex/AGENTS.md             # Codex adapter
 ├── agents/                      # 10 specialist agents
-├── skills/                      # 47 skills
-├── commands/                    # 16 workflow command prompts
+├── skills/                      # 52 skills
+├── commands/                    # 21 workflow command prompts
 ├── rules/dotnet/                # 10 canonical always-on rules
 ├── .claude/rules/               # Claude compatibility rule mirror
 ├── templates/                   # 5 drop-in AGENTS.md templates

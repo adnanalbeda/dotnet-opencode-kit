@@ -147,7 +147,7 @@ Use Roslyn MCP for local project understanding before reading many files.
 
 ## Cross-Agent Meta Skills
 
-These 10 meta and productivity skills are not tied to a specific agent — any agent can load them when the context calls for it:
+These 15 meta and productivity skills are not tied to a specific agent — any agent can load them when the context calls for it:
 
 | Skill | When to Load |
 |-------|-------------|
@@ -161,6 +161,11 @@ These 10 meta and productivity skills are not tied to a specific agent — any a
 | `instinct-system` | Pattern detection across sessions — observe-hypothesize-confirm cycle for project conventions |
 | `session-management` | Session start/end — load handoff, detect solution, write session summary |
 | `autonomous-loops` | Iterative fix loops — build-fix, test-fix, refactor with bounded iterations |
+| `grill-me` | Stress-test plans/designs one question at a time before implementation |
+| `to-prd` | Convert current context into a PRD for the issue tracker |
+| `to-issue` | Break plans/PRDs into vertical-slice implementation issues |
+| `caveman` | Use ultra-compressed technical communication when requested |
+| `cavecrew` | Choose compressed subagent delegation for investigation, small edits, and reviews |
 
 ### Meta Skill Routing
 
@@ -176,6 +181,11 @@ These 10 meta and productivity skills are not tied to a specific agent — any a
 | "show instincts", "what have you learned", "confidence scores" | instinct-system |
 | "start session", "load handoff", "session start" | session-management |
 | "fix build loop", "keep fixing", "auto-fix" | autonomous-loops |
+| "grill me", "stress-test this", "challenge this plan" | grill-me |
+| "write PRD", "turn this into a PRD", "product requirements" | to-prd |
+| "create issues", "break into tickets", "implementation issues" | to-issue |
+| "caveman mode", "be brief", "less tokens" | caveman |
+| "use cavecrew", "delegate to subagent", "save context" | cavecrew |
 
 ## Slash Commands
 
@@ -199,6 +209,11 @@ Commands map to skills and agents. Use these as shortcuts for common workflows.
 | `/instinct-status` | instinct-system | — | Show learned instincts |
 | `/instinct-export` | instinct-system | — | Export instincts to shareable format |
 | `/instinct-import` | instinct-system | — | Import instincts from another project |
+| `/grill-me` | grill-me | — | Stress-test a plan/design before implementation |
+| `/to-prd` | to-prd | — | Convert current context into a PRD |
+| `/to-issue` | to-issue | — | Break a plan/PRD into vertical-slice issues |
+| `/caveman` | caveman | — | Enable compressed technical communication |
+| `/cavecrew` | cavecrew | — | Use compressed subagent delegation patterns |
 
 ## Conflict Resolution
 

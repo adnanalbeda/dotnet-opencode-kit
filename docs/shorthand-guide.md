@@ -8,10 +8,11 @@ A compact reference for all components: commands, skills, agents, rules, hooks, 
 
 | Command | Description | Related Skill / Agent |
 |---------|-------------|----------------------|
-| `/plan` | Enter plan mode with architecture awareness | workflow-mastery / dotnet-architect |
+| `/dotnet-init` | Project setup and `AGENTS.md` generation | project-setup / dotnet-architect |
+| `/plan` | Enter plan mode with architecture awareness | architecture-advisor / dotnet-architect |
 | `/scaffold` | Architecture-aware feature scaffolding | scaffolding / dotnet-architect |
-| `/build-fix` | Autonomous build-fix loop | verification-loop / build-error-resolver |
-| `/verify` | 7-phase verification pipeline | verification-loop / code-reviewer |
+| `/build-fix` | Autonomous build-fix loop | autonomous-loops / build-error-resolver |
+| `/verify` | 7-phase verification pipeline | verification-loop / -- |
 | `/tdd` | Guided test-driven development workflow | testing / test-engineer |
 | `/code-review` | MCP-powered multi-dimensional code review | code-review-workflow / code-reviewer |
 | `/health-check` | Project health assessment with letter grades | health-check / code-reviewer |
@@ -23,10 +24,15 @@ A compact reference for all components: commands, skills, agents, rules, hooks, 
 | `/instinct-status` | Display learned instincts with confidence scores | instinct-system / -- |
 | `/instinct-export` | Export instincts to shareable format | instinct-system / -- |
 | `/instinct-import` | Import instincts from another project | instinct-system / -- |
+| `/grill-me` | Stress-test a plan/design one question at a time | grill-me / -- |
+| `/to-prd` | Convert current context into a PRD | to-prd / -- |
+| `/to-issue` | Break a plan/PRD into vertical-slice issues | to-issue / -- |
+| `/caveman` | Enable ultra-compressed technical communication | caveman / -- |
+| `/cavecrew` | Use compressed subagent delegation | cavecrew / -- |
 
 ---
 
-## Skills (47 total)
+## Skills (52 total)
 
 ### .NET Domain (29)
 
@@ -52,7 +58,7 @@ A compact reference for all components: commands, skills, agents, rules, hooks, 
 | verification-loop | Build-test-verify feedback loop |
 | workflow-mastery | Advanced agent workflow patterns |
 
-### Meta & Productivity (7)
+### Meta & Productivity (12)
 
 | Skill | Purpose |
 |-------|---------|
@@ -63,8 +69,13 @@ A compact reference for all components: commands, skills, agents, rules, hooks, 
 | self-correction-loop | Capture corrections and prevent recurrence |
 | split-memory | Split large AGENTS.md across organized files |
 | wrap-up-ritual | Session handoff with progress and pending tasks |
+| grill-me | Stress-test plans/designs before implementation |
+| to-prd | Convert context into a PRD |
+| to-issue | Break PRDs/plans into vertical-slice issues |
+| caveman | Ultra-compressed technical communication |
+| cavecrew | Compressed subagent delegation patterns |
 
-### Autonomous (6 -- no SKILL.md, used internally)
+### Autonomous & Quality (6)
 
 autonomous-loops, de-sloppify, health-check, instinct-system, security-scan, session-management
 
@@ -188,3 +199,8 @@ All rules have `alwaysApply: true` -- they are enforced on every interaction.
 | `/instinct-status` | instinct-system | -- | -- |
 | `/instinct-export` | instinct-system | -- | -- |
 | `/instinct-import` | instinct-system | -- | -- |
+| `/grill-me` | grill-me | -- | -- |
+| `/to-prd` | to-prd | -- | -- |
+| `/to-issue` | to-issue | -- | -- |
+| `/caveman` | caveman | -- | -- |
+| `/cavecrew` | cavecrew | -- | -- |

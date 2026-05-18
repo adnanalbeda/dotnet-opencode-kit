@@ -45,6 +45,21 @@ These files document the OpenCode/Codex-first project model and this manifest:
 - `docs/dotnet-opencode-kit-SPEC.md`
 - `docs/added-files-manifest.md`
 
+## Productivity Skills And Commands
+
+These files add globally used productivity workflows to the local kit:
+
+- `skills/grill-me/SKILL.md`
+- `skills/to-prd/SKILL.md`
+- `skills/to-issue/SKILL.md`
+- `skills/caveman/SKILL.md`
+- `skills/cavecrew/SKILL.md`
+- `commands/grill-me.md`
+- `commands/to-prd.md`
+- `commands/to-issue.md`
+- `commands/caveman.md`
+- `commands/cavecrew.md`
+
 ## Update Guidance
 
 When syncing from upstream/source:
