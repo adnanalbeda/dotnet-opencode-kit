@@ -63,7 +63,7 @@ OpenCode reads root `AGENTS.md`. That file is canonical.
 Recommended operating loop:
 
 1. Ask for `/plan` before non-trivial changes.
-2. `/plan` loads `grill-me` and resolves decisions one question at a time.
+2. `/plan` loads `grill-with-docs` and resolves decisions one question at a time against project docs.
 3. During grilling, `/plan` routes to relevant agents/skills and loads MCP context when it improves recommendations.
 4. After grilling, `/plan` runs `to-prd` and writes local PRD markdown only.
 5. Then `/plan` runs `to-issues` and writes local issue markdown only.

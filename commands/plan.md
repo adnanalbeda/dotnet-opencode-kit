@@ -1,6 +1,6 @@
 ---
 description: >
-  End-to-end planning workflow for .NET projects. Loads grill-me first, routes to
+  End-to-end planning workflow for .NET projects. Loads grill-with-docs first, routes to
   relevant agents/skills and MCP context, generates local-only PRD and issue
   artifacts, then runs implementation agents in caveman mode with cavecrew
   delegation. Use when: "plan", "let's plan", "think through", "design this",
@@ -13,7 +13,7 @@ description: >
 
 Runs the project planning pipeline from unclear request to implementation:
 
-- Load `grill-me` and interrogate the plan one question at a time.
+- Load `grill-with-docs` and interrogate the plan one question at a time against project docs.
 - Route to relevant agents/skills and load MCP context when it improves recommendations.
 - After grilling is done, run a PRD agent with `to-prd`.
 - Generate PRDs locally only under `docs/planning/prds/`; do not create or push GitHub/GitLab issues.
@@ -36,9 +36,9 @@ stop and re-plan rather than pushing through a broken approach.
 
 ## How
 
-### Step 1: Load `grill-me`
+### Step 1: Load `grill-with-docs`
 
-Load `grill-me` before architecture planning. Ask one focused question at a time, each with a recommended answer. If repo inspection can answer the question, inspect first instead of asking.
+Load `grill-with-docs` before architecture planning. Inspect relevant local docs first (`CONTEXT.md`, `docs/adr/`, `knowledge/decisions/`, planning docs), then ask one focused question at a time, each with a recommended answer. If repo inspection can answer the question, inspect first instead of asking.
 
 Continue until decisions, risks, scope, non-goals, and implementation boundaries are clear.
 
@@ -159,7 +159,7 @@ Pause for user confirmation only at HITL decisions, destructive changes, remote 
 ```
 User: /plan Add a product catalog feature with search and filtering
 
-Agent: Loading `grill-me`. First question:
+Agent: Loading `grill-with-docs`. First question:
 
 Context loaded: `api-designer`, `ef-core-specialist`, `testing`; Roslyn MCP `get_project_graph`; Microsoft Learn docs for output caching.
 
@@ -192,7 +192,7 @@ Proceeding with AFK slices. Pausing only for HITL decisions.
 
 ## Related
 
-- `/grill-me` -- Stress-test the plan before PRD/issues
+- `/grill-me` -- Stress-test the plan against project docs before PRD/issues
 - `/to-prd` -- Generate local PRD artifact
 - `/to-issues` -- Generate local issue artifacts
 - `/cavecrew` -- Delegate investigation, edits, and review compactly

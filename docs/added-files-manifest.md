@@ -51,7 +51,7 @@ These files document the OpenCode/Codex-first project model and this manifest:
 
 These files add globally used productivity workflows to the local kit:
 
-- `skills/grill-me/SKILL.md`
+- `skills/grill-with-docs/SKILL.md`
 - `skills/to-prd/SKILL.md`
 - `skills/to-issues/SKILL.md`
 - `skills/caveman/SKILL.md`

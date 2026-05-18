@@ -118,7 +118,7 @@ Commands are markdown workflow prompts under `commands/`. Clients with native sl
 | Command | Purpose | Invokes |
 |---------|---------|---------|
 | `/dotnet-init` | Project setup and `AGENTS.md` generation | project-setup skill, dotnet-architect agent |
-| `/plan` | Grill requirements, route relevant agent/skill/MCP context, generate local PRD/issues, then implement with caveman+cavecrew agents | grill-me, contextual skills/MCP, to-prd, to-issues, caveman, cavecrew |
+| `/plan` | Grill requirements against project docs, route relevant agent/skill/MCP context, generate local PRD/issues, then implement with caveman+cavecrew agents | grill-with-docs, contextual skills/MCP, to-prd, to-issues, caveman, cavecrew |
 | `/verify` | 7-phase verification: build, analyzers, antipatterns, tests, security, format, diff | verification-loop skill |
 | `/tdd` | Red-green-refactor with xUnit + Testcontainers | testing skill, test-engineer agent |
 | `/scaffold` | Architecture-aware feature scaffolding | scaffolding skill, dotnet-architect agent |
@@ -133,7 +133,7 @@ Commands are markdown workflow prompts under `commands/`. Clients with native sl
 | `/instinct-status` | Show learned instincts with confidence scores | instinct-system skill |
 | `/instinct-export` | Export instincts to shareable format | instinct-system skill |
 | `/instinct-import` | Import instincts from another project | instinct-system skill |
-| `/grill-me` | Stress-test a plan/design one question at a time | grill-me skill |
+| `/grill-me` | Stress-test a plan/design against project docs one question at a time | grill-with-docs skill |
 | `/to-prd` | Convert current context into a local PRD | to-prd skill |
 | `/to-issues` | Break a plan/PRD into local vertical-slice issues | to-issues skill |
 | `/caveman` | Enable ultra-compressed technical communication | caveman skill |
@@ -170,7 +170,7 @@ Skills are code-heavy reference files under `skills/<name>/SKILL.md`. Load only 
 | Observability | [logging](skills/logging/SKILL.md), [serilog](skills/serilog/SKILL.md), [opentelemetry](skills/opentelemetry/SKILL.md) | Structured logs, traces, metrics, correlation IDs. |
 | Testing | [testing](skills/testing/SKILL.md) | xUnit v3, WebApplicationFactory, Testcontainers, Verify. |
 | DevOps | [docker](skills/docker/SKILL.md), [container-publish](skills/container-publish/SKILL.md), [ci-cd](skills/ci-cd/SKILL.md), [aspire](skills/aspire/SKILL.md) | Containers, SDK publishing, GitHub Actions, Aspire orchestration. |
-| Workflow | [scaffolding](skills/scaffolding/SKILL.md), [project-setup](skills/project-setup/SKILL.md), [code-review-workflow](skills/code-review-workflow/SKILL.md), [verification-loop](skills/verification-loop/SKILL.md), [grill-me](skills/grill-me/SKILL.md), [to-prd](skills/to-prd/SKILL.md), [to-issues](skills/to-issues/SKILL.md) | Feature generation, setup, review, verification, plan interrogation, PRDs, issue breakdown. |
+| Workflow | [scaffolding](skills/scaffolding/SKILL.md), [project-setup](skills/project-setup/SKILL.md), [code-review-workflow](skills/code-review-workflow/SKILL.md), [verification-loop](skills/verification-loop/SKILL.md), [grill-with-docs](skills/grill-with-docs/SKILL.md), [to-prd](skills/to-prd/SKILL.md), [to-issues](skills/to-issues/SKILL.md) | Feature generation, setup, review, verification, docs-aware plan interrogation, PRDs, issue breakdown. |
 | Meta | [context-discipline](skills/context-discipline/SKILL.md), [wrap-up-ritual](skills/wrap-up-ritual/SKILL.md), [session-management](skills/session-management/SKILL.md), [learning-log](skills/learning-log/SKILL.md), [caveman](skills/caveman/SKILL.md), [cavecrew](skills/cavecrew/SKILL.md) | Token budget, handoff, session state, captured learnings, compressed communication, compressed subagents. |
 
 ## Agents (10)

@@ -1,14 +1,14 @@
 ---
 description: >
-  Stress-test a plan, design, or requirement by asking one focused question at a
-  time with recommended answers until decisions are clear.
+  Stress-test a plan, design, or requirement against project docs by asking one
+  focused question at a time with recommended answers until decisions are clear.
 ---
 
 # /grill-me
 
 ## What
 
-Runs the `grill-me` skill to challenge a plan before implementation.
+Runs the `grill-with-docs` skill to challenge a plan before implementation.
 
 ## When
 
@@ -19,7 +19,7 @@ Runs the `grill-me` skill to challenge a plan before implementation.
 
 ## How
 
-1. Load `grill-me`.
+1. Load `grill-with-docs`.
 2. Inspect repo if the next question can be answered from code/docs.
 3. Ask one question with recommended answer and rationale.
 4. Repeat until key branches are resolved.

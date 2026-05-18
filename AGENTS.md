@@ -161,7 +161,7 @@ These 15 meta and productivity skills are not tied to a specific agent — any a
 | `instinct-system` | Pattern detection across sessions — observe-hypothesize-confirm cycle for project conventions |
 | `session-management` | Session start/end — load handoff, detect solution, write session summary |
 | `autonomous-loops` | Iterative fix loops — build-fix, test-fix, refactor with bounded iterations |
-| `grill-me` | Stress-test plans/designs one question at a time before implementation |
+| `grill-with-docs` | Stress-test plans/designs against project docs before implementation |
 | `to-prd` | Convert current context into a local PRD artifact |
 | `to-issues` | Break plans/PRDs into local vertical-slice implementation issue files |
 | `caveman` | Use ultra-compressed technical communication when requested |
@@ -181,7 +181,7 @@ These 15 meta and productivity skills are not tied to a specific agent — any a
 | "show instincts", "what have you learned", "confidence scores" | instinct-system |
 | "start session", "load handoff", "session start" | session-management |
 | "fix build loop", "keep fixing", "auto-fix" | autonomous-loops |
-| "grill me", "stress-test this", "challenge this plan" | grill-me |
+| "grill me", "stress-test this", "challenge this plan" | grill-with-docs |
 | "write PRD", "turn this into a PRD", "product requirements" | to-prd |
 | "create issues", "break into tickets", "implementation issues", "to-issues" | to-issues |
 | "caveman mode", "be brief", "less tokens" | caveman |
@@ -194,7 +194,7 @@ Commands map to skills and agents. Use these as shortcuts for common workflows.
 | Command | Primary Skill | Primary Agent | Purpose |
 |---------|--------------|---------------|---------|
 | `/dotnet-init` | project-setup | dotnet-architect | Interactive project initialization |
-| `/plan` | grill-me, contextual skills/MCP, to-prd, to-issues, caveman, cavecrew | dotnet-architect | Grill, route context, local PRD/issues, then implement |
+| `/plan` | grill-with-docs, contextual skills/MCP, to-prd, to-issues, caveman, cavecrew | dotnet-architect | Grill with docs, route context, local PRD/issues, then implement |
 | `/verify` | verification-loop | — | 7-phase verification pipeline |
 | `/tdd` | testing | test-engineer | Red-green-refactor workflow |
 | `/scaffold` | scaffolding | dotnet-architect | Architecture-aware feature scaffolding |
@@ -209,7 +209,7 @@ Commands map to skills and agents. Use these as shortcuts for common workflows.
 | `/instinct-status` | instinct-system | — | Show learned instincts |
 | `/instinct-export` | instinct-system | — | Export instincts to shareable format |
 | `/instinct-import` | instinct-system | — | Import instincts from another project |
-| `/grill-me` | grill-me | — | Stress-test a plan/design before implementation |
+| `/grill-me` | grill-with-docs | — | Stress-test a plan/design against project docs before implementation |
 | `/to-prd` | to-prd | — | Convert current context into local PRD |
 | `/to-issues` | to-issues | — | Break a plan/PRD into local vertical-slice issues |
 | `/caveman` | caveman | — | Enable compressed technical communication |

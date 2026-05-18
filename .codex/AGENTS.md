@@ -36,7 +36,7 @@ api-versioning, architecture-advisor, aspire, authentication, caching, ci-cd, cl
 code-review-workflow, convention-learner, migration-workflow, verification-loop, workflow-mastery
 
 ### Meta & Productivity Skills
-80-20-review, context-discipline, learning-log, model-selection, self-correction-loop, split-memory, wrap-up-ritual, grill-me, to-prd, to-issues, caveman, cavecrew
+80-20-review, context-discipline, learning-log, model-selection, self-correction-loop, split-memory, wrap-up-ritual, grill-with-docs, to-prd, to-issues, caveman, cavecrew
 
 ## Workflow Commands
 
@@ -45,14 +45,14 @@ Codex does not need native slash command support. If user types command text, re
 | Command | File | Purpose |
 |---------|------|---------|
 | `/dotnet-init` | `commands/dotnet-init.md` | Project setup and `AGENTS.md` generation |
-| `/plan` | `commands/plan.md` | Grill, route contextual skills/MCP, local PRD/issues, then implement |
+| `/plan` | `commands/plan.md` | Grill with docs, route contextual skills/MCP, local PRD/issues, then implement |
 | `/verify` | `commands/verify.md` | Build, diagnostics, tests, security, format, diff review |
 | `/scaffold` | `commands/scaffold.md` | Architecture-aware feature scaffolding |
 | `/code-review` | `commands/code-review.md` | MCP-powered code review |
 | `/build-fix` | `commands/build-fix.md` | Iterative build repair |
 | `/checkpoint` | `commands/checkpoint.md` | Commit plus `.agent/handoff.md` |
 | `/wrap-up` | `commands/wrap-up.md` | End-session handoff |
-| `/grill-me` | `commands/grill-me.md` | Stress-test a plan/design |
+| `/grill-me` | `commands/grill-me.md` | Stress-test a plan/design against project docs |
 | `/to-prd` | `commands/to-prd.md` | Create local PRD from current context |
 | `/to-issues` | `commands/to-issues.md` | Break plan/PRD into local implementation issues |
 | `/caveman` | `commands/caveman.md` | Enable compressed response style |
