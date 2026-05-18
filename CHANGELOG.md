@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- Reoriented project identity from Claude-first to OpenCode/Codex-first under `dotnet-opencode-kit`.
+- Made root `AGENTS.md` the canonical orchestration file and `.codex/AGENTS.md` the Codex adapter.
+- Promoted reusable rules to canonical `rules/dotnet/` while keeping `.claude/rules/` as compatibility mirror.
+- Added `AGENTS.md` templates for web API, modular monolith, Blazor app, worker service, and class library projects.
+- Updated workflows and state paths to prefer `.agent/*` with legacy `.claude/*` fallback.
+- Added OpenCode/Codex MCP and hook adapter documentation.
+
 ## [0.7.0] — 2026-03-22
 
 ### Added

@@ -6,10 +6,10 @@
 
 All 47 skills are **structurally compliant** — every one has YAML frontmatter, Core Principles, Patterns, Anti-patterns (BAD/GOOD), and Decision Guide tables. The format is consistent and well-executed across the board.
 
-However, the skills vary dramatically in **value-add over Claude's base knowledge**:
-- **16 skills** are HIGH value-add (Claude would produce significantly worse output without them)
+However, the skills vary dramatically in **value-add over base model knowledge**:
+- **16 skills** are HIGH value-add (agents would produce significantly worse output without them)
 - **18 skills** are MEDIUM value-add (useful guardrails and opinionated defaults)
-- **13 skills** are LOW value-add (high overlap with Claude's training data)
+- **13 skills** are LOW value-add (high overlap with common model training data)
 
 **Key findings:**
 1. ~12,000 tokens could be saved through deduplication and trimming without losing value
@@ -25,9 +25,9 @@ Skills ranked by **value-per-token** (combining value-add and information densit
 
 ### Tier 1: Essential — HIGH Value, LOW Overlap
 
-These skills fundamentally change Claude's output quality. Worth every token.
+These skills fundamentally change agent output quality. Worth every token.
 
-| # | Skill | Lines | Est. Tokens | Density | Claude Overlap | Key Value |
+| # | Skill | Lines | Est. Tokens | Density | Model Overlap | Key Value |
 |---|-------|-------|-------------|---------|----------------|-----------|
 | 1 | **openapi** | 287 | ~2,060 | HIGH | LOW | Prevents Swashbuckle; .NET 10 built-in OpenAPI transformers |
 | 2 | **opentelemetry** | 271 | ~1,217 | HIGH | LOW | UseOtlpExporter() conflicts, IMeterFactory, TagList perf |
@@ -38,7 +38,7 @@ These skills fundamentally change Claude's output quality. Worth every token.
 | 7 | **instinct-system** | 323 | ~2,742 | HIGH | LOW | Novel confidence-scoring learning framework |
 | 8 | **health-check** | 320 | ~2,571 | HIGH | LOW | 8-dimension grading rubric with MCP tool mapping |
 | 9 | **autonomous-loops** | 393 | ~3,525 | HIGH | LOW | Bounded iteration protocol, regression guards |
-| 10 | **resilience** | 389 | ~1,909 | HIGH | LOW-MED | Polly v8 API (Claude defaults to v7), hedging, keyed services |
+| 10 | **resilience** | 389 | ~1,909 | HIGH | LOW-MED | Polly v8 API (many models default to v7), hedging, keyed services |
 | 11 | **scalar** | 259 | ~1,810 | MED | LOW | Scalar replaces Swagger UI; proxy security, auth prefill |
 | 12 | **de-sloppify** | 277 | ~2,210 | HIGH | LOW | Ordered cleanup pipeline with dead code safety checks |
 | 13 | **ddd** | 346 | ~2,727 | HIGH | MED | ComplexProperty, Guid.CreateVersion7(), domain event dispatch |
@@ -50,7 +50,7 @@ These skills fundamentally change Claude's output quality. Worth every token.
 
 Useful guardrails and opinionated defaults. Worth loading for relevant tasks.
 
-| # | Skill | Lines | Est. Tokens | Density | Claude Overlap | Key Value |
+| # | Skill | Lines | Est. Tokens | Density | Model Overlap | Key Value |
 |---|-------|-------|-------------|---------|----------------|-----------|
 | 17 | **ef-core** | 309 | ~1,298 | HIGH | MED | No-repository stance, ExecuteUpdate/Delete, interceptors |
 | 18 | **testing** | 334 | ~1,359 | HIGH | MED | Testcontainers fixture, FakeTimeProvider, Verify snapshots |
@@ -70,11 +70,11 @@ Useful guardrails and opinionated defaults. Worth loading for relevant tasks.
 | 32 | **learning-log** | 254 | ~2,035 | MED | MED-HIGH | 6-category taxonomy, log vs memory vs handoff distinction |
 | 33 | **project-setup** | 282 | ~1,846 | MED | MED | Health check grading, MCP orchestration |
 
-### Tier 3: Low Priority — HIGH Overlap with Claude's Training Data
+### Tier 3: Low Priority — HIGH Overlap with Model Training Data
 
-Claude already knows most of this. Load only when you need the opinionated defaults.
+Most models already know much of this. Load only when you need the opinionated defaults.
 
-| # | Skill | Lines | Est. Tokens | Density | Claude Overlap | Key Value |
+| # | Skill | Lines | Est. Tokens | Density | Model Overlap | Key Value |
 |---|-------|-------|-------------|---------|----------------|-----------|
 | 34 | **modern-csharp** | 316 | ~1,625 | HIGH | HIGH | Only `field` keyword + extension members are novel (C# 14) |
 | 35 | **configuration** | 232 | ~1,729 | MED-HIGH | MED-HIGH | ValidateOnStart() is the main differentiator |
@@ -86,7 +86,7 @@ Claude already knows most of this. Load only when you need the opinionated defau
 | 41 | **project-structure** | 224 | ~1,795 | MED | HIGH | .slnx format and .NET 10 version pins only |
 | 42 | **api-versioning** | 158 | ~1,397 | HIGH | MED | NewApiVersionSet builder API specifics |
 | 43 | **model-selection** | 246 | ~2,073 | MED | HIGH | Only CLI commands (/model, /fast) are novel |
-| 44 | **workflow-mastery** | 277 | ~2,008 | MED | HIGH | .claude/settings.json hook config is the main value |
+| 44 | **workflow-mastery** | 277 | ~2,008 | MED | HIGH | client hook config and workflow patterns are the main value |
 | 45 | **wrap-up-ritual** | 246 | ~1,995 | MED | MED-HIGH | Handoff template structure is the main value |
 | 46 | **split-memory** | 285 | ~2,195 | MED | HIGH | Precedence rules and 300-line threshold heuristic |
 | 47 | **context-discipline** | 260 | ~2,220 | MED | HIGH | MCP tool cost estimates (30-150 vs 500-2000+ tokens) |
@@ -228,14 +228,14 @@ The `workflow-mastery` skill contains a verification loop section that duplicate
 Apply the ~425 lines of quick-win optimizations to save ~2,825 tokens with zero information loss.
 
 ### Priority 3: Consider Tier 3 Consolidation
-The 14 Tier 3 skills consume ~23,252 tokens with high Claude overlap. Consider:
+The 14 Tier 3 skills consume ~23,252 tokens with high model-knowledge overlap. Consider:
 - **Merge** `dependency-injection` + `configuration` into a single "DI & Config" skill focused on novel patterns only
 - **Merge** `docker` + `container-publish` into a single "Containerization" skill
 - **Merge** `ci-cd` + `project-structure` into a single "Project Infrastructure" skill
 - **Refocus** `modern-csharp` to C# 14 features only (~100 lines)
-- **Refocus** `model-selection` + `workflow-mastery` + `context-discipline` into a single "Claude Code Workflow" skill
+- **Refocus** `model-selection` + `workflow-mastery` + `context-discipline` into a single "Agent Workflow" skill
 
 This would reduce Tier 3 from 14 skills (~23,252 tokens) to ~7 skills (~12,000 tokens), saving ~11,000 tokens.
 
 ### Priority 4: Evaluate Meta/Workflow Skill ROI
-The 14 meta/workflow skills (context-discipline, split-memory, wrap-up-ritual, learning-log, model-selection, 80-20-review, workflow-mastery, verification-loop, instinct-system, session-management, autonomous-loops, self-correction-loop, convention-learner, health-check) consume ~31,000 tokens total. While some are essential (instinct-system, autonomous-loops, health-check), others overlap significantly with Claude's built-in behavior. Consider gating these behind explicit loading rather than including in templates.
+The 14 meta/workflow skills (context-discipline, split-memory, wrap-up-ritual, learning-log, model-selection, 80-20-review, workflow-mastery, verification-loop, instinct-system, session-management, autonomous-loops, self-correction-loop, convention-learner, health-check) consume ~31,000 tokens total. While some are essential (instinct-system, autonomous-loops, health-check), others overlap significantly with built-in agent behavior. Consider gating these behind explicit loading rather than including in templates.

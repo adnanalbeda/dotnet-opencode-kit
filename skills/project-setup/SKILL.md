@@ -2,11 +2,11 @@
 name: project-setup
 description: >
   Interactive project setup, health check, and migration workflows.
-  Guides developers through project initialization with customized CLAUDE.md generation,
+  Guides developers through project initialization with customized AGENTS.md generation,
   codebase health analysis using MCP tools, and .NET version migration.
   Load when: "init project", "setup project", "new project", "health check",
   "analyze project", "project report", "migrate", "upgrade dotnet",
-  "upgrade .NET", "generate CLAUDE.md".
+  "upgrade .NET", "generate AGENTS.md".
 ---
 
 # Project Setup & Workflows
@@ -15,7 +15,7 @@ description: >
 
 1. **Interactive over passive** — Don't dump a generic template. Ask questions, gather context, then generate a customized result tailored to the specific project.
 2. **MCP-driven analysis** — Use Roslyn MCP tools for health checks and migration analysis instead of reading files manually. Token-efficient and semantically accurate.
-3. **Generate, don't template** — CLAUDE.md files should be fully populated with specific choices (not `[PLACEHOLDER]` values). Every section should reflect the actual project decisions.
+3. **Generate, don't template** — AGENTS.md files should be fully populated with specific choices (not `[PLACEHOLDER]` values). Every section should reflect the actual project decisions.
 4. **Architecture-first** — Every workflow starts by understanding or selecting the project's architecture. Architecture drives folder structure, naming, patterns, and test organization.
 5. **Verify after action** — After any workflow completes (init, migration, health check), verify the result. Run builds, tests, or health checks to confirm success.
 
@@ -27,7 +27,7 @@ Interactive conversational flow for new projects. Execute steps in order, waitin
 
 **Step 1: Project Identity**
 Ask:
-- Project name (used for solution, namespaces, CLAUDE.md)
+- Project name (used for solution, namespaces, AGENTS.md)
 - Project type: API, Blazor, Worker Service, Class Library, or Modular Monolith
 
 **Step 2: Architecture Selection**
@@ -48,8 +48,8 @@ Ask about each dimension with a recommended default:
 | Observability | Serilog + OpenTelemetry, Basic logging | Serilog + OTEL |
 | Resilience | Polly v8 pipelines, Basic retry | Polly v8 |
 
-**Step 4: Generate CLAUDE.md**
-Generate a customized CLAUDE.md with all choices baked in:
+**Step 4: Generate AGENTS.md**
+Generate a customized AGENTS.md with all choices baked in:
 
 ```markdown
 # [ProjectName] — Development Instructions
@@ -152,8 +152,8 @@ Grading scale:
 ### Skipping Architecture Questionnaire
 
 ```
-# BAD — Generating CLAUDE.md without asking about the project
-"Here's your CLAUDE.md with VSA architecture..."
+# BAD — Generating AGENTS.md without asking about the project
+"Here's your AGENTS.md with VSA architecture..."
 ```
 
 ```
@@ -163,7 +163,7 @@ How important is independent deployability? ..."
 → Based on answers: "I recommend Clean Architecture because..."
 ```
 
-### Generic CLAUDE.md with Placeholders
+### Generic AGENTS.md with Placeholders
 
 ```markdown
 <!-- BAD — User has to fill in everything manually -->
@@ -219,9 +219,9 @@ dotnet build  # 47 errors
 | Scenario | Workflow | Key Tool |
 |----------|----------|----------|
 | New greenfield project | Project Init | architecture-advisor skill |
-| Joining existing project | Health Check → Init (for CLAUDE.md) | get_project_graph |
+| Joining existing project | Health Check → Init (for AGENTS.md) | get_project_graph |
 | "How's our codebase?" | Health Check | detect_antipatterns, get_diagnostics |
 | "Upgrade to .NET 10" | Migration | get_project_graph, breaking-changes.md |
-| "Generate CLAUDE.md for this project" | Project Init (skip new project steps) | get_project_graph |
+| "Generate AGENTS.md for this project" | Project Init (skip new project steps) | get_project_graph |
 | Code quality declining | Health Check → set baseline → periodic re-check | All MCP tools |
-| Onboarding new developers | Health Check + Init (generates CLAUDE.md documenting conventions) | convention-learner skill |
+| Onboarding new developers | Health Check + Init (generates AGENTS.md documenting conventions) | convention-learner skill |

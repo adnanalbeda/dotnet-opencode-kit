@@ -14,7 +14,7 @@ Creates a progress checkpoint by performing two actions in sequence:
 
 1. **Git commit** -- Stages all relevant changes and creates a descriptive commit
    message summarizing the current work.
-2. **Handoff note** -- Writes `.claude/handoff.md` capturing what was done, what
+2. **Handoff note** -- Writes `.agent/handoff.md` capturing what was done, what
    is pending, and what was learned so the next session can resume immediately.
 
 This is a quick, safe operation -- it preserves your current state without pushing
@@ -37,7 +37,7 @@ to remote or modifying branches.
    over `git add -A`.
 3. **Create commit** -- Write a descriptive commit message that summarizes the
    work completed. Follow the repository's existing commit message style.
-4. **Write handoff** -- Create or overwrite `.claude/handoff.md` with:
+4. **Write handoff** -- Create or overwrite `.agent/handoff.md` with:
    - **Completed** -- What was accomplished (with file paths and line references)
    - **Pending** -- What remains to be done (with specific next steps)
    - **Learned** -- Any discoveries, corrections, or non-obvious findings
@@ -63,7 +63,7 @@ to remote or modifying branches.
 ```
 User: /checkpoint
 
-Claude: Assessing current state...
+Agent: Assessing current state...
   3 files modified, 1 new file.
 
   Committing: "Add CreateOrder validation with FluentValidation"
@@ -73,7 +73,7 @@ Claude: Assessing current state...
 
   Commit: a1b2c3d
 
-  Writing handoff to .claude/handoff.md:
+  Writing handoff to .agent/handoff.md:
   ## Completed
   - [x] Added FluentValidation to CreateOrder (src/Orders/Features/CreateOrder.cs)
   - [x] Integration test covering 3 validation scenarios

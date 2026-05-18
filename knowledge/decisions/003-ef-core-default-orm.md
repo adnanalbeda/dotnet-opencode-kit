@@ -20,7 +20,7 @@ Every data-driven .NET application needs a data access strategy. The .NET ecosys
 2. **Performance.** What is the query execution overhead? Can hot paths be optimized?
 3. **Migrations.** How are schema changes managed across environments?
 4. **LINQ support.** Can queries be composed and tested without writing raw SQL?
-5. **AI-assisted development.** How well can Claude Code generate correct data access code?
+5. **AI-assisted development.** How well can agents generate correct data access code?
 6. **Ecosystem integration.** How well does it integrate with ASP.NET Core, Aspire, and the broader .NET ecosystem?
 
 ### Observations
@@ -31,7 +31,7 @@ Every data-driven .NET application needs a data access strategy. The .NET ecosys
 
 ## Decision
 
-**EF Core is the default ORM in dotnet-claude-kit. Use `DbContext` directly in feature handlers without a repository abstraction layer.**
+**EF Core is the default ORM in dotnet-opencode-kit. Use `DbContext` directly in feature handlers without a repository abstraction layer.**
 
 ### Default usage pattern
 
@@ -107,7 +107,7 @@ public sealed class GetOrderReportHandler(IDbConnection connection)
 }
 ```
 
-### EF Core conventions enforced by dotnet-claude-kit
+### EF Core conventions enforced by dotnet-opencode-kit
 
 1. **No repository pattern.** Use `DbContext` directly. `DbSet<T>` IS the repository.
 2. **`AsNoTracking()` for read-only queries.** Or better: project to DTOs with `Select()`.
@@ -124,7 +124,7 @@ public sealed class GetOrderReportHandler(IDbConnection connection)
 - **Maximum productivity.** LINQ queries, migrations, and change tracking handle the vast majority of data access needs with minimal code.
 - **Type-safe queries.** Compile-time checking of LINQ queries catches errors before runtime. Refactoring entity properties automatically updates queries.
 - **Migration management.** EF Core migrations provide a structured, version-controlled approach to schema evolution that raw SQL scripts cannot match for productivity.
-- **AI-assisted development.** Claude Code generates highly accurate EF Core LINQ queries because the patterns are well-documented and type-safe. Raw SQL generation is more error-prone.
+- **AI-assisted development.** Agents generate highly accurate EF Core LINQ queries when patterns are well-documented and type-safe. Raw SQL generation is more error-prone.
 - **Ecosystem integration.** EF Core integrates with Aspire, health checks, OpenTelemetry, and the ASP.NET Core DI container out of the box.
 
 ### Negative

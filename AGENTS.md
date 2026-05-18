@@ -1,6 +1,23 @@
-# Agent Routing & Orchestration
+# OpenCode Agent Routing & Orchestration
 
-> This file defines how Claude Code routes queries to specialist agents and how agents coordinate.
+> Canonical orchestration file for OpenCode and Codex. Claude Code support is a compatibility adapter that maps to the same agents, skills, commands, rules, and MCP tools.
+
+## Platform Priority
+
+| Platform | Entry Point | Status |
+|---|---|---|
+| OpenCode | `AGENTS.md` | Primary |
+| Codex | `.codex/AGENTS.md` -> `AGENTS.md` | Primary |
+| Claude Code | `.claude-plugin/`, `CLAUDE.md`, `.claude/rules/` | Compatibility |
+| Cursor | `.cursor/rules/dotnet-rules.md` | Compatibility |
+
+Shared source of truth:
+- Agents: `agents/*.md`
+- Skills: `skills/*/SKILL.md`
+- Commands: `commands/*.md`
+- Rules: `rules/dotnet/*.md`
+- Knowledge: `knowledge/**/*.md`
+- MCP: `mcp/CWM.RoslynNavigator/`
 
 ## Agent Roster
 
@@ -38,7 +55,7 @@ Match user intent to agent. When multiple agents could handle a query, the first
 | "review this code", "PR review", "code quality" | code-reviewer | — |
 | "choose architecture", "which architecture", "architecture decision" | dotnet-architect | — |
 | "scaffold feature", "create feature", "add endpoint", "generate feature" | dotnet-architect | api-designer, ef-core-specialist |
-| "init project", "setup project", "new project", "generate CLAUDE.md" | dotnet-architect | — |
+| "init project", "setup project", "new project", "generate AGENTS.md" | dotnet-architect | — |
 | "health check", "analyze project", "project report" | code-reviewer | dotnet-architect |
 | "review PR", "review changes", "code review", "PR review" | code-reviewer | — |
 | "add migration", "ef migration", "update packages", "upgrade nuget" | ef-core-specialist | — |
@@ -50,7 +67,7 @@ Match user intent to agent. When multiple agents could handle a query, the first
 
 ## Skill Loading Order
 
-Agents load skills in dependency order. Core skills load first.
+Agents load skills in dependency order. Core skills load first. If the client does not have native skill loading, read the matching `skills/<name>/SKILL.md` file before acting.
 
 ### Default Load Order (All Agents)
 1. `modern-csharp` — Always loaded, baseline C# knowledge
@@ -96,11 +113,11 @@ These 10 meta and productivity skills are not tied to a specific agent — any a
 | Skill | When to Load |
 |-------|-------------|
 | `self-correction-loop` | After ANY user correction — capture the rule in MEMORY.md |
-| `wrap-up-ritual` | User signals end of session — write handoff to `.claude/handoff.md` |
+| `wrap-up-ritual` | User signals end of session — write handoff to `.agent/handoff.md` |
 | `context-discipline` | Context running low, large codebase navigation, planning exploration strategy |
-| `model-selection` | Choosing between Opus/Sonnet/Haiku, assigning subagent models |
+| `model-selection` | Choosing strongest reasoning, high-throughput coding, or cheap/fast subagent models |
 | `80-20-review` | Code review, PR review, deciding what to review in depth |
-| `split-memory` | CLAUDE.md exceeds 300 lines, need to split instructions across files |
+| `split-memory` | AGENTS.md exceeds 300 lines, need to split instructions across files |
 | `learning-log` | Non-obvious discovery during development — log the insight |
 | `instinct-system` | Pattern detection across sessions — observe-hypothesize-confirm cycle for project conventions |
 | `session-management` | Session start/end — load handoff, detect solution, write session summary |
@@ -113,9 +130,9 @@ These 10 meta and productivity skills are not tied to a specific agent — any a
 | "learn from mistakes", "remember this", "don't do that again" | self-correction-loop |
 | "wrap up", "done for today", "save progress", "handoff" | wrap-up-ritual |
 | "context", "running out of tokens", "too many files" | context-discipline |
-| "which model", "use Opus", "use Sonnet", "switch model" | model-selection |
+| "which model", "deep reasoning", "fast mode", "switch model" | model-selection |
 | "review this", "what should I review", "blast radius" | 80-20-review |
-| "split CLAUDE.md", "too long", "organize instructions" | split-memory |
+| "split AGENTS.md", "too long", "organize instructions" | split-memory |
 | "log this", "document this finding", "gotcha" | learning-log |
 | "show instincts", "what have you learned", "confidence scores" | instinct-system |
 | "start session", "load handoff", "session start" | session-management |

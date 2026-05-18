@@ -25,10 +25,10 @@ Export project instincts to a portable format that can be imported into other pr
 
 ### Step 2: Filter and Export
 
-- Read `.claude/instincts.md` from the current project
+- Read `.agent/instincts.md` from the current project. Fall back to `.claude/instincts.md` only for legacy projects.
 - Filter to instincts with confidence score above 0.7 (configurable via argument)
 - Strip project-specific context (file paths, line numbers) while preserving the pattern
-- Write to `.claude/instincts-export.md` with portable metadata
+- Write to `.agent/instincts-export.md` with portable metadata
 
 ### Step 3: Report
 
@@ -39,7 +39,7 @@ Display what was exported and what was filtered out, with the output file path.
 ```
 User: /instinct-export
 
-Claude: Exported 7 of 12 instincts (confidence > 0.7):
+Agent: Exported 7 of 12 instincts (confidence > 0.7):
 
 Exported:
   - Use vertical slice architecture (0.9)
@@ -54,7 +54,7 @@ Skipped (below threshold):
   - Avoid MediatR for simple flows (0.4)
   - Prefer Dapper over EF (0.35)
 
-Written to: .claude/instincts-export.md
+Written to: .agent/instincts-export.md
 ```
 
 ## Related

@@ -76,7 +76,7 @@ wall of red.
 ```
 User: /build-fix
 
-Claude: Running dotnet build...
+Agent: Running dotnet build...
   Found 12 errors across 4 files.
 
   Iteration 1/5:

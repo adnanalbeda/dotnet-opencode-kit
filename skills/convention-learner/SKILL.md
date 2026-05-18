@@ -15,7 +15,7 @@ description: >
 1. **Observe before enforcing** — Never impose conventions without first analyzing the existing codebase. A project with 200 `internal sealed class` handlers should not get a new `public class` handler. Detect first, then match.
 2. **Project conventions override generic rules** — If the project uses `*Service` instead of `*Handler`, follow the project's convention even if the kit default is different. Explicit `.editorconfig` and `Directory.Build.props` rules always win.
 3. **Use MCP tools for analysis** — `get_public_api` reveals naming patterns, `get_project_graph` shows structure conventions, `detect_antipatterns` tracks quality trends. Tools provide objective data; file reads provide confirmation.
-4. **Document findings** — After detecting conventions, suggest adding them to the project's CLAUDE.md. Undocumented conventions are lost when the original developers leave.
+4. **Document findings** — After detecting conventions, suggest adding them to the project's AGENTS.md. Undocumented conventions are lost when the original developers leave.
 5. **Consistency over perfection** — A project with consistent `snake_case` database columns is better than a project with half `snake_case` and half `PascalCase`. Match the existing pattern, even if another convention is theoretically superior.
 
 ## Patterns
@@ -155,12 +155,12 @@ Use `detect_antipatterns` to track recurring quality issues across sessions.
 ```
 | Anti-pattern | Count | Trend | Priority |
 |-------------|-------|-------|----------|
-| DateTime.Now | 12 | ↑ +3 | High — add to CLAUDE.md conventions |
+| DateTime.Now | 12 | ↑ +3 | High — add to AGENTS.md conventions |
 | async void | 1 | → same | Medium — one-off fix |
 | new HttpClient | 0 | ↓ -2 | Low — already fixing |
 ```
 
-When patterns recur, add explicit rules to CLAUDE.md:
+When patterns recur, add explicit rules to AGENTS.md:
 ```markdown
 ## Conventions
 - **NEVER use DateTime.Now** — Use TimeProvider.GetUtcNow() (12 violations found, fixing)
@@ -234,9 +234,9 @@ var for obvious cases (e.g., new MyClass()). Confirmed across 5 files."
 | Convention conflict (kit vs project) | **Project wins** | — |
 | Convention conflict (team disagreement) | Document both, suggest .editorconfig | — |
 | No conventions detected | Use kit defaults, document them | architecture-advisor skill |
-| Recurring anti-pattern | Add to CLAUDE.md conventions | detect_antipatterns |
+| Recurring anti-pattern | Add to AGENTS.md conventions | detect_antipatterns |
 | New team member onboarding | Run detection, generate convention doc | Full detection flow |
 | .editorconfig exists | Trust it, don't override | Read .editorconfig |
 | No .editorconfig | Suggest creating one based on detected patterns | Detection + generation |
 | Pattern seen once | Create instinct at 0.3 confidence via `instinct-system` skill | instinct-system |
-| Pattern confirmed 3+ times | Instinct auto-promotes to 0.7, suggest adding to CLAUDE.md | instinct-system |
+| Pattern confirmed 3+ times | Instinct auto-promotes to 0.7, suggest adding to AGENTS.md | instinct-system |

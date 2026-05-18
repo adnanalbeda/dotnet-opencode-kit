@@ -5,7 +5,7 @@ description: >
   MEMORY.md (corrective rules from the self-correction-loop skill), the learning
   log captures organic discoveries: non-obvious bugs, undocumented architecture
   decisions, performance findings, workarounds, and gotchas. Stored at
-  .claude/learning-log.md. Load this skill when Claude discovers something
+  .agent/learning-log.md. Load this skill when an agent discovers something
   non-obvious, finds a workaround, uncovers an undocumented decision, or when
   the user asks about "learnings", "discoveries", "gotchas", "what did we learn",
   or "document this finding".
@@ -29,7 +29,7 @@ description: >
 
 ### Log Entry Format
 
-Each entry follows a consistent structure in `.claude/learning-log.md`:
+Each entry follows a consistent structure in `.agent/learning-log.md`:
 
 ```markdown
 # Learning Log
@@ -118,13 +118,13 @@ MEMORY.md (via self-correction-loop):
 - Lifespan: Permanent until proven wrong
 - Format: Category → bullet point rules
 
-.claude/learning-log.md (this skill):
+.agent/learning-log.md (this skill):
 - Contains: Descriptive insights ("X happens because Y")
 - Source: Organic discoveries during development
 - Lifespan: 3-6 months, then archive or promote
 - Format: Date | Category | Title | Description | Files
 
-.claude/handoff.md (via wrap-up-ritual):
+.agent/handoff.md (via wrap-up-ritual):
 - Contains: Session state (done/pending/learned)
 - Source: End of each session
 - Lifespan: Until next session overwrites it
@@ -167,7 +167,7 @@ warning but no error — and the two can silently diverge.
 
 ```
 // BAD — 100 entries, never reviewed
-.claude/learning-log.md grows to 500 lines
+.agent/learning-log.md grows to 500 lines
 Same gotchas keep appearing because no one reads the log
 No entries are promoted to MEMORY.md
 
@@ -200,7 +200,7 @@ learning-log.md: "## Bug Root Cause | Flaky Test Due to DateTime.Now
 | Performance surprise (good or bad) | Log it — category: Performance Discovery |
 | Found a reusable pattern in the codebase | Log it — category: Pattern Found |
 | External API behaved differently than docs say | Log it — category: External Service |
-| User corrected Claude's code | Don't log — use `self-correction-loop` for MEMORY.md |
+| User corrected agent output | Don't log — use `self-correction-loop` for MEMORY.md |
 | Routine code change, nothing surprising | Don't log — only log insights |
 | Same gotcha appeared 3+ times in the log | Promote to MEMORY.md as a preventive rule |
 | Learning log exceeds 50 entries | Monthly review — archive old, promote recurring |

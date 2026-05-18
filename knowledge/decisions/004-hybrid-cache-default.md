@@ -58,7 +58,7 @@ Problems with this pattern:
 
 ## Decision
 
-**HybridCache is the default caching abstraction in dotnet-claude-kit. Manual `IDistributedCache` patterns should be avoided for new code.**
+**HybridCache is the default caching abstraction in dotnet-opencode-kit. Manual `IDistributedCache` patterns should be avoided for new code.**
 
 ### Default usage pattern
 
@@ -133,11 +133,11 @@ await cache.RemoveByTagAsync("orders", ct);
 - **L1+L2 composition is automatic.** HybridCache checks in-memory first (fast, no network), then distributed cache (fast, one network hop), then calls the factory. Both layers are populated automatically.
 - **Tag-based invalidation.** Invalidating all cache entries for a logical group (e.g., all orders for a customer) is a single `RemoveByTagAsync` call instead of manually tracking and removing individual keys.
 - **Consistent API.** The entire team uses the same caching API. No more inconsistencies between "someone used `IMemoryCache` here but `IDistributedCache` there."
-- **AI-assisted development.** Claude generates correct caching code more reliably with HybridCache's simple API than with the manual `IDistributedCache` pattern.
+- **AI-assisted development.** Agents generate correct caching code more reliably with HybridCache's simple API than with the manual `IDistributedCache` pattern.
 
 ### Negative
 
-- **.NET 10+ only.** HybridCache is GA in .NET 10. Applications on .NET 8 LTS cannot use it without a preview package. (dotnet-claude-kit targets .NET 10, so this is acceptable.)
+- **.NET 10+ only.** HybridCache is GA in .NET 10. Applications on .NET 8 LTS cannot use it without a preview package. (dotnet-opencode-kit targets .NET 10, so this is acceptable.)
 - **Less granular control.** For exotic caching scenarios (custom eviction policies, per-entry size limits), the abstraction may not expose the knobs you need.
 - **Dependency on Microsoft's implementation.** If a bug exists in HybridCache, you are dependent on Microsoft for a fix, whereas a hand-rolled cache-aside pattern is fully within your control.
 - **Learning curve.** Developers familiar with `IDistributedCache` must learn the new API (though it is simpler, not more complex).

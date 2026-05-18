@@ -157,7 +157,7 @@ Verdicts:
 ```
 User: /verify
 
-Claude: Running 7-phase verification pipeline...
+Agent: Running 7-phase verification pipeline...
 
 Phase 1: Build ............ PASS (0 errors)
 Phase 2: Diagnostics ...... PASS (0 new warnings)

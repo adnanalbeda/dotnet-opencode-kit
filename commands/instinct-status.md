@@ -9,7 +9,7 @@ description: >
 
 ## What
 
-Display all learned instincts from `.claude/instincts.md` as a formatted table showing:
+Display all learned instincts from `.agent/instincts.md` as a formatted table showing:
 
 - Instinct name and description
 - Confidence score (0.3 = tentative, 0.9 = battle-tested)
@@ -19,7 +19,7 @@ Display all learned instincts from `.claude/instincts.md` as a formatted table s
 
 ## When
 
-- Reviewing what Claude has learned about the project
+- Reviewing what the agent has learned about the project
 - Before sharing instincts with another project (pre-export review)
 - Debugging unexpected behavior -- "why did you do it that way?"
 - Periodic review of accumulated project knowledge
@@ -32,7 +32,7 @@ Display all learned instincts from `.claude/instincts.md` as a formatted table s
 
 ### Step 2: Read and Format
 
-- Read `.claude/instincts.md` from the project root
+- Read `.agent/instincts.md` from the project root. Fall back to `.claude/instincts.md` only for legacy projects.
 - Parse each instinct entry with its metadata
 - Sort by confidence score (highest first)
 - Format as a table grouped by category
@@ -51,7 +51,7 @@ Display the table and a brief summary of instinct health:
 ```
 User: /instinct-status
 
-Claude: ## Project Instincts (12 total, avg confidence: 0.72)
+Agent: ## Project Instincts (12 total, avg confidence: 0.72)
 
 | Instinct                        | Confidence | Category     | Status     |
 |---------------------------------|------------|--------------|------------|

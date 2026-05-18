@@ -4,7 +4,7 @@ description: >
   Confidence-scored instinct system for learning project-specific patterns through
   an observe-hypothesize-confirm cycle. Instincts start as low-confidence hypotheses
   and graduate to permanent rules in MEMORY.md once confirmed. Stored per-project
-  in .claude/instincts.md. Load this skill when you notice a recurring pattern,
+  in .agent/instincts.md. Load this skill when you notice a recurring pattern,
   want to track a project convention, encounter "learn this", "I think they always",
   "notice a pattern", "instinct", "hypothesis", "confidence", or when starting a
   session (to load existing instincts).
@@ -16,9 +16,9 @@ description: >
 
 1. **Instincts are hypotheses, not rules** — An instinct starts as a guess based on a single observation. It has no authority until confirmed across multiple instances. Never treat a first observation as a project convention. "I saw one handler use `sealed` " is an instinct at 0.3; "all 12 handlers use `sealed`" is a rule at 0.9.
 
-2. **Confidence scoring drives behavior (0.3-0.9)** — Each instinct carries a numeric confidence that determines how Claude acts on it. At 0.3, merely note it. At 0.5, mention it when relevant. At 0.7, follow it by default. At 0.9, promote it to a permanent rule. Never apply a low-confidence instinct without flagging the uncertainty.
+2. **Confidence scoring drives behavior (0.3-0.9)** — Each instinct carries a numeric confidence that determines how the agent acts on it. At 0.3, merely note it. At 0.5, mention it when relevant. At 0.7, follow it by default. At 0.9, promote it to a permanent rule. Never apply a low-confidence instinct without flagging the uncertainty.
 
-3. **Project-scoped, never global** — Instincts are stored per-project in `.claude/instincts.md`. What holds true in one codebase may be wrong in another. A project using `internal sealed class` everywhere says nothing about a different project that uses `public class` with interface testing. Instincts do not transfer at full confidence.
+3. **Project-scoped, never global** — Instincts are stored per-project in `.agent/instincts.md`. What holds true in one codebase may be wrong in another. A project using `internal sealed class` everywhere says nothing about a different project that uses `public class` with interface testing. Instincts do not transfer at full confidence.
 
 4. **Observe-Hypothesize-Confirm cycle** — The lifecycle is disciplined: see a pattern, form a hypothesis, actively seek confirming or disconfirming evidence, adjust confidence accordingly. Passive observation is not enough. When you form an instinct, look for it in the next 2-3 related files.
 
@@ -37,7 +37,7 @@ The full lifecycle from first observation to permanent rule:
 
 2. HYPOTHESIZE
    Create an instinct with initial confidence 0.3.
-   Write to .claude/instincts.md:
+   Write to .agent/instincts.md:
    - Use `sealed` on all handler classes | confidence: 0.3 | seen: 1 | last: 2025-07-15
 
 3. SEEK CONFIRMATION
@@ -57,7 +57,7 @@ The full lifecycle from first observation to permanent rule:
 
 ### Instinct Storage Format
 
-Store instincts in `.claude/instincts.md` with categories and structured metadata:
+Store instincts in `.agent/instincts.md` with categories and structured metadata:
 
 ```markdown
 # Project Instincts
@@ -126,7 +126,7 @@ ACTIVE SEEKING PROTOCOL:
    → Use get_public_api to check their return types
 3. Count matches and mismatches
 4. Adjust confidence based on findings
-5. Update .claude/instincts.md with new count and confidence
+5. Update .agent/instincts.md with new count and confidence
 
 EXAMPLE:
   New instinct: "Handlers return Result<T>" at 0.3
@@ -155,7 +155,7 @@ PROMOTION STEPS:
 
 2. If user approves:
    - Add to MEMORY.md under the appropriate category
-   - Remove from .claude/instincts.md
+   - Remove from .agent/instincts.md
    - Format as a clear, generalized rule (use self-correction-loop generalization)
 
 3. If user declines:
@@ -171,7 +171,7 @@ PROMOTION STEPS:
 
 ### Export and Import Between Projects
 
-Export instincts at 0.7+ to `.claude/instincts-export.md`. On import, apply 0.2 confidence decay (0.9 becomes 0.7, 0.7 becomes 0.5). Never import above 0.7 — every project must confirm locally. Mark imported instincts with `source: "imported from [project]"`.
+Export instincts at 0.7+ to `.agent/instincts-export.md`. On import, apply 0.2 confidence decay (0.9 becomes 0.7, 0.7 becomes 0.5). Never import above 0.7 — every project must confirm locally. Mark imported instincts with `source: "imported from [project]"`.
 
 ### Session-Start Instinct Loading
 
@@ -179,7 +179,7 @@ At the beginning of each session, load and apply instincts:
 
 ```
 SESSION START:
-1. Read .claude/instincts.md (if it exists)
+1. Read .agent/instincts.md (if it exists)
 2. Load all instincts at 0.7+ into active context
 3. Note instincts at 0.5-0.6 for mention-when-relevant
 4. Ignore instincts below 0.5 (they'll be confirmed or discarded organically)
@@ -209,7 +209,7 @@ SESSION START:
 
 ```
 # BAD — instincts sit at 0.3 forever, never confirmed or discarded
-.claude/instincts.md has 40 instincts, 35 of them at confidence 0.3
+.agent/instincts.md has 40 instincts, 35 of them at confidence 0.3
 from 3 months ago — useless noise
 
 # GOOD — actively seek confirmation or discard
@@ -234,7 +234,7 @@ Instincts that can't reach 0.5 within 3 sessions get removed.
 
 ```
 # BAD — never cleaning up the instinct file
-.claude/instincts.md grows to 200 lines, full of contradictions
+.agent/instincts.md grows to 200 lines, full of contradictions
 and instincts that were never confirmed
 
 # GOOD — periodic cleanup

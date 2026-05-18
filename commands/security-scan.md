@@ -156,7 +156,7 @@ find_references(symbolName: "AllowAnyOrigin") -- flag overly permissive CORS
 ```
 User: /security-scan
 
-Claude: Running security scan across 6 dimensions...
+Agent: Running security scan across 6 dimensions...
 
   Phase 1: Vulnerable Dependencies
   - CRITICAL: Newtonsoft.Json 12.0.3 has CVE-2024-XXXX (upgrade to 13.0.3+)

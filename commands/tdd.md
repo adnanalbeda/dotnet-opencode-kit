@@ -130,7 +130,7 @@ If the project lacks test infrastructure, set it up before the first cycle:
 ```
 User: /tdd Let's TDD a product search endpoint
 
-Claude: I'll plan the TDD cycles for product search:
+Agent: I'll plan the TDD cycles for product search:
 
 Cycle 1: Search with matching term returns matching products
 Cycle 2: Search with no matches returns empty list

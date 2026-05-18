@@ -121,7 +121,7 @@ dotnet ef database update <PreviousMigrationName> --project <InfraProject> --sta
 ```
 User: /migrate
 
-Claude: Checking migration state...
+Agent: Checking migration state...
   Last applied: 20250710_AddOrderTable
   Model changes detected: new ShippingAddress property on Order entity.
 

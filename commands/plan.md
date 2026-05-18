@@ -87,7 +87,7 @@ Revise until the user confirms. Only then proceed to implementation.
 ```
 User: /plan Add a product catalog feature with search and filtering
 
-Claude: Let me analyze your project structure first...
+Agent: Let me analyze your project structure first...
 
 ## Plan: Product Catalog Feature
 

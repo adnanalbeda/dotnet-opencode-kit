@@ -1,6 +1,6 @@
 # [Project Name] — Web API
 
-> Copy this file into your project root and customize the sections below.
+> Claude compatibility copy. OpenCode/Codex users should copy `AGENTS.md` instead.
 
 ## Project Context
 
@@ -78,7 +78,7 @@ tests/
 
 ## Skills
 
-Load these dotnet-claude-kit skills for context:
+Load these dotnet-opencode-kit skills for context:
 
 - `modern-csharp` — C# 14 language features and idioms
 - `architecture-advisor` — Run for new projects to choose the best architecture
@@ -95,7 +95,7 @@ Load these dotnet-claude-kit skills for context:
 - `dependency-injection` — Service registration patterns
 - `workflow-mastery` — Parallel worktrees, verification loops, subagent patterns
 - `self-correction-loop` — Capture corrections as permanent rules in MEMORY.md
-- `wrap-up-ritual` — Structured session handoff to `.claude/handoff.md`
+- `wrap-up-ritual` — Structured session handoff to `.agent/handoff.md`
 - `context-discipline` — Token budget management, MCP-first navigation
 
 ## MCP Tools

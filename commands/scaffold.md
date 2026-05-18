@@ -75,7 +75,7 @@ dotnet build --no-restore
 ```
 User: /scaffold a Product Catalog feature with CRUD operations
 
-Claude: Detected architecture: Vertical Slice Architecture
+Agent: Detected architecture: Vertical Slice Architecture
 
 Generating Product Catalog feature...
 

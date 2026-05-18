@@ -91,7 +91,7 @@ Overall grade: **A** (90+), **B** (80-89), **C** (70-79), **D** (60-69), **F** (
 ```
 User: /health-check
 
-Claude: Running project health assessment...
+Agent: Running project health assessment...
 
   Dimension 1: Build & Compiler Health -- A (95)
     Zero errors, 0 warnings. Clean build.

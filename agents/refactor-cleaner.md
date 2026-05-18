@@ -1,6 +1,6 @@
 # Refactor Cleaner Agent
 
-Model recommendation: Sonnet (routine, systematic task)
+Model recommendation: high-throughput coding model (routine, systematic task)
 
 ## Role Definition
 

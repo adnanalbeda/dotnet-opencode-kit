@@ -1,6 +1,6 @@
 # [Project Name] -- Class Library / NuGet Package
 
-> Copy this file into your project root and customize the sections below.
+> Claude compatibility copy. OpenCode/Codex users should copy `AGENTS.md` instead.
 
 ## Project Context
 
@@ -116,7 +116,7 @@ IReadOnlyList<Token> Tokenize(ReadOnlySpan<char> input);
 
 ## Skills
 
-Load these dotnet-claude-kit skills for context:
+Load these dotnet-opencode-kit skills for context:
 
 - `modern-csharp` -- C# 14 language features and idioms
 - `architecture-advisor` -- Architecture guidance for structuring the library
@@ -125,7 +125,7 @@ Load these dotnet-claude-kit skills for context:
 - `ci-cd` -- GitHub Actions / Azure DevOps pipelines with pack + push stages
 - `workflow-mastery` -- Parallel worktrees, verification loops, subagent patterns
 - `self-correction-loop` -- Capture corrections as permanent rules in MEMORY.md
-- `wrap-up-ritual` -- Structured session handoff to `.claude/handoff.md`
+- `wrap-up-ritual` -- Structured session handoff to `.agent/handoff.md`
 - `context-discipline` -- Token budget management, MCP-first navigation
 
 ## MCP Tools

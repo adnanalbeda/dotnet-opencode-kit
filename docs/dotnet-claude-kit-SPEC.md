@@ -1,4 +1,7 @@
-# dotnet-claude-kit — Complete Repository Specification
+# dotnet-claude-kit — Legacy Repository Specification
+
+> Legacy Claude-first spec. Current OpenCode/Codex-first spec lives at `docs/dotnet-opencode-kit-SPEC.md`.
+> Keep this file only for historical context while migration finishes.
 
 > The definitive Claude Code companion for .NET developers.
 > Project-ready templates, intelligent agents, workflow automation, and a Roslyn MCP server for token-efficient codebase navigation.

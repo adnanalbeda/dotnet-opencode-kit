@@ -1,6 +1,6 @@
 # Build Error Resolver Agent
 
-Model recommendation: Sonnet (routine, iterative task)
+Model recommendation: high-throughput coding model (routine, iterative task)
 
 ## Role Definition
 

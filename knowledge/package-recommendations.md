@@ -2,7 +2,7 @@
 
 > Last updated: March 2026 -- .NET 10 / C# 14
 
-Curated packages that dotnet-claude-kit recommends by default. Every entry includes rationale and guidance on when NOT to use it.
+Curated packages that dotnet-opencode-kit recommends by default. Every entry includes rationale and guidance on when NOT to use it.
 
 ## CRITICAL: Always Use Latest Stable Versions
 

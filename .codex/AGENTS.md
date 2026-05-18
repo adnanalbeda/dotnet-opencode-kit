@@ -1,6 +1,14 @@
 # Codex Agent Configuration
 
-This project uses [dotnet-claude-kit](https://github.com/codewithmukesh/dotnet-claude-kit) for .NET development intelligence.
+This project uses `dotnet-opencode-kit` for .NET development intelligence. Codex should treat root `AGENTS.md` as canonical and this file as a Codex adapter.
+
+## Load Order
+
+1. Read root `AGENTS.md` for routing, skill maps, MCP preferences, and response patterns.
+2. Read relevant `agents/<agent-name>.md` when task matches an agent route.
+3. Read relevant `skills/<skill-name>/SKILL.md` before implementation.
+4. Apply always-on rules from `rules/dotnet/*.md`.
+5. Use `commands/<command>.md` as workflow prompts when user invokes slash-style commands.
 
 ## Available Agents
 
@@ -30,6 +38,21 @@ code-review-workflow, convention-learner, migration-workflow, verification-loop,
 ### Meta & Productivity Skills
 80-20-review, context-discipline, learning-log, model-selection, self-correction-loop, split-memory, wrap-up-ritual
 
+## Workflow Commands
+
+Codex does not need native slash command support. If user types command text, read matching file under `commands/` and execute that workflow.
+
+| Command | File | Purpose |
+|---------|------|---------|
+| `/dotnet-init` | `commands/dotnet-init.md` | Project setup and `AGENTS.md` generation |
+| `/plan` | `commands/plan.md` | Architecture-aware planning |
+| `/verify` | `commands/verify.md` | Build, diagnostics, tests, security, format, diff review |
+| `/scaffold` | `commands/scaffold.md` | Architecture-aware feature scaffolding |
+| `/code-review` | `commands/code-review.md` | MCP-powered code review |
+| `/build-fix` | `commands/build-fix.md` | Iterative build repair |
+| `/checkpoint` | `commands/checkpoint.md` | Commit plus `.agent/handoff.md` |
+| `/wrap-up` | `commands/wrap-up.md` | End-session handoff |
+
 ## MCP Tools
 
 The `cwm-roslyn-navigator` MCP server provides Roslyn-powered code intelligence:
@@ -47,7 +70,7 @@ The `cwm-roslyn-navigator` MCP server provides Roslyn-powered code intelligence:
 | `get_type_hierarchy` | Get inheritance chain, interfaces, and derived types |
 | `get_project_graph` | Get solution dependency tree with frameworks and references |
 | `get_dependency_graph` | Get recursive call graph for a method |
-| `get_diagnostics` | Get compiler and analyzer diagnostics (errors, warnings) |
+| `get_diagnostics` | Get compiler and analyzer diagnostics |
 | `get_test_coverage_map` | Heuristic test coverage by naming convention |
 | `detect_antipatterns` | Find .NET anti-patterns via Roslyn analysis |
 | `detect_circular_dependencies` | Find cycles in project or type dependencies |
@@ -67,3 +90,4 @@ Always-applied coding conventions live in `rules/dotnet/`:
 - `git-workflow.md` -- Conventional commits, atomic commits, branch safety
 - `agents.md` -- MCP-first tools, subagent routing, skill loading
 - `hooks.md` -- Format hooks, pre-commit, post-test analysis
+- `packages.md` -- Latest stable NuGet package guidance

@@ -25,13 +25,13 @@ Import instincts from an exported file and merge them with the current project's
 
 ### Step 2: Read and Merge
 
-- Read the exported instincts file (path provided by user or default `.claude/instincts-export.md`)
-- Read existing `.claude/instincts.md` if present
+- Read the exported instincts file (path provided by user or default `.agent/instincts-export.md`)
+- Read existing `.agent/instincts.md` if present. Fall back to `.claude/instincts.md` only for legacy projects.
 - For each imported instinct:
   - **No conflict**: Add with confidence decayed by 0.2 (imported patterns start lower)
   - **Matching instinct exists**: Keep the higher confidence, mark as reinforced
   - **Conflicting instinct exists**: Present both to the user for resolution
-- Write merged result to `.claude/instincts.md`
+- Write merged result to `.agent/instincts.md`
 
 ### Step 3: Report
 
@@ -40,9 +40,9 @@ Display what was imported, merged, and any conflicts that need resolution.
 ## Example
 
 ```
-User: /instinct-import .claude/instincts-export.md
+User: /instinct-import .agent/instincts-export.md
 
-Claude: Importing instincts from .claude/instincts-export.md...
+Agent: Importing instincts from .agent/instincts-export.md...
 
 Imported (5 new, confidence decayed by 0.2):
   - Use vertical slice architecture (0.9 -> 0.7)

@@ -1,4 +1,4 @@
-# dotnet-claude-kit Quick Reference
+# dotnet-opencode-kit Quick Reference
 
 A compact reference for all components: commands, skills, agents, rules, hooks, and MCP tools.
 
@@ -18,8 +18,8 @@ A compact reference for all components: commands, skills, agents, rules, hooks, 
 | `/security-scan` | Deep security audit (OWASP Top 10, secrets, packages) | security-scan / security-auditor |
 | `/migrate` | Guided EF Core migration workflow | migration-workflow / ef-core-specialist |
 | `/de-sloppify` | Systematic code cleanup pass | de-sloppify / refactor-cleaner |
-| `/checkpoint` | Save progress with commit and handoff note | wrap-up-ritual / -- |
-| `/wrap-up` | End-of-session wrap-up ritual | wrap-up-ritual / -- |
+| `/checkpoint` | Save progress with commit and `.agent/handoff.md` | wrap-up-ritual / -- |
+| `/wrap-up` | End-of-session wrap-up ritual writing `.agent/handoff.md` | wrap-up-ritual / -- |
 | `/instinct-status` | Display learned instincts with confidence scores | instinct-system / -- |
 | `/instinct-export` | Export instincts to shareable format | instinct-system / -- |
 | `/instinct-import` | Import instincts from another project | instinct-system / -- |
@@ -50,7 +50,7 @@ A compact reference for all components: commands, skills, agents, rules, hooks, 
 | convention-learner | Detect and codify project conventions |
 | migration-workflow | Safe EF Core migration with review and rollback |
 | verification-loop | Build-test-verify feedback loop |
-| workflow-mastery | Advanced Claude Code workflow patterns |
+| workflow-mastery | Advanced agent workflow patterns |
 
 ### Meta & Productivity (7)
 
@@ -59,9 +59,9 @@ A compact reference for all components: commands, skills, agents, rules, hooks, 
 | 80-20-review | Focus review effort on highest-risk code |
 | context-discipline | Manage context window and token budget |
 | learning-log | Document non-obvious discoveries |
-| model-selection | Choose the right model (Opus/Sonnet/Haiku) per task |
+| model-selection | Choose strongest reasoning, coding, or cheap/fast model per task |
 | self-correction-loop | Capture corrections and prevent recurrence |
-| split-memory | Split large CLAUDE.md across organized files |
+| split-memory | Split large AGENTS.md across organized files |
 | wrap-up-ritual | Session handoff with progress and pending tasks |
 
 ### Autonomous (6 -- no SKILL.md, used internally)

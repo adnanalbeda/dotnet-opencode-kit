@@ -1,12 +1,12 @@
 ---
 name: context-discipline
 description: >
-  Token budget management for Claude Code sessions. Teaches how to minimize
+  Token budget management for agent sessions. Teaches how to minimize
   context consumption using MCP-first navigation, lazy loading, subagent
-  isolation, and strategic file reading. Keeps Claude effective throughout
+  isolation, and strategic file reading. Keeps agents effective throughout
   long sessions by treating the 200k token window as a budget, not a dumping
   ground. Load this skill when context is running low, sessions feel sluggish,
-  Claude starts forgetting earlier context, or when planning how to explore
+  the agent starts forgetting earlier context, or when planning how to explore
   a large codebase efficiently. Keywords: "context", "tokens", "budget",
   "running out of context", "too many files", "large codebase", "memory".
 ---

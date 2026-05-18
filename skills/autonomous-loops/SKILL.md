@@ -4,7 +4,7 @@ description: >
   Autonomous iteration loops for .NET development: build-fix, test-fix, refactor,
   and scaffold loops. Each loop has bounded iterations, progress detection, and
   fail-safe guards that prevent infinite retries and wasted tokens. Load this skill
-  when Claude needs to fix build errors, fix failing tests, perform multi-step
+  when an agent needs to fix build errors, fix failing tests, perform multi-step
   refactoring, scaffold a new feature, or when the user says "fix the build",
   "make the tests pass", "refactor this", "scaffold", "generate and verify",
   "keep going until it works", "autonomous", or "loop".
@@ -18,7 +18,7 @@ description: >
 
 2. **Progress tracking or exit** — Each iteration must make measurable progress: fewer errors, fewer failing tests, fewer warnings. If an iteration produces the same error count as the previous one, the loop exits with a STUCK status. Retrying without progress is token waste.
 
-3. **Fail-safe guards are non-negotiable** — Loops exit on: max iterations reached, no progress detected, critical error encountered, more errors introduced than fixed, or user interruption. These guards exist to prevent the most common failure mode: Claude stubbornly retrying the same broken approach 20 times.
+3. **Fail-safe guards are non-negotiable** — Loops exit on: max iterations reached, no progress detected, critical error encountered, more errors introduced than fixed, or user interruption. These guards exist to prevent the most common failure mode: an agent stubbornly retrying the same broken approach 20 times.
 
 4. **Transparency at every iteration** — Report what changed and why after each iteration. The user should be able to follow the loop's reasoning without reading every file. "Iteration 3: fixed CS0246 by adding `using System.Text.Json`, 2 errors remain" is transparent. Silently modifying files is not.
 
@@ -303,7 +303,7 @@ ITERATION REPORT FORMAT:
 ```
 # BAD — no iteration limit
 "Keep fixing build errors until it compiles"
-*Claude tries 47 iterations, burns through context window,
+*Agent tries 47 iterations, burns through context window,
  keeps retrying the same broken approach*
 
 # GOOD — explicit bounds with progress checks

@@ -4,11 +4,11 @@
 
 Superseded by [ADR-005](005-multi-architecture.md)
 
-> **Note:** VSA remains a fully supported architecture in dotnet-claude-kit. It is no longer the hardcoded default — the `architecture-advisor` skill now recommends the best fit based on project context. See ADR-005 for details.
+> **Note:** VSA remains a fully supported architecture in dotnet-opencode-kit. It is no longer the hardcoded default — the `architecture-advisor` skill now recommends the best fit based on project context. See ADR-005 for details.
 
 ## Context
 
-dotnet-claude-kit needs a default architectural pattern for structuring .NET applications. The primary candidates are:
+dotnet-opencode-kit needs a default architectural pattern for structuring .NET applications. The primary candidates are:
 
 - **Clean Architecture (CA):** Organizes code into concentric layers (Domain, Application, Infrastructure, Presentation). Widely taught and documented. Enforces dependency inversion via project references.
 - **Vertical Slice Architecture (VSA):** Organizes code by feature. Each feature is a self-contained slice containing its endpoint, handler, validation, data access, and DTOs. Cross-cutting concerns are shared via middleware, pipeline behaviors, or base classes.
@@ -16,8 +16,8 @@ dotnet-claude-kit needs a default architectural pattern for structuring .NET app
 
 We evaluated these patterns against the following criteria:
 
-1. **Cognitive load for AI-assisted development.** Claude Code operates on context windows. Patterns that keep related code close together reduce the number of files Claude needs to load.
-2. **Feature velocity.** How quickly can a developer (or Claude) add a new feature end-to-end?
+1. **Cognitive load for AI-assisted development.** Coding agents operate on context windows. Patterns that keep related code close together reduce the number of files agents need to load.
+2. **Feature velocity.** How quickly can a developer or agent add a new feature end-to-end?
 3. **Merge conflict frequency.** In team settings, patterns where features touch separate files reduce conflicts.
 4. **Suitability for modern .NET.** Minimal APIs, records, and primary constructors favor compact, co-located code.
 5. **Escape hatches.** Can the pattern scale to modular monoliths or be refactored toward Clean Architecture if the domain grows complex?
@@ -30,11 +30,11 @@ We evaluated these patterns against the following criteria:
 
 ### Guiding principle
 
-dotnet-claude-kit is opinionated. We pick the best default for the majority of .NET applications and provide escape hatches for the rest. We do not present all options as equal.
+dotnet-opencode-kit is opinionated. We pick the best default for the majority of .NET applications and provide escape hatches for the rest. We do not present all options as equal.
 
 ## Decision
 
-**Vertical Slice Architecture is the default architectural pattern in dotnet-claude-kit.**
+**Vertical Slice Architecture is the default architectural pattern in dotnet-opencode-kit.**
 
 All templates, skills, agents, and code examples use VSA as the primary structure. Features are organized into feature folders, each containing:
 
@@ -50,19 +50,19 @@ Features/
       ...
 ```
 
-The handler approach (Mediator, Wolverine, or plain handler classes) is left to the user's choice. dotnet-claude-kit provides patterns for all three.
+The handler approach (Mediator, Wolverine, or plain handler classes) is left to the user's choice. dotnet-opencode-kit provides patterns for all three.
 
 ### When to deviate
 
 - **Complex domains with rich business logic:** If you find yourself needing a shared Domain layer with aggregates, value objects, and domain events that multiple features depend on, introduce a `Domain` project. This is a natural evolution, not a contradiction of VSA.
-- **Modular monoliths:** Each module uses VSA internally. Modules communicate via explicit contracts (events, interfaces). dotnet-claude-kit supports this as an optional scaling pattern.
+- **Modular monoliths:** Each module uses VSA internally. Modules communicate via explicit contracts (events, interfaces). dotnet-opencode-kit supports this as an optional scaling pattern.
 - **Shared infrastructure:** Cross-cutting concerns (auth, logging, error handling, persistence configuration) belong in a shared `Infrastructure` or `ServiceDefaults` project, not duplicated per feature.
 
 ## Consequences
 
 ### Positive
 
-- **Reduced context window usage.** Claude loads 1-2 files per feature instead of 4-6 across layers. This directly improves AI-assisted development quality.
+- **Reduced context window usage.** Agents load 1-2 files per feature instead of 4-6 across layers. This directly improves AI-assisted development quality.
 - **Faster feature delivery.** Adding a new feature is a self-contained folder creation. No need to update repository interfaces, service abstractions, or mapping profiles in separate layers.
 - **Fewer merge conflicts.** Features are isolated in separate folders and files. Two developers working on different features rarely touch the same files.
 - **Natural fit for minimal APIs.** .NET 10 minimal APIs map directly to thin endpoint classes that delegate to handlers.

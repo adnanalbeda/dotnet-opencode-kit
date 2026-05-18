@@ -269,7 +269,7 @@ Each finding uses format: `#### [SEVERITY] File:Line — Title` with OWASP Categ
 ```markdown
 ## Security Scan Report
 
-**Project:** MyApp | **Date:** 2026-03-04 | **Scanner:** Claude (static analysis)
+**Project:** MyApp | **Date:** 2026-03-04 | **Scanner:** Agent static analysis
 
 > This is a static analysis scan. It catches known patterns but does not replace
 > penetration testing, dynamic analysis, or threat modeling.

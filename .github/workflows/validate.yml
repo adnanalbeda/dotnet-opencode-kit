@@ -116,11 +116,11 @@ jobs:
       - name: Check rule frontmatter and size
         run: |
           errors=0
-          if [ ! -d ".claude/rules" ] && [ ! -d "rules" ]; then
+          if [ ! -d "rules/dotnet" ] && [ ! -d ".claude/rules" ]; then
             echo "WARNING: No rules directory found"
             exit 0
           fi
-          for rule in $(find .claude/rules rules -name "*.md" -type f 2>/dev/null); do
+          for rule in $(find rules/dotnet .claude/rules -name "*.md" -type f 2>/dev/null); do
             # Check YAML frontmatter exists
             if ! head -1 "$rule" | grep -q "^---$"; then
               echo "ERROR: $rule missing YAML frontmatter"
@@ -145,7 +145,7 @@ jobs:
             echo "$errors error(s) found"
             exit 1
           fi
-          count=$(find rules -name "*.md" -type f | wc -l)
+          count=$(find rules/dotnet -name "*.md" -type f | wc -l)
           echo "All $count rules validated successfully"
 
   validate-agents:
@@ -269,7 +269,7 @@ jobs:
       - name: Validate JSON syntax
         run: |
           errors=0
-          for f in .claude-plugin/plugin.json .claude-plugin/marketplace.json .mcp.json hooks/hooks.json; do
+          for f in .claude-plugin/plugin.json .claude-plugin/marketplace.json .mcp.json hooks/hooks.json hooks/adapters/claude-hooks.json; do
             if ! python3 -m json.tool "$f" > /dev/null 2>&1; then
               echo "ERROR: $f is not valid JSON"
               errors=$((errors + 1))
@@ -299,7 +299,7 @@ jobs:
       - name: Validate component directories exist
         run: |
           errors=0
-          for path in skills/ agents/ commands/ .claude/rules/ hooks/hooks.json .mcp.json; do
+          for path in AGENTS.md .codex/AGENTS.md skills/ agents/ commands/ rules/dotnet/ .claude/rules/ hooks/hooks.json .mcp.json; do
             if [ ! -e "$path" ]; then
               echo "ERROR: Expected '$path' but it does not exist"
               errors=$((errors + 1))

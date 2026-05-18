@@ -12,7 +12,7 @@ description: >
 An end-of-session ritual that ensures continuity between coding sessions by:
 
 1. Reviewing what was accomplished during the session
-2. Writing a handoff document at `.claude/handoff.md` for the next session
+2. Writing a handoff document at `.agent/handoff.md` for the next session
 3. Extracting learnings and corrections into `MEMORY.md` for long-term retention
 
 ## When
@@ -40,7 +40,7 @@ Analyze the current session to identify:
 
 ### Step 3: Write Handoff and Learnings
 
-- Write `.claude/handoff.md` with: completed work, pending tasks, blockers, and next steps
+- Write `.agent/handoff.md` with: completed work, pending tasks, blockers, and next steps
 - Append new learnings to `MEMORY.md` if any corrections or patterns were discovered
 - Report the summary to the user for confirmation
 
@@ -49,7 +49,7 @@ Analyze the current session to identify:
 ```
 User: /wrap-up
 
-Claude: Wrapping up session...
+Agent: Wrapping up session...
 
 ## Session Summary
 - Implemented OrderService with validation pipeline
@@ -64,7 +64,7 @@ Claude: Wrapping up session...
 - User prefers explicit mapping over AutoMapper
 - This project uses vertical slice architecture
 
-Written to .claude/handoff.md. See you next session.
+Written to .agent/handoff.md. Resume from there next session.
 ```
 
 ## Related

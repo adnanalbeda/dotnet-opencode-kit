@@ -1,22 +1,22 @@
 ---
 description: >
   Interactive project initialization. Detects project type, asks architecture
-  questions, and generates a customized CLAUDE.md — no manual template copying.
+  questions, and generates a customized AGENTS.md — no manual template copying.
 ---
 
 # /dotnet-init
 
 ## What
 
-Interactively initializes a .NET project for use with dotnet-claude-kit. Detects the project type, asks targeted questions about architecture and tech stack, then generates a fully customized `CLAUDE.md` in the project root.
+Interactively initializes a .NET project for use with dotnet-opencode-kit. Detects the project type, asks targeted questions about architecture and tech stack, then generates a fully customized `AGENTS.md` in the project root.
 
 **No manual template copying required.**
 
 ## When
 
-- Starting a new .NET project with Claude Code
-- Adding dotnet-claude-kit to an existing project
-- "init project", "setup project", "generate CLAUDE.md", "configure for dotnet-claude-kit"
+- Starting a new .NET project with OpenCode or Codex
+- Adding dotnet-opencode-kit to an existing project
+- "init project", "setup project", "generate AGENTS.md", "configure for dotnet-opencode-kit"
 
 ## How
 
@@ -69,7 +69,7 @@ Ask about specific technology choices:
 - **Messaging**: Wolverine, MassTransit, or none yet
 - **Testing**: Confirm xUnit + Testcontainers defaults
 
-### Step 4: Generate CLAUDE.md
+### Step 4: Generate AGENTS.md
 
 Load the appropriate template from `templates/` as a base, then customize:
 
@@ -78,7 +78,8 @@ Load the appropriate template from `templates/` as a base, then customize:
 - Configure the tech stack section
 - For existing projects: add project-specific conventions detected in Step 2
 - For greenfield: add recommended conventions based on architecture choice
-- Write to `./CLAUDE.md`
+- Write to `./AGENTS.md`
+- If Claude compatibility is requested, also write or update `./CLAUDE.md` as an adapter.
 
 ### Step 5: Verify Setup
 
@@ -101,7 +102,7 @@ Load the appropriate template from `templates/` as a base, then customize:
 ```
 User: /dotnet-init
 
-Claude: Detected:
+Agent: Detected:
   - Solution: MyApp.slnx (3 projects)
   - SDK: Microsoft.NET.Sdk.Web → Web API
   - Database: PostgreSQL (from connection string)
@@ -114,7 +115,7 @@ Claude: Detected:
   > Small
 
   Recommendation: Vertical Slice Architecture
-  Generated: ./CLAUDE.md (MyApp + VSA + PostgreSQL + JWT)
+  Generated: ./AGENTS.md (MyApp + VSA + PostgreSQL + JWT)
   Run /health-check to see your baseline.
 ```
 
@@ -123,7 +124,7 @@ Claude: Detected:
 ```
 User: /dotnet-init
 
-Claude: No .sln or .csproj found. Let's set up a new project.
+Agent: No .sln or .csproj found. Let's set up a new project.
 
   1. What are you building? [REST API / Blazor / Worker / Library / Modular Monolith]
   > REST API
@@ -141,7 +142,7 @@ Claude: No .sln or .csproj found. Let's set up a new project.
   → dotnet new web -n OrderService.Api -o src/OrderService.Api
   → dotnet new xunit -n OrderService.Tests -o tests/OrderService.Tests
   → Directory.Build.props with .NET 10 defaults
-  → Generated: ./CLAUDE.md (OrderService + VSA + scaffold-ready)
+  → Generated: ./AGENTS.md (OrderService + VSA + scaffold-ready)
 
   Run /scaffold to add your first feature.
 ```

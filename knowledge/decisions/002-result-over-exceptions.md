@@ -41,7 +41,7 @@ The caller inspects the `Result` and maps it to an HTTP response explicitly.
 2. **Explicitness.** The method signature should communicate whether an operation can fail. `Result<Order>` makes failure a first-class part of the contract. `Order` with a hidden `throw` does not.
 3. **Control flow clarity.** Exceptions create invisible control flow. The reader must know which exceptions a method might throw. Results make all paths visible in the return type.
 4. **Composability.** Results chain naturally with pattern matching, LINQ-like operations, and pipeline behaviors. Exception-based flows require nested try/catch or exception filters.
-5. **AI-assisted development.** Claude Code generates more correct code when the type system encodes success/failure. With exceptions, Claude must remember (or be told) which exceptions to catch and where.
+5. **AI-assisted development.** Agents generate more correct code when the type system encodes success/failure. With exceptions, agents must infer which exceptions to catch and where.
 6. **Integration with ASP.NET Core.** Both approaches work. Exceptions rely on `UseExceptionHandler` middleware. Results map to `TypedResults` in minimal APIs.
 
 ### Industry context
@@ -50,7 +50,7 @@ The .NET ecosystem has traditionally relied on exceptions for all error handling
 
 ## Decision
 
-**dotnet-claude-kit uses the Result pattern as the default approach for handling expected failures. Exceptions are reserved for truly exceptional, unexpected situations.**
+**dotnet-opencode-kit uses the Result pattern as the default approach for handling expected failures. Exceptions are reserved for truly exceptional, unexpected situations.**
 
 ### What constitutes an "expected failure"
 
@@ -71,7 +71,7 @@ The .NET ecosystem has traditionally relied on exceptions for all error handling
 
 ### Implementation approach
 
-dotnet-claude-kit does not mandate a specific Result library. The recommended pattern is a lightweight, project-owned `Result<T>` type:
+dotnet-opencode-kit does not mandate a specific Result library. The recommended pattern is a lightweight, project-owned `Result<T>` type:
 
 ```csharp
 public sealed record Error(string Code, string Description)
@@ -139,7 +139,7 @@ public static class ResultExtensions
 - **Method signatures are honest.** `Result<Order>` tells the caller that this operation can fail. `Order` with a hidden throw does not.
 - **Better performance under load.** Avoiding exception stack trace capture reduces CPU cost for expected failure paths. In benchmarks, Result returns are 100-1000x cheaper than throwing exceptions.
 - **Pattern matching friendly.** Results compose naturally with C# pattern matching and switch expressions.
-- **Improved AI code generation.** Claude produces more correct code when the type system guides it. The Result type makes success/failure paths explicit in the code Claude reads and generates.
+- **Improved AI code generation.** Agents produce more correct code when the type system guides them. The Result type makes success/failure paths explicit in the code agents read and generate.
 - **Consistent error mapping.** A single `ToProblemDetails()` extension method handles all Result-to-HTTP conversion, replacing scattered `try/catch` blocks.
 - **Testable.** Testing a Result return is a simple assertion on `IsSuccess` and `Error`. Testing exception-throwing requires `Assert.Throws` with more ceremony.
 

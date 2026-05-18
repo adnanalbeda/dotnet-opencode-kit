@@ -1,65 +1,94 @@
 # MCP Server Configuration
 
-This directory contains template MCP (Model Context Protocol) server configurations for use with Claude Code and other MCP-compatible clients.
+This directory contains MCP (Model Context Protocol) server configuration templates for OpenCode, Codex, Claude Code compatibility, Cursor, VS Code, and other MCP-compatible clients.
 
 ## Servers
 
 ### cwm-roslyn-navigator
 
-**Purpose:** Roslyn-powered .NET code intelligence -- symbol lookup, reference finding, diagnostics, dependency graphs, antipattern detection, and more.
+**Purpose:** Roslyn-powered .NET code intelligence: symbol lookup, references, diagnostics, dependency graphs, anti-pattern detection, dead code, and public API inspection.
 
-**When to use:** Any .NET project. This is the primary MCP server for dotnet-claude-kit and should always be configured.
+**When to use:** Any .NET project. This is the primary MCP server for dotnet-opencode-kit and should always be configured.
 
 **Prerequisites:**
-- Install the tool globally: `dotnet tool install -g CWM.RoslynNavigator`
-- Ensure a `.sln` or `.slnx` file exists in your workspace root (or within 3 levels of nesting)
+- Install globally: `dotnet tool install -g CWM.RoslynNavigator`
+- Ensure a `.sln` or `.slnx` file exists in workspace root or nearby directory
 
 ### github
 
-**Purpose:** GitHub API access -- issues, pull requests, repository metadata, file contents.
+**Purpose:** GitHub API access: issues, pull requests, repository metadata, file contents.
 
-**When to use:** When working with GitHub-hosted repositories and you need to read issues, create PRs, or access repository data through MCP tools.
+**When to use:** GitHub-hosted repos where agent needs issue/PR context through MCP.
 
 **Prerequisites:**
-- Node.js installed (for `npx`)
-- Set `GITHUB_TOKEN` environment variable with a GitHub Personal Access Token
+- Node.js and pnpm installed
+- Set `GITHUB_TOKEN` or `GITHUB_PERSONAL_ACCESS_TOKEN`
 
 ### filesystem
 
-**Purpose:** Direct filesystem read/write access scoped to the workspace.
+**Purpose:** Direct filesystem access scoped to workspace.
 
-**When to use:** When MCP tools need file access beyond what the default Claude Code tools provide.
+**When to use:** Only when client-native file tools are insufficient.
 
 **Prerequisites:**
-- Node.js installed (for `npx`)
+- Node.js and pnpm installed
 
-## How to Use
+## OpenCode
 
-### Claude Code
+Use your OpenCode MCP configuration mechanism and copy the `mcpServers` object from `mcp-servers.json`. Keep `cwm-roslyn-navigator` enabled for .NET work.
 
-Merge the server configurations into your project's `.mcp.json` file at the repository root:
+If OpenCode supports project-local `.mcp.json`, copy:
 
 ```bash
-# If .mcp.json does not exist yet, copy the template
 cp mcp-configs/mcp-servers.json .mcp.json
-
-# If .mcp.json already exists, merge the servers manually
 ```
 
-Replace `${workspaceFolder}` with your actual workspace path, or use the variable if your client supports it.
+If `${workspaceFolder}` is not expanded by your client, replace it with absolute workspace path.
 
-Replace `${GITHUB_TOKEN}` with your token or set it as an environment variable.
+## Codex
 
-### Cursor IDE
+Use Codex MCP settings if available. Copy `cwm-roslyn-navigator` from `mcp-servers.json` and keep optional GitHub/filesystem servers only when needed.
 
-Add the server configurations to your Cursor MCP settings file (`.cursor/mcp.json` or global settings).
+Recommended minimum:
 
-### VS Code (Copilot)
+```json
+{
+  "mcpServers": {
+    "cwm-roslyn-navigator": {
+      "command": "cwm-roslyn-navigator",
+      "args": ["--solution", "${workspaceFolder}"]
+    }
+  }
+}
+```
 
-Add to `.vscode/mcp.json` in your project root using the same format.
+## Claude Code Compatibility
+
+Claude Code can still use `.mcp.json` or user-scope MCP registration. This repo keeps Claude support as compatibility, not canonical setup.
+
+Project-local setup:
+
+```bash
+cp mcp-configs/mcp-servers.json .mcp.json
+```
+
+User-scope setup example:
+
+```bash
+claude mcp add --scope user cwm-roslyn-navigator -- cwm-roslyn-navigator --solution ${workspaceFolder}
+```
+
+## Cursor IDE
+
+Add server configurations to `.cursor/mcp.json` or global Cursor MCP settings.
+
+## VS Code / Copilot
+
+Add to `.vscode/mcp.json` using same `mcpServers` format if supported by installed tooling.
 
 ## Customization
 
-- Remove servers you do not need. Only `cwm-roslyn-navigator` is required for dotnet-claude-kit.
-- Add additional MCP servers (database, cloud provider, monitoring) as needed for your project.
-- The `--solution` argument for `cwm-roslyn-navigator` accepts a path to a specific `.sln`/`.slnx` file if you have multiple solutions.
+- Keep `cwm-roslyn-navigator` for .NET work.
+- Remove GitHub/filesystem servers unless needed.
+- Replace `${workspaceFolder}` when client does not expand variables.
+- Use explicit `.sln`/`.slnx` path with `--solution` when repo contains multiple solutions.

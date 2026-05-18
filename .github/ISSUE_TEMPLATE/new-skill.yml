@@ -1,5 +1,5 @@
 name: New Skill Proposal
-description: Propose a new skill for dotnet-claude-kit
+description: Propose a new skill for dotnet-opencode-kit
 title: "[Skill] "
 labels: ["skill", "enhancement"]
 body:
@@ -21,10 +21,10 @@ body:
     id: description
     attributes:
       label: Description
-      description: What does this skill cover? When should Claude load it?
+      description: What does this skill cover? When should an agent load it?
       placeholder: |
         This skill covers...
-        Claude should load it when...
+        Agent should load it when...
     validations:
       required: true
 
@@ -84,6 +84,6 @@ body:
       options:
         - label: This skill doesn't overlap significantly with an existing skill
           required: true
-        - label: I've checked the spec (`docs/dotnet-claude-kit-SPEC.md`) for alignment
+        - label: I've checked the spec (`docs/dotnet-opencode-kit-SPEC.md`) for alignment
           required: true
         - label: I'm willing to contribute the implementation (optional)

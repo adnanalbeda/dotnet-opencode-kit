@@ -163,7 +163,7 @@ Check: README exists, is current, covers setup and architecture
 ```markdown
 ## Project Health Report
 
-**Project:** MyApp | **Date:** 2026-03-04 | **Assessed by:** Claude (MCP-assisted)
+**Project:** MyApp | **Date:** 2026-03-04 | **Assessed by:** Agent (MCP-assisted)
 
 ### Grades
 

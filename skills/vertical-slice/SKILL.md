@@ -2,7 +2,7 @@
 name: vertical-slice
 description: >
   Vertical Slice Architecture (VSA) for .NET applications — one of several
-  supported architectures in dotnet-claude-kit. Covers feature folders, endpoint
+  supported architectures in dotnet-opencode-kit. Covers feature folders, endpoint
   grouping, and handler patterns for Mediator, Wolverine, and raw handler classes.
   Load this skill when the architecture-advisor recommends VSA, when working in
   an existing VSA codebase, when adding features to a feature-folder project,

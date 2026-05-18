@@ -140,7 +140,7 @@ Output a structured review with this format:
 ```
 User: /code-review the changes in this PR
 
-Claude: Scoping review to 7 changed files across 3 projects...
+Agent: Scoping review to 7 changed files across 3 projects...
 
 ## Code Review: Order Processing Feature
 

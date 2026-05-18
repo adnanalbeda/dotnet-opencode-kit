@@ -1,6 +1,6 @@
 # Common Anti-patterns
 
-> Patterns that Claude tends to generate incorrectly. Every developer using dotnet-claude-kit should be protected from these mistakes.
+> Patterns that AI coding agents tend to generate incorrectly. Every developer using dotnet-opencode-kit should be protected from these mistakes.
 
 ## async void
 
