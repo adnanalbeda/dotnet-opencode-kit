@@ -90,7 +90,24 @@ Agents load skills in dependency order. Core skills load first. If the client do
 
 ## MCP Tool Preferences
 
-Agents should **prefer Roslyn MCP tools over file scanning** to reduce token consumption.
+Agents should **prefer MCP tools over file scanning or stale model knowledge**. Use each MCP for its strongest boundary.
+
+### MCP Routing
+
+| Need | Prefer | Why |
+|------|--------|-----|
+| Codebase symbols, references, diagnostics, dependency graph | `cwm-roslyn-navigator` | Semantic local code intelligence |
+| Current .NET/Microsoft/Azure docs | Official Microsoft Learn/.NET MCP (`dotnet_microsoft_docs_search`, `dotnet_microsoft_docs_fetch`) | First-party current documentation |
+| Official Microsoft code snippets | Official Microsoft Learn/.NET MCP (`dotnet_microsoft_code_sample_search`) | Avoid stale API examples from model memory |
+| Aspire AppHost/resources/logs/traces/runtime state | Official Aspire MCP (`aspire_*`) | Live app model, logs, traces, integrations, docs |
+
+Use Microsoft Learn/.NET MCP before generating Microsoft/Azure/.NET code samples, checking APIs, package guidance, breaking changes, or configuration syntax.
+
+Use Aspire MCP when user mentions Aspire, AppHost, service discovery, resource orchestration, integrations, dashboard, logs, traces, or resource health.
+
+Use Roslyn MCP for local project understanding before reading many files.
+
+### Roslyn MCP
 
 | Task | Use MCP Tool | Instead Of |
 |------|-------------|-----------|
@@ -105,6 +122,28 @@ Agents should **prefer Roslyn MCP tools over file scanning** to reduce token con
 | Check for circular dependencies | `detect_circular_dependencies` | Manually tracing project references |
 | Understand method call chains | `get_dependency_graph` | Reading multiple files and tracing calls |
 | Check which types have tests | `get_test_coverage_map` | Manually searching for test files |
+
+### Microsoft Learn/.NET MCP
+
+| Task | Use MCP Tool |
+|------|--------------|
+| Find current official docs | `dotnet_microsoft_docs_search` |
+| Read full official docs page | `dotnet_microsoft_docs_fetch` after search identifies page |
+| Get current C#/Azure/.NET samples | `dotnet_microsoft_code_sample_search` |
+
+### Aspire MCP
+
+| Task | Use MCP Tool |
+|------|--------------|
+| Diagnose local Aspire environment | `aspire_doctor` |
+| List running AppHosts | `aspire_list_apphosts` |
+| Select AppHost | `aspire_select_apphost` |
+| List resources/endpoints/health | `aspire_list_resources` |
+| Inspect console logs | `aspire_list_console_logs` |
+| Inspect structured logs | `aspire_list_structured_logs` |
+| Inspect distributed traces | `aspire_list_traces`, then `aspire_list_trace_structured_logs` |
+| Start/stop/restart resource | `aspire_execute_resource_command` |
+| Find Aspire docs/integrations | `aspire_search_docs`, `aspire_get_doc`, `aspire_list_integrations` |
 
 ## Cross-Agent Meta Skills
 

@@ -55,6 +55,12 @@ Codex does not need native slash command support. If user types command text, re
 
 ## MCP Tools
 
+Use MCPs by boundary:
+
+- `cwm-roslyn-navigator` for local codebase symbols, diagnostics, references, project graph, dead code, and anti-patterns.
+- Official Microsoft Learn/.NET MCP for current first-party docs and code samples: `dotnet_microsoft_docs_search`, `dotnet_microsoft_docs_fetch`, `dotnet_microsoft_code_sample_search`.
+- Official Aspire MCP for AppHost runtime state, resources, logs, traces, docs, and integrations: `aspire_*` tools.
+
 The `cwm-roslyn-navigator` MCP server provides Roslyn-powered code intelligence:
 
 | Tool | Purpose |

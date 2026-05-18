@@ -2,7 +2,50 @@
 
 This directory contains MCP (Model Context Protocol) server configuration templates for OpenCode, Codex, Claude Code compatibility, Cursor, VS Code, and other MCP-compatible clients.
 
-## Servers
+## Server Catalog
+
+Use this catalog to decide which MCP servers belong in user/global config versus project-local templates.
+
+## Global Official MCPs
+
+If your user/global MCP config already includes official Microsoft Learn/.NET and Aspire MCP servers, keep them global. This project references them in `AGENTS.md` and does not require duplicating those entries into every repo.
+
+### Microsoft Learn/.NET MCP
+
+**Purpose:** First-party Microsoft documentation and code samples.
+
+**When to use:**
+- Before generating Microsoft/Azure/.NET code snippets.
+- When checking current API names, package setup, configuration syntax, or breaking changes.
+- When search results identify a high-value docs page that needs full context.
+
+**Preferred tools:**
+- `dotnet_microsoft_docs_search` for first-pass official docs search.
+- `dotnet_microsoft_docs_fetch` after search identifies relevant page.
+- `dotnet_microsoft_code_sample_search` for official snippets.
+
+### .NET Aspire MCP
+
+**Purpose:** Aspire AppHost runtime inspection, diagnostics, docs, and integration discovery.
+
+**When to use:**
+- User mentions Aspire, AppHost, service discovery, dashboard, orchestration, resources, integrations, logs, or traces.
+- Need to inspect running resources, endpoints, health, console logs, structured logs, or distributed traces.
+- Need official Aspire docs or hosting integration guidance.
+
+**Preferred tools:**
+- `aspire_doctor`
+- `aspire_list_apphosts`
+- `aspire_select_apphost`
+- `aspire_list_resources`
+- `aspire_list_console_logs`
+- `aspire_list_structured_logs`
+- `aspire_list_traces`
+- `aspire_list_trace_structured_logs`
+- `aspire_execute_resource_command`
+- `aspire_list_integrations`
+- `aspire_search_docs`
+- `aspire_get_doc`
 
 ### cwm-roslyn-navigator
 

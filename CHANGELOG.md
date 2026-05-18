@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `AGENTS.md` templates for web API, modular monolith, Blazor app, worker service, and class library projects.
 - Updated workflows and state paths to prefer `.agent/*` with legacy `.claude/*` fallback.
 - Added OpenCode/Codex MCP and hook adapter documentation.
+- Documented official Microsoft Learn/.NET and Aspire MCP routing in `AGENTS.md`, docs, and Aspire skill.
+- Added `docs/added-files-manifest.md` to track project-local added files for easier upstream/source sync.
 
 ## [0.7.0] — 2026-03-22
 

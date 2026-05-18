@@ -120,7 +120,9 @@ All rules have `alwaysApply: true` -- they are enforced on every interaction.
 
 ---
 
-## MCP Tools (15)
+## MCP Tools
+
+### Roslyn MCP (15)
 
 | Tool | Category | Purpose |
 |------|----------|---------|
@@ -140,18 +142,43 @@ All rules have `alwaysApply: true` -- they are enforced on every interaction.
 | `detect_antipatterns` | Quality | .NET anti-patterns via Roslyn |
 | `detect_circular_dependencies` | Quality | Cycles in project or type deps |
 
+### Official Microsoft Learn/.NET MCP
+
+| Tool | Purpose |
+|------|---------|
+| `dotnet_microsoft_docs_search` | Search current official Microsoft/.NET docs |
+| `dotnet_microsoft_docs_fetch` | Fetch full official docs page after search |
+| `dotnet_microsoft_code_sample_search` | Find official Microsoft code samples |
+
+### Official Aspire MCP
+
+| Tool | Purpose |
+|------|---------|
+| `aspire_doctor` | Diagnose Aspire environment issues |
+| `aspire_list_apphosts` | List detected running AppHosts |
+| `aspire_select_apphost` | Select AppHost when multiple exist |
+| `aspire_list_resources` | List resources, endpoints, health, relationships |
+| `aspire_list_console_logs` | Inspect resource console logs |
+| `aspire_list_structured_logs` | Inspect structured logs |
+| `aspire_list_traces` | Inspect distributed traces |
+| `aspire_list_trace_structured_logs` | Inspect logs for one trace |
+| `aspire_execute_resource_command` | Start/stop/restart resource |
+| `aspire_search_docs`, `aspire_get_doc` | Find Aspire docs |
+| `aspire_list_integrations` | List Aspire hosting integrations |
+
 ---
 
 ## Cross-Reference: Command to Skill to Agent
 
 | Command | Primary Skill(s) | Primary Agent | Support Agent(s) |
 |---------|-----------------|---------------|-------------------|
-| `/plan` | workflow-mastery | dotnet-architect | -- |
-| `/scaffold` | scaffolding, project-setup | dotnet-architect | api-designer, ef-core-specialist |
-| `/build-fix` | verification-loop | build-error-resolver | -- |
-| `/verify` | verification-loop | code-reviewer | dotnet-architect |
+| `/dotnet-init` | project-setup | dotnet-architect | -- |
+| `/plan` | architecture-advisor | dotnet-architect | -- |
+| `/scaffold` | scaffolding | dotnet-architect | api-designer, ef-core-specialist |
+| `/build-fix` | autonomous-loops | build-error-resolver | -- |
+| `/verify` | verification-loop | -- | -- |
 | `/tdd` | testing | test-engineer | -- |
-| `/code-review` | code-review-workflow, 80-20-review | code-reviewer | -- |
+| `/code-review` | code-review-workflow | code-reviewer | -- |
 | `/health-check` | health-check | code-reviewer | dotnet-architect |
 | `/security-scan` | security-scan, authentication | security-auditor | -- |
 | `/migrate` | migration-workflow, ef-core | ef-core-specialist | -- |

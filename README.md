@@ -68,6 +68,8 @@ cp mcp-configs/mcp-servers.json .mcp.json
 
 4. Start OpenCode in the project root. Ask for `/plan`, `/verify`, `/scaffold`, `/code-review`, or normal natural-language work.
 
+If your global MCP config already includes official Microsoft Learn/.NET and Aspire MCP servers, this kit will route to them through `AGENTS.md` guidance. No project-local duplication required.
+
 ### Codex
 
 Use `.codex/AGENTS.md` as adapter and root `AGENTS.md` as canonical routing file. Codex should read `commands/<command>.md` when user invokes slash-style command text.
@@ -215,6 +217,17 @@ Drop-in `AGENTS.md` files configure specific project types. `CLAUDE.md` files re
 
 See [mcp/CWM.RoslynNavigator/README.md](mcp/CWM.RoslynNavigator/README.md) and [mcp-configs/README.md](mcp-configs/README.md).
 
+## Official Microsoft MCPs
+
+This kit also recognizes official global MCPs when installed:
+
+| MCP | Use When | Tools |
+|-----|----------|-------|
+| Microsoft Learn/.NET MCP | Need current .NET, ASP.NET Core, EF Core, Azure, or Microsoft API docs/samples | `dotnet_microsoft_docs_search`, `dotnet_microsoft_docs_fetch`, `dotnet_microsoft_code_sample_search` |
+| .NET Aspire MCP | Need Aspire AppHost state, resources, logs, traces, integrations, or Aspire docs | `aspire_list_resources`, `aspire_list_console_logs`, `aspire_list_traces`, `aspire_doctor`, `aspire_search_docs` |
+
+Rule of thumb: Roslyn MCP understands your local code, Microsoft Learn/.NET MCP understands official docs, Aspire MCP understands running Aspire applications.
+
 ## Repository Structure
 
 ```text
@@ -261,6 +274,15 @@ Hook scripts are reusable. Client-specific hook wiring lives in adapter docs/con
 | `post-edit-format.sh` | Formats C# files after edits |
 | `post-test-analyze.sh` | Parses test results and outputs actionable summary |
 | `pre-build-validate.sh` | Validates solution structure before build |
+
+## Documentation
+
+| Guide | Purpose |
+|-------|---------|
+| [Shorthand Guide](docs/shorthand-guide.md) | Compact command, skill, agent, rule, hook, and MCP reference |
+| [Longform Guide](docs/longform-guide.md) | Setup, workflows, MCP usage, autonomous loops, troubleshooting |
+| [OpenCode Kit Spec](docs/dotnet-opencode-kit-SPEC.md) | Current OpenCode/Codex-first repository specification |
+| [Added Files Manifest](docs/added-files-manifest.md) | Files added by OpenCode/Codex orientation for easier source sync |
 
 ## Contributing
 

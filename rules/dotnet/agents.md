@@ -21,6 +21,12 @@ description: >
 - **DON'T** read entire files to find a single method or type. Use `find_symbol` first.
   Rationale: A 500-line file costs tokens. A symbol lookup costs almost nothing.
 
+- **DO** use official Microsoft Learn/.NET MCP for current Microsoft docs and code samples.
+  Rationale: Official docs beat stale model memory for APIs, package setup, and configuration syntax.
+
+- **DO** use official Aspire MCP for Aspire AppHost resources, logs, traces, docs, and integrations.
+  Rationale: Aspire MCP sees live runtime state that file reads cannot provide.
+
 ## Subagent Routing
 
 - **DO** use subagents for parallel research, exploration, and independent tasks.
@@ -59,6 +65,9 @@ description: >
 | Understand who calls a method | `find_callers` |
 | Check public API surface | `get_public_api` |
 | Verify no regressions | `get_diagnostics` |
+| Current Microsoft docs | `dotnet_microsoft_docs_search` / `dotnet_microsoft_docs_fetch` |
+| Official .NET samples | `dotnet_microsoft_code_sample_search` |
+| Aspire runtime state | `aspire_list_resources` / `aspire_list_traces` |
 | Parallel research | Subagent |
 | Architecture decision | Strongest reasoning model + specialist agent |
 | Routine refactor | Fast coding model |

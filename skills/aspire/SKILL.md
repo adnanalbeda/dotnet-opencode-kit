@@ -126,6 +126,30 @@ MyApp.slnx
     └── MyApp.Api.Tests/
 ```
 
+### Aspire MCP Workflow
+
+When the official Aspire MCP is available, use it before guessing from files or logs:
+
+| Need | Tool |
+|------|------|
+| Environment diagnostics | `aspire_doctor` |
+| Running AppHosts | `aspire_list_apphosts` |
+| Current resources/endpoints/health | `aspire_list_resources` |
+| Resource console logs | `aspire_list_console_logs` |
+| Structured logs | `aspire_list_structured_logs` |
+| Distributed traces | `aspire_list_traces` then `aspire_list_trace_structured_logs` |
+| Resource start/stop/restart | `aspire_execute_resource_command` |
+| Official Aspire docs | `aspire_search_docs`, `aspire_get_doc` |
+| Hosting integrations | `aspire_list_integrations` |
+
+Troubleshooting order:
+
+1. `aspire_doctor` for machine/tooling issues.
+2. `aspire_list_apphosts` and `aspire_select_apphost` if multiple AppHosts run.
+3. `aspire_list_resources` for resource state, endpoints, and health.
+4. Logs/traces for failing resource or request.
+5. Aspire docs/integrations tools for configuration syntax.
+
 ## Anti-patterns
 
 ### Don't Use Aspire for Production Deployment
