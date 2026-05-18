@@ -43,6 +43,7 @@ These files document reusable hook scripts and client-specific wiring:
 These files document the OpenCode/Codex-first project model and this manifest:
 
 - `MEMORY.md`
+- `docs/global-local-install.md`
 - `docs/dotnet-opencode-kit-SPEC.md`
 - `docs/added-files-manifest.md`
 

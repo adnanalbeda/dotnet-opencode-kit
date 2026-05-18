@@ -19,6 +19,8 @@ dotnet-opencode-kit separates reusable agent intelligence from client adapters.
 
 ## Setup
 
+For local-only global usage across clients, see [Global Local Install](global-local-install.md). It covers symlink setup for OpenCode, Codex, Claude compatibility, Cursor notes, Arch Linux, and NixOS/Home Manager.
+
 ### 1. Install Roslyn MCP Server
 
 ```bash

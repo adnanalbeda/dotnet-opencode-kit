@@ -70,6 +70,10 @@ cp mcp-configs/mcp-servers.json .mcp.json
 
 If your global MCP config already includes official Microsoft Learn/.NET and Aspire MCP servers, this kit will route to them through `AGENTS.md` guidance. No project-local duplication required.
 
+### Global Local Install
+
+For a local-only global setup, clone this repo once from the `personalized-workflow` branch and symlink OpenCode, Codex, Claude compatibility, and Cursor rule files to it. See [Global Local Install](docs/global-local-install.md) for GitHub clone, Arch Linux, NixOS, and Home Manager steps.
+
 ### Codex
 
 Use `.codex/AGENTS.md` as adapter and root `AGENTS.md` as canonical routing file. Codex should read `commands/<command>.md` when user invokes slash-style command text.

@@ -13,7 +13,8 @@ description: >
 1. **One question at a time** - Do not dump a questionnaire. Resolve each branch before moving deeper.
 2. **Recommend an answer** - Every question includes the agent's recommended answer and rationale.
 3. **Explore before asking** - If the answer is discoverable from code, docs, issues, or git state, inspect those first.
-4. **Drive to decision** - End with agreed decisions, open questions, risks, and next concrete action.
+4. **Use the question tool for choices** - When selectable answers are needed and the client has a question/choice tool, use it instead of writing prose options.
+5. **Drive to decision** - End with agreed decisions, open questions, risks, and next concrete action.
 
 ## Patterns
 
@@ -32,6 +33,20 @@ Choose: vertical slice / shared platform / defer
 ```
 
 After user answers, update decision state and ask the next highest-leverage question.
+
+### Question Tool Contract
+
+When a question has clear choices, use the client's question tool with the recommended option first:
+
+```text
+Question: Which install mode should docs optimize for?
+Options:
+1. Symlink local clone (Recommended) - one repo clone, global clients point to it.
+2. Copy files - simple but drifts over time.
+3. Both - more docs, more maintenance.
+```
+
+If the client lacks a question tool, use the same structure as a concise numbered list.
 
 ### Codebase-Aware Grilling
 
@@ -94,11 +109,22 @@ What should we do?
 Recommended answer: use output caching, not HybridCache, because this is an HTTP response concern.
 ```
 
+### Prose Options Instead Of Tool
+
+```text
+# BAD
+Which path do you want? Symlink, copy, or both?
+
+# GOOD
+Use the question tool with options. Put recommended option first and explain each choice briefly.
+```
+
 ## Decision Guide
 
 | Scenario | Action |
 |----------|--------|
 | User says "grill me" | Ask one question with recommended answer |
+| Question has selectable choices | Use question tool; recommended answer first |
 | Plan has unclear architecture | Probe boundaries, data ownership, integration points |
 | Answer is in repo | Inspect first, then state finding |
 | User agrees with recommendation | Record decision, move to next branch |

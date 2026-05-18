@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `grill-me`, `to-prd`, `to-issues`, `caveman`, and `cavecrew` as local skills with command routing.
 - Updated `/plan` to run grill-me first, generate local-only PRDs/issues, then implement with caveman+cavecrew agents.
 - Added contextual agent/skill routing and MCP context loading to `/plan` recommendations.
+- Added local-only global install documentation with symlink workflows for Arch Linux, NixOS, and all supported clients.
+- Documented GitHub clone/update steps for the `personalized-workflow` branch.
 
 ## [0.7.0] — 2026-03-22
 
