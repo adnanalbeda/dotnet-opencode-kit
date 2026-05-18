@@ -53,7 +53,7 @@ Load relevant skills before implementation:
 - `configuration` when options are exposed
 - `dependency-injection` when service registration extensions exist
 - `context-discipline`, `wrap-up-ritual`, `verification-loop`
-- `grill-me`, `to-prd`, `to-issues`, `caveman`, `cavecrew` for planning, local product docs, local issue breakdown, and compressed workflows
+- `grill-with-docs`, `to-prd`, `to-issues`, `caveman`, `cavecrew` for docs-aware planning, local product docs, local issue breakdown, and compressed workflows
 
 ## MCP Tools
 

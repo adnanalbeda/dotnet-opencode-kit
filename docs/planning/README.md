@@ -9,7 +9,7 @@ Local planning output lives here. These files are local markdown artifacts, not 
 
 ## Workflow
 
-1. `/plan` loads `grill-me` and resolves decisions.
+1. `/plan` loads `grill-with-docs` and resolves decisions against project docs.
 2. Planning routes to relevant agents/skills and loads MCP context when it improves recommendations.
 3. `to-prd` writes local PRD markdown.
 4. `to-issues` writes local vertical-slice issue markdown.
