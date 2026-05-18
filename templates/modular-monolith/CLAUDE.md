@@ -178,7 +178,7 @@ Load these dotnet-opencode-kit skills for context:
 - `self-correction-loop` — Capture corrections as permanent rules in MEMORY.md
 - `wrap-up-ritual` — Structured session handoff to `.agent/handoff.md`
 - `context-discipline` — Token budget management, MCP-first navigation
-- `grill-me`, `to-prd`, `to-issue`/`to-issues`, `caveman`, `cavecrew` -- Planning, local product docs, local issue breakdown, compressed workflows
+- `grill-me`, `to-prd`, `to-issues`, `caveman`, `cavecrew` -- Planning, local product docs, local issue breakdown, compressed workflows
 
 ## MCP Tools
 

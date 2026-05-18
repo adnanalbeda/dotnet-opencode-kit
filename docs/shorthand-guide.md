@@ -9,7 +9,7 @@ A compact reference for all components: commands, skills, agents, rules, hooks, 
 | Command | Description | Related Skill / Agent |
 |---------|-------------|----------------------|
 | `/dotnet-init` | Project setup and `AGENTS.md` generation | project-setup / dotnet-architect |
-| `/plan` | Grill, route context, local PRD/issues, then implement | grill-me, contextual skills/MCP, to-prd, to-issue, caveman, cavecrew / dotnet-architect |
+| `/plan` | Grill, route context, local PRD/issues, then implement | grill-me, contextual skills/MCP, to-prd, to-issues, caveman, cavecrew / dotnet-architect |
 | `/scaffold` | Architecture-aware feature scaffolding | scaffolding / dotnet-architect |
 | `/build-fix` | Autonomous build-fix loop | autonomous-loops / build-error-resolver |
 | `/verify` | 7-phase verification pipeline | verification-loop / -- |
@@ -26,8 +26,7 @@ A compact reference for all components: commands, skills, agents, rules, hooks, 
 | `/instinct-import` | Import instincts from another project | instinct-system / -- |
 | `/grill-me` | Stress-test a plan/design one question at a time | grill-me / -- |
 | `/to-prd` | Convert current context into a local PRD | to-prd / -- |
-| `/to-issue` | Break a plan/PRD into local vertical-slice issues | to-issue / -- |
-| `/to-issues` | Alias for `/to-issue` | to-issue / -- |
+| `/to-issues` | Break a plan/PRD into local vertical-slice issues | to-issues / -- |
 | `/caveman` | Enable ultra-compressed technical communication | caveman / -- |
 | `/cavecrew` | Use compressed subagent delegation | cavecrew / -- |
 
@@ -72,7 +71,7 @@ A compact reference for all components: commands, skills, agents, rules, hooks, 
 | wrap-up-ritual | Session handoff with progress and pending tasks |
 | grill-me | Stress-test plans/designs before implementation |
 | to-prd | Convert context into a PRD |
-| to-issue | Break PRDs/plans into vertical-slice issues |
+| to-issues | Break PRDs/plans into vertical-slice issues |
 | caveman | Ultra-compressed technical communication |
 | cavecrew | Compressed subagent delegation patterns |
 
@@ -185,7 +184,7 @@ All rules have `alwaysApply: true` -- they are enforced on every interaction.
 | Command | Primary Skill(s) | Primary Agent | Support Agent(s) |
 |---------|-----------------|---------------|-------------------|
 | `/dotnet-init` | project-setup | dotnet-architect | -- |
-| `/plan` | grill-me, contextual skills/MCP, to-prd, to-issue, caveman, cavecrew | dotnet-architect | -- |
+| `/plan` | grill-me, contextual skills/MCP, to-prd, to-issues, caveman, cavecrew | dotnet-architect | -- |
 | `/scaffold` | scaffolding | dotnet-architect | api-designer, ef-core-specialist |
 | `/build-fix` | autonomous-loops | build-error-resolver | -- |
 | `/verify` | verification-loop | -- | -- |
@@ -202,7 +201,6 @@ All rules have `alwaysApply: true` -- they are enforced on every interaction.
 | `/instinct-import` | instinct-system | -- | -- |
 | `/grill-me` | grill-me | -- | -- |
 | `/to-prd` | to-prd | -- | -- |
-| `/to-issue` | to-issue | -- | -- |
-| `/to-issues` | to-issue | -- | -- |
+| `/to-issues` | to-issues | -- | -- |
 | `/caveman` | caveman | -- | -- |
 | `/cavecrew` | cavecrew | -- | -- |

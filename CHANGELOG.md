@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added OpenCode/Codex MCP and hook adapter documentation.
 - Documented official Microsoft Learn/.NET and Aspire MCP routing in `AGENTS.md`, docs, and Aspire skill.
 - Added `docs/added-files-manifest.md` to track project-local added files for easier upstream/source sync.
-- Added `grill-me`, `to-prd`, `to-issue`, `caveman`, and `cavecrew` as local skills with command routing.
+- Added `grill-me`, `to-prd`, `to-issues`, `caveman`, and `cavecrew` as local skills with command routing.
 - Updated `/plan` to run grill-me first, generate local-only PRDs/issues, then implement with caveman+cavecrew agents.
 - Added contextual agent/skill routing and MCP context loading to `/plan` recommendations.
 

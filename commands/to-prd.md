@@ -33,4 +33,4 @@ Uses `to-prd` to synthesize known context into a local product requirements docu
 ## Related
 
 - `/grill-me` - Resolve unclear decisions first.
-- `/to-issue` / `/to-issues` - Break approved PRD into local implementation issue files.
+- `/to-issues` - Break approved PRD into local implementation issue files.

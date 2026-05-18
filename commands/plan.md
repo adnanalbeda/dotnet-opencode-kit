@@ -17,7 +17,7 @@ Runs the project planning pipeline from unclear request to implementation:
 - Route to relevant agents/skills and load MCP context when it improves recommendations.
 - After grilling is done, run a PRD agent with `to-prd`.
 - Generate PRDs locally only under `docs/planning/prds/`; do not create or push GitHub/GitLab issues.
-- Run an issue-breakdown agent with `to-issue`/`to-issues`.
+- Run an issue-breakdown agent with `to-issues`.
 - Generate issue files locally only under `docs/planning/issues/`.
 - Run implementation agents using `caveman` style and `cavecrew` delegation.
 
@@ -97,7 +97,7 @@ Do not run `gh issue create`, GitLab issue creation, API publishing, or remote t
 
 ### Step 7: Produce Local Issues
 
-Run a planning agent/subagent with `to-issue` or `to-issues` behavior. Use routed agent/skill/MCP context to choose thin vertical slices. Output local markdown only:
+Run a planning agent/subagent with `to-issues`. Use routed agent/skill/MCP context to choose thin vertical slices. Output local markdown only:
 
 ```text
 docs/planning/issues/[yyyy-mm-dd]-[slug]/001-[slice].md
@@ -194,6 +194,6 @@ Proceeding with AFK slices. Pausing only for HITL decisions.
 
 - `/grill-me` -- Stress-test the plan before PRD/issues
 - `/to-prd` -- Generate local PRD artifact
-- `/to-issue` / `/to-issues` -- Generate local issue artifacts
+- `/to-issues` -- Generate local issue artifacts
 - `/cavecrew` -- Delegate investigation, edits, and review compactly
 - `/verify` -- Run verification after implementing slices

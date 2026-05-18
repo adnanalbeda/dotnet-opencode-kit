@@ -100,4 +100,4 @@ Write `docs/planning/prds/[date]-[slug].md` locally.
 | Context lacks architecture vocabulary | Inspect repo docs and nearby feature patterns |
 | Running inside `/plan` | Generate local PRD only |
 | User asks to publish remotely | Stop and require a separate explicit publishing workflow; do not publish from this skill |
-| User wants implementation tickets | Use `to-issue`/`to-issues` after PRD approval |
+| User wants implementation tickets | Use `to-issues` after PRD approval |

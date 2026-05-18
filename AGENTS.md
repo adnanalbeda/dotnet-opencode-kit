@@ -163,7 +163,7 @@ These 15 meta and productivity skills are not tied to a specific agent — any a
 | `autonomous-loops` | Iterative fix loops — build-fix, test-fix, refactor with bounded iterations |
 | `grill-me` | Stress-test plans/designs one question at a time before implementation |
 | `to-prd` | Convert current context into a local PRD artifact |
-| `to-issue` | Break plans/PRDs into local vertical-slice implementation issue files (`to-issues` alias) |
+| `to-issues` | Break plans/PRDs into local vertical-slice implementation issue files |
 | `caveman` | Use ultra-compressed technical communication when requested |
 | `cavecrew` | Choose compressed subagent delegation for investigation, small edits, and reviews |
 
@@ -183,7 +183,7 @@ These 15 meta and productivity skills are not tied to a specific agent — any a
 | "fix build loop", "keep fixing", "auto-fix" | autonomous-loops |
 | "grill me", "stress-test this", "challenge this plan" | grill-me |
 | "write PRD", "turn this into a PRD", "product requirements" | to-prd |
-| "create issues", "break into tickets", "implementation issues", "to-issues" | to-issue |
+| "create issues", "break into tickets", "implementation issues", "to-issues" | to-issues |
 | "caveman mode", "be brief", "less tokens" | caveman |
 | "use cavecrew", "delegate to subagent", "save context" | cavecrew |
 
@@ -194,7 +194,7 @@ Commands map to skills and agents. Use these as shortcuts for common workflows.
 | Command | Primary Skill | Primary Agent | Purpose |
 |---------|--------------|---------------|---------|
 | `/dotnet-init` | project-setup | dotnet-architect | Interactive project initialization |
-| `/plan` | grill-me, contextual skills/MCP, to-prd, to-issue, caveman, cavecrew | dotnet-architect | Grill, route context, local PRD/issues, then implement |
+| `/plan` | grill-me, contextual skills/MCP, to-prd, to-issues, caveman, cavecrew | dotnet-architect | Grill, route context, local PRD/issues, then implement |
 | `/verify` | verification-loop | — | 7-phase verification pipeline |
 | `/tdd` | testing | test-engineer | Red-green-refactor workflow |
 | `/scaffold` | scaffolding | dotnet-architect | Architecture-aware feature scaffolding |
@@ -211,8 +211,7 @@ Commands map to skills and agents. Use these as shortcuts for common workflows.
 | `/instinct-import` | instinct-system | — | Import instincts from another project |
 | `/grill-me` | grill-me | — | Stress-test a plan/design before implementation |
 | `/to-prd` | to-prd | — | Convert current context into local PRD |
-| `/to-issue` | to-issue | — | Break a plan/PRD into local vertical-slice issues |
-| `/to-issues` | to-issue | — | Alias for `/to-issue` |
+| `/to-issues` | to-issues | — | Break a plan/PRD into local vertical-slice issues |
 | `/caveman` | caveman | — | Enable compressed technical communication |
 | `/cavecrew` | cavecrew | — | Use compressed subagent delegation patterns |
 

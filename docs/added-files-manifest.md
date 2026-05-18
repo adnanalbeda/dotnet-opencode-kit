@@ -52,12 +52,11 @@ These files add globally used productivity workflows to the local kit:
 
 - `skills/grill-me/SKILL.md`
 - `skills/to-prd/SKILL.md`
-- `skills/to-issue/SKILL.md`
+- `skills/to-issues/SKILL.md`
 - `skills/caveman/SKILL.md`
 - `skills/cavecrew/SKILL.md`
 - `commands/grill-me.md`
 - `commands/to-prd.md`
-- `commands/to-issue.md`
 - `commands/to-issues.md`
 - `commands/caveman.md`
 - `commands/cavecrew.md`

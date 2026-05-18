@@ -12,7 +12,7 @@ Local planning output lives here. These files are local markdown artifacts, not 
 1. `/plan` loads `grill-me` and resolves decisions.
 2. Planning routes to relevant agents/skills and loads MCP context when it improves recommendations.
 3. `to-prd` writes local PRD markdown.
-4. `to-issue`/`to-issues` writes local vertical-slice issue markdown.
+4. `to-issues` writes local vertical-slice issue markdown.
 5. Implementation agents use `caveman` and `cavecrew`.
 
-Remote tracker publishing is not part of `/plan`, `to-prd`, `to-issue`, or `to-issues`.
+Remote tracker publishing is not part of `/plan`, `to-prd`, or `to-issues`.

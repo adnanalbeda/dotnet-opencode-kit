@@ -36,7 +36,7 @@ api-versioning, architecture-advisor, aspire, authentication, caching, ci-cd, cl
 code-review-workflow, convention-learner, migration-workflow, verification-loop, workflow-mastery
 
 ### Meta & Productivity Skills
-80-20-review, context-discipline, learning-log, model-selection, self-correction-loop, split-memory, wrap-up-ritual, grill-me, to-prd, to-issue, caveman, cavecrew
+80-20-review, context-discipline, learning-log, model-selection, self-correction-loop, split-memory, wrap-up-ritual, grill-me, to-prd, to-issues, caveman, cavecrew
 
 ## Workflow Commands
 
@@ -54,8 +54,7 @@ Codex does not need native slash command support. If user types command text, re
 | `/wrap-up` | `commands/wrap-up.md` | End-session handoff |
 | `/grill-me` | `commands/grill-me.md` | Stress-test a plan/design |
 | `/to-prd` | `commands/to-prd.md` | Create local PRD from current context |
-| `/to-issue` | `commands/to-issue.md` | Break plan/PRD into local implementation issues |
-| `/to-issues` | `commands/to-issues.md` | Alias for `/to-issue` |
+| `/to-issues` | `commands/to-issues.md` | Break plan/PRD into local implementation issues |
 | `/caveman` | `commands/caveman.md` | Enable compressed response style |
 | `/cavecrew` | `commands/cavecrew.md` | Use compressed subagent delegation |
 

@@ -1,14 +1,14 @@
 ---
 description: >
-  Alias for /to-issue. Generates local dependency-ordered vertical-slice issue
-  files without publishing to GitHub/GitLab.
+  Generate local dependency-ordered vertical-slice issue files without publishing
+  to GitHub/GitLab.
 ---
 
 # /to-issues
 
 ## What
 
-Alias for `/to-issue`; uses `to-issue` behavior matching global `to-issues` terminology.
+Uses `to-issues` to create independently grabbable local implementation issue files.
 
 ## When
 
@@ -17,7 +17,7 @@ Alias for `/to-issue`; uses `to-issue` behavior matching global `to-issues` term
 
 ## How
 
-1. Load `to-issue`.
+1. Load `to-issues`.
 2. Generate local issue markdown files under `docs/planning/issues/[yyyy-mm-dd]-[slug]/`.
 3. Do not publish to GitHub/GitLab from this command.
 

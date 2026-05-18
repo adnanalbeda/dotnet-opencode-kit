@@ -1,12 +1,12 @@
 ---
-name: to-issue
+name: to-issues
 description: >
   Break a plan, spec, or PRD into independently grabbable local issue files using
   tracer-bullet vertical slices. Load when user asks to create issues,
-  implementation tickets, or break down work. Alias for global to-issues behavior.
+  implementation tickets, or break down work.
 ---
 
-# To Issue
+# To Issues
 
 ## Core Principles
 
@@ -101,7 +101,7 @@ Allow checkout to reject expired payment authorization with ProblemDetails respo
 
 | Scenario | Action |
 |----------|--------|
-| User says "to issue", "to issues", or "create tickets" | Draft local vertical slice breakdown |
+| User says "to issues" or "create tickets" | Draft local vertical slice breakdown |
 | Source is existing tracker issue | Fetch full body/comments before slicing |
 | Slice needs human choice | Mark HITL |
 | Slice can be implemented from spec | Mark AFK |
